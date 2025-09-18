@@ -12,8 +12,8 @@ const darkPalette = [
   "hsla(0, 15%, 39%, 1)",
   "hsla(0, 15%, 45%, 1)",
   "hsla(0, 15%, 50%, 1)",
-  "hsla(0, 15%, 93%, 1)",
-  "hsla(0, 15%, 99%, 1)",
+  "hsla(0, 18%, 93%, 1)",
+  "hsla(0, 18%, 99%, 1)",
 ];
 const lightPalette = [
   "hsla(0, 15%, 99%, 1)",
@@ -26,8 +26,8 @@ const lightPalette = [
   "hsla(0, 15%, 61%, 1)",
   "hsla(0, 15%, 55%, 1)",
   "hsla(0, 15%, 50%, 1)",
-  "hsla(0, 15%, 15%, 1)",
-  "hsla(0, 15%, 1%, 1)",
+  "hsla(0, 18%, 15%, 1)",
+  "hsla(0, 18%, 1%, 1)",
 ];
 
 const lightShadows = {
@@ -105,7 +105,7 @@ const builtThemes = createThemes({
         "hsla(51, 100%, 64%, 1)",
         "hsla(51, 100%, 65%, 1)",
         "hsla(250, 50%, 95%, 1)",
-        "hsla(250, 50%, 95%, 1)",
+        "hsla(0, 18%, 1%, 1)",
       ],
     },
   },
