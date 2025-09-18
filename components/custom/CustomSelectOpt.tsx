@@ -49,7 +49,7 @@ export function CustomSelectOpt(
             {/* </Sheet.ScrollView> */}
           </Sheet.Frame>
           <Sheet.Overlay
-            backgroundColor="$shadowColor"
+            backgroundColor="rgba(0,0,0,0.5)"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
