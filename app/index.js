@@ -50,78 +50,78 @@ export default function Page() {
     <SafeAreaProvider>
       <TamaguiProvider config={config} defaultTheme={"light"}>
         <KeyboardProvider>
-        {/* Header */}
-        <XStack justifyContent="start">
-          <YStack justifyContent="center" alignItems="center">
-            {step > 1 && (
-              <Button
-                unstyled
-                circular
-                size="$6"
-                icon={ArrowLeft}
-                justifyContent="center"
-                onPress={onProgressStepDecrease}
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "transparent",
-                }}
-              />
-            )}
-          </YStack>
+          {/* Header */}
+          <XStack justifyContent="start">
+            <YStack justifyContent="center" alignItems="center">
+              {step > 1 && (
+                <Button
+                  unstyled
+                  circular
+                  size="$6"
+                  icon={ArrowLeft}
+                  justifyContent="center"
+                  onPress={onProgressStepDecrease}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "transparent",
+                  }}
+                />
+              )}
+            </YStack>
+
+            <YStack
+              px={"$6"}
+              py={"$3"}
+              justifyContent="center"
+              alignItems="center">
+              <H3>Setup Your Profile</H3>
+            </YStack>
+          </XStack>
+
+          {/* Progress bar */}
 
           <YStack
-            px={"$6"}
-            py={"$3"}
-            justifyContent="center"
-            alignItems="center">
-            <H3>Setup Your Profile</H3>
-          </YStack>
-        </XStack>
-
-        {/* Progress bar */}
-
-        <YStack
-          style={{
-            justifyContent: "space-between",
-            padding: 25,
-            gap: 18,
-          }}>
-          <XStack style={{ justifyContent: "space-between" }}>
-            <Text>{step}/5</Text>
-            <Text>{progress}%</Text>
-          </XStack>
-          <YStack>
-            <XStack>
-              <Progress
-                value={progress}
-                max={100}
-                style={{ backgroundColor: "white" }}>
-                <Progress.Indicator
-                  animation="quick"
-                  style={{ backgroundColor: "hsla(51, 100%, 58%, 1)" }}
-                />
-              </Progress>
+            style={{
+              justifyContent: "space-between",
+              padding: 25,
+              gap: 18,
+            }}>
+            <XStack style={{ justifyContent: "space-between" }}>
+              <Text>{step}/5</Text>
+              <Text>{progress}%</Text>
             </XStack>
-          </YStack>
+            <YStack>
+              <XStack>
+                <Progress
+                  value={progress}
+                  max={100}
+                  style={{ backgroundColor: "white" }}>
+                  <Progress.Indicator
+                    animation="quick"
+                    style={{ backgroundColor: "hsla(51, 100%, 58%, 1)" }}
+                  />
+                </Progress>
+              </XStack>
+            </YStack>
 
-          {/* Main  */}
+            {/* Main  */}
 
             <YStack backgroundColor="white" rounded={"$6"} p={"$4"}>
-            <CurrStepComponent />
-          </YStack>
+              <CurrStepComponent />
+            </YStack>
 
-          {/* Step button */}
-          <XStack width={"$100"} justify={step < 5 ? "start" : "center"}>
-            <Button
-              size="$6"
-              iconAfter={step < 5 ? ArrowRight : Check}
-              onPress={onProgressStepIncrease}
-              theme={"accent"}>
-              {step < 5 ? "Continue" : "Complete Setup"}
-            </Button>
-          </XStack>
-        </YStack>
+            {/* Step button */}
+            <XStack width={"$100"} justify={step < 5 ? "start" : "center"}>
+              <Button
+                size="$6"
+                iconAfter={step < 5 ? ArrowRight : Check}
+                onPress={onProgressStepIncrease}
+                theme={"accent"}>
+                {step < 5 ? "Continue" : "Complete Setup"}
+              </Button>
+            </XStack>
+          </YStack>
         </KeyboardProvider>
       </TamaguiProvider>
     </SafeAreaProvider>
