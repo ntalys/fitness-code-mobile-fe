@@ -3,7 +3,7 @@ import React from "react";
 import { XStack } from "tamagui";
 import { Calendar as CalendarIcon } from "lucide-react-native";
 
-const CustomCalendarInput = ({ onPress, date }) => {
+const CustomCalendarInput = ({ children, date }) => {
   return (
     <XStack
       p={"$6"}
@@ -22,15 +22,15 @@ const CustomCalendarInput = ({ onPress, date }) => {
         borderRightColor: "hsla(0, 15%, 77%, 1)",
         borderLeftColor: "hsla(0, 15%, 77%, 1)",
         borderBottomColor: "hsla(0, 15%, 77%, 1)",
-        maxWidth: 320,
+        maxWidth: 420,
         overflow: "hidden",
         borderRadius: 9,
         borderWidth: 1,
       }}>
-      <Text style={{ color: "hsla(0, 15%, 50%, 1)" }}>
+      <Text style={{ color: date ? "black" : "hsla(0, 15%, 50%, 1)" }}>
         {date ? date : "dd/mm/yyyy"}
       </Text>
-      <CalendarIcon color="hsla(0, 15%, 50%, 1)" onPress={onPress} />
+      {children}
     </XStack>
   );
 };
