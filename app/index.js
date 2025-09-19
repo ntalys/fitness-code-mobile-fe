@@ -107,7 +107,7 @@ export default function Page() {
 
           {/* Main  */}
 
-          <YStack backgroundColor="white" rounded={"$6"} p={"$6"}>
+            <YStack backgroundColor="white" rounded={"$6"} p={"$4"}>
             <CurrStepComponent />
           </YStack>
 
