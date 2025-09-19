@@ -11,13 +11,11 @@ import {
   YStack,
 } from "tamagui";
 import config from "../tamagui.config";
-import { Component, useState } from "react";
+import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
-import Step1 from "../components/setup/Step1";
-import Step2 from "../components/setup/Step2";
-import Step3 from "../components/setup/Step3";
-import Step4 from "../components/setup/Step4";
-import Step5 from "../components/setup/Step5";
+import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
+
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 export default function Page() {
   // const [themeMode, setThemeMode] = (useState < "light") | ("dark" > "light");
