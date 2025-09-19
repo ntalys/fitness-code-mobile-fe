@@ -1,133 +1,84 @@
 import React, { useState } from "react";
-import { CalendarList } from "react-native-calendars";
-import { Adapt, Button, Popover, PopoverProps, Sheet, YStack } from "tamagui";
-import { Calendar as CalendarIcon } from "lucide-react-native";
-import { Platform } from "react-native";
-
+import {
+  Modal,
+  Platform,
+  Pressable,
+  View,
+  TouchableWithoutFeedback,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Calendar } from "lucide-react-native";
 
-const PopoverCalendar = ({
-  Icon,
-  Name,
-  shouldAdapt,
-  ...props
-}: PopoverProps & {
-  Icon?: any;
-  Name?: string;
-  shouldAdapt?: boolean;
-  setDate;
-}) => {
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState("date");
+const PopoverCalendar = () => {
+  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    if (event.type === "dismissed") {
+      setShow(false);
+      return;
+    }
+    setDate(selectedDate || date);
     setShow(false);
-    setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode("date");
-  };
-
-  const showTimepicker = () => {
-    showMode("time");
-  };
+  const openPicker = () => setShow(true);
+  const closePicker = () => setShow(false);
 
   return (
-    <Popover size="$5" allowFlip stayInFrame offset={5} resize {...props}>
-      <Popover.Trigger asChild>
-        <CalendarIcon color={"hsla(0, 15%, 50%, 1)"} />
-      </Popover.Trigger>
+    <>
+      <Pressable onPress={openPicker}>
+        <Calendar size={28} color={"hsla(0, 15%, 77%, 1)"} />
+      </Pressable>
 
-      {shouldAdapt && (
-        <Adapt when="maxMd" platform="touch">
-          <Sheet animation="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame padding="$4">
-              <Adapt.Contents />
-            </Sheet.Frame>
-            <Sheet.Overlay
-              backgroundColor="$shadowColor"
-              animation="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
+      {Platform.OS === "ios" ? (
+        <Modal
+          visible={show}
+          transparent
+          animationType="slide"
+          backdropColor={"red"}>
+          {/* Overlay to close modal on press */}
+          <TouchableWithoutFeedback onPress={closePicker}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "flex-end",
+                // backgroundColor: "rgba(0,0,0,0.3)",
+              }}
             />
-          </Sheet>
-        </Adapt>
-      )}
+          </TouchableWithoutFeedback>
 
-      <Popover.Content
-        borderWidth={1}
-        borderColor="$borderColor"
-        width={450}
-        height={400}
-        position={Platform.OS === "ios" ? "absolute" : "static"}
-        left={0}
-        // style={{ alignItems: "center" }}
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
-        elevate
-        style={{ padding: 0 }}
-        animation={[
-          "quick",
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}>
-        {/* <Button onPress={showDatepicker}>Show date picker!</Button>
-
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
-        /> */}
-        <YStack gap="$1">
-          <CalendarList
-            pastScrollRange={1000}
+          <View
             style={{
-              borderRadius: 3,
-              width: 400,
-              flex: 1,
-              alignContent: "center",
-              paddingLeft: 0,
-              paddingRight: 20,
-            }}
-            onDayPress={(day) => {
-              console.log("day: ", day);
-              props.setDate((dateVal) => {
-                const date = day.day <= 9 ? `0${day.day}` : `${day.day}`;
-                const month = day.month <= 9 ? `0${day.month}` : `${day.month}`;
-                return (dateVal = `${date}/${month}/${day.year}`);
-              });
-            }}
+              backgroundColor: "hsla(0, 15%, 50%, 1)",
+              // padding: 10,
+              // flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            }}>
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="inline" // "inline" works only inside views, "spinner" gives modal style
+              onChange={onChange}
+              accentColor="hsla(51, 100%, 54%, 1)"
+            />
+          </View>
+        </Modal>
+      ) : (
+        show && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="calendar"
+            onChange={onChange}
           />
-          {/* <Popover.Arrow borderWidth={1} borderColor="$borderColor" /> */}
-          <Popover.Close asChild></Popover.Close>
-        </YStack>
-      </Popover.Content>
-    </Popover>
+        )
+      )}
+    </>
   );
 };
 
 export default PopoverCalendar;
-
-//    <Calendar
-//       onDayPress={(day) => {
-//         console.log("day: ", day);
-//         setDate((dateVal) => {
-//           const date = day.day <= 9 ? `0${day.day}` : `${day.day}`;
-//           const month = day.month <= 9 ? `0${day.month}` : `${day.month}`;
-//           return (dateVal = `${date}/${month}/${day.year}`);
-//         });
-//       }}
-//     />
