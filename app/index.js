@@ -51,6 +51,7 @@ export default function Page() {
   return (
     <SafeAreaProvider>
       <TamaguiProvider config={config} defaultTheme={"light"}>
+        <KeyboardProvider>
         {/* Header */}
         <XStack justifyContent="start">
           <YStack justifyContent="center" alignItems="center">
@@ -123,6 +124,7 @@ export default function Page() {
             </Button>
           </XStack>
         </YStack>
+        </KeyboardProvider>
       </TamaguiProvider>
     </SafeAreaProvider>
   );
