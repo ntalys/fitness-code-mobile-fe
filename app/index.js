@@ -1,5 +1,3 @@
-import { useRouter } from "expo-router";
-import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import {
