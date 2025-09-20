@@ -10,6 +10,7 @@
     "deploy": "npx expo export -p web && npx eas-cli@latest deploy"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^8.4.5",
     "@tamagui/animations-react-native": "^1.132.23",
     "@tamagui/button": "^1.132.23",
     "@tamagui/config": "^1.132.23",
@@ -22,6 +23,7 @@
     "@tamagui/themes": "^1.132.23",
     "@tamagui/toast": "^1.132.23",
     "burnt": "^0.13.0",
+    "date-fns": "^4.1.0",
     "expo": "^54.0.1",
     "expo-constants": "~18.0.8",
     "expo-linking": "~8.0.8",
