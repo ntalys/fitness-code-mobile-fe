@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import CustomCalendarInput from "./CustomCalendarInput";
 import { SelectProps } from "tamagui";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Calendar } from "lucide-react-native";
+import CustomIcon from "./CustomIcon";
 
 const PopoverCalendarAndroid = (
   props: SelectProps & {
@@ -47,7 +47,11 @@ const PopoverCalendarAndroid = (
               onChange={onChange}
             />
           )}
-          <Calendar size={"14"} color={"hsla(0, 15%, 50%, 1)"} />
+          <CustomIcon
+            name={"Calendar"}
+            size={"14"}
+            color={"hsla(0, 15%, 50%, 1)"}
+          />
         </CustomCalendarInput>
       </Pressable>
     </>
