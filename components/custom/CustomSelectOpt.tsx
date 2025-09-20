@@ -1,49 +1,61 @@
+import React, { useMemo } from "react";
 import { Check, ChevronDown, ChevronUp } from "lucide-react-native";
-import { useMemo, useState } from "react";
-import {
-  Adapt,
-  FontSizeTokens,
-  getFontSize,
-  Select,
-  SelectProps,
-  Sheet,
-  YStack,
-} from "tamagui";
+import { Adapt, Select, SelectProps, Sheet, YStack } from "tamagui";
 
-export function CustomSelectOpt(
-  props: SelectProps & {
-    trigger?: React.ReactNode;
-    labelTitle?: string;
-    items: Array<{ name: string; value: string }>;
-  }
-) {
-  const [val, setVal] = useState("");
+type Item = { name: string; value: string };
+
+interface CustomSelectOptProps extends Omit<SelectProps, "children"> {
+  labelTitle?: string;
+  items: Item[];
+  maxWidth?: number; // px
+  placeholder?: string;
+  value: string;
+  onValueChange: (val: string) => void;
+  onOpenChange?: (val: boolean) => void;
+}
+
+export const CustomSelectOpt = ({
+  items,
+  labelTitle,
+  maxWidth = 90,
+  placeholder,
+  value,
+  onValueChange,
+  onOpenChange,
+  ...props
+}: CustomSelectOptProps) => {
+  const options = useMemo(
+    () =>
+      items.map((item, index) => (
+        <Select.Item index={index} key={item.value} value={item.value}>
+          <Select.ItemText>{item.name}</Select.ItemText>
+          <Select.ItemIndicator marginLeft="auto">
+            <Check size={20} />
+          </Select.ItemIndicator>
+        </Select.Item>
+      )),
+    []
+  );
 
   return (
     <Select
-      value={val}
-      onValueChange={setVal}
+      value={value}
+      onValueChange={onValueChange}
+      onOpenChange={onOpenChange}
       disablePreventBodyScroll
       {...props}>
-      {props?.trigger || (
-        <Select.Trigger
-          maxWidth={420}
-          iconAfter={ChevronDown}
-          color={"hsla(0, 15%, 50%, 1)"}>
-          <Select.Value
-            placeholder="Select Gender"
-            color={!val ? "$color10" : "hsla(0, 18%, 15%, 1)"}
-          />
-        </Select.Trigger>
-      )}
+      <Select.Trigger
+        style={{ width: maxWidth, alignSelf: "flex-start" }}
+        iconAfter={ChevronDown}
+        color={"hsla(0, 15%, 50%, 1)"}>
+        <Select.Value
+          placeholder={placeholder}
+          color={!value ? "$color10" : "hsla(0, 18%, 15%, 1)"}
+        />
+      </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet
-          native={!!props.native}
-          modal
-          dismissOnSnapToBottom
-          animation="medium"
-          snapPoints={[50]}>
+        <Sheet modal dismissOnSnapToBottom animation="medium" snapPoints={[50]}>
           <Sheet.Handle />
           <Sheet.Frame>
             <Adapt.Contents />
@@ -67,51 +79,17 @@ export function CustomSelectOpt(
           <YStack zIndex={10}>
             <ChevronUp size={20} />
           </YStack>
-          <linearGradient
-            start={[0, 0]}
-            end={[0, 1]}
-            colors={["$background", "transparent"]}
-            borderRadius="$4"
-          />
         </Select.ScrollUpButton>
 
         <Select.Viewport minWidth={200}>
           <Select.Group>
-            <Select.Label textAlign="center" bg={"hsla(0, 15%, 77%, 1)"}>
-              {props.labelTitle}
-            </Select.Label>
-            {/* for longer lists memoizing these is useful */}
-            {useMemo(
-              () =>
-                props.items.map((item, i) => {
-                  return (
-                    <Select.Item index={i} key={item.name} value={item.value}>
-                      <Select.ItemText>{item.name}</Select.ItemText>
-                      <Select.ItemIndicator marginLeft="auto">
-                        <Check size={28} />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  );
-                }),
-              [props.items]
+            {labelTitle && (
+              <Select.Label textAlign="center" bg={"hsla(0, 15%, 77%, 1)"}>
+                {labelTitle}
+              </Select.Label>
             )}
+            {options}
           </Select.Group>
-          {/* Native gets an extra icon */}
-          {props.native && (
-            <YStack
-              position="absolute"
-              right={0}
-              top={0}
-              bottom={0}
-              alignItems="center"
-              justifyContent="center"
-              width={"$4"}
-              pointerEvents="none">
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? "$true")}
-              />
-            </YStack>
-          )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
@@ -123,15 +101,10 @@ export function CustomSelectOpt(
           <YStack zIndex={10}>
             <ChevronDown size={20} />
           </YStack>
-          <linearGradient
-            start={[0, 0]}
-            end={[0, 1]}
-            fullscreen
-            colors={["transparent", "$background"]}
-            borderRadius="$4"
-          />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>
   );
-}
+};
+
+export default CustomSelectOpt;
