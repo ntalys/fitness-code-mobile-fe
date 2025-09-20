@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Input, Label, XStack, YStack } from "tamagui";
+import { H4, Input, Label, Text, XStack, YStack } from "tamagui";
 import { CustomSelectOpt } from "../custom/CustomSelectOpt";
 
-import { Platform, Pressable } from "react-native";
+import { Platform } from "react-native";
 
 import PopoverCalendarIOS from "../custom/PopoverCalendarIOS";
 import PopoverCalendarAndroid from "../custom/PopoverCalendarAndroid";
@@ -19,6 +19,9 @@ const Step1 = () => {
   return (
     <YStack>
       <YStack alignItems="start" gap="$1">
+        <YStack mb={15}>
+          <H4 fontWeight={600}>Personal Information</H4>
+        </YStack>
         <XStack alignItems="center" justifyContent="space-between" gap={10}>
           <YStack flex={1}>
             <Label width={90} htmlFor="fname">
