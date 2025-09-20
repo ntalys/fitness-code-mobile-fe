@@ -27,10 +27,13 @@ export function CustomSelectOpt(
       {...props}>
       {props?.trigger || (
         <Select.Trigger
-          maxWidth={320}
+          maxWidth={420}
           iconAfter={ChevronDown}
           color={"hsla(0, 15%, 50%, 1)"}>
-          <Select.Value placeholder="Select Gender" color={"$color10"} />
+          <Select.Value
+            placeholder="Select Gender"
+            color={!val ? "$color10" : "hsla(0, 18%, 15%, 1)"}
+          />
         </Select.Trigger>
       )}
 
@@ -43,10 +46,7 @@ export function CustomSelectOpt(
           snapPoints={[50]}>
           <Sheet.Handle />
           <Sheet.Frame>
-            {/* This is to include scroll view */}
-            {/* <Sheet.ScrollView> */}
             <Adapt.Contents />
-            {/* </Sheet.ScrollView> */}
           </Sheet.Frame>
           <Sheet.Overlay
             backgroundColor="rgba(0,0,0,0.5)"
@@ -75,15 +75,11 @@ export function CustomSelectOpt(
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport
-          //   to do animations:
-          //   animation="quick"
-          //   animateOnly={["transform", "opacity"]}
-          //   enterStyle={{ o: 0, y: -10 }}
-          //   exitStyle={{ o: 0, y: 10 }}
-          minWidth={200}>
+        <Select.Viewport minWidth={200}>
           <Select.Group>
-            <Select.Label>{props.labelTitle}</Select.Label>
+            <Select.Label bg={"hsla(0, 15%, 77%, 1)"}>
+              {props.labelTitle}
+            </Select.Label>
             {/* for longer lists memoizing these is useful */}
             {useMemo(
               () =>
