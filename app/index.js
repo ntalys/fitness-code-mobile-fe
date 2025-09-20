@@ -1,5 +1,4 @@
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
 import {
   Button,
   H3,
@@ -14,37 +13,23 @@ import config from "../tamagui.config";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
-
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
 export default function Page() {
-  // const [themeMode, setThemeMode] = (useState < "light") | ("dark" > "light");
-
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
-  // const router = useRouter();
 
   function onProgressStepIncrease() {
     if (step === 5) return;
-    setProgress(() => progress + 20);
-    setStep(() => step + 1);
+    setProgress(progress + 20);
+    setStep(step + 1);
   }
 
   function onProgressStepDecrease() {
     if (step === 1) return;
-    setProgress(() => progress - 20);
-    setStep(() => step - 1);
+    setProgress(progress - 20);
+    setStep(step - 1);
   }
-
-  const setupComponent = {
-    1: Step1,
-    2: Step2,
-    3: Step3,
-    4: Step4,
-    5: Step5,
-  };
-
-  const CurrStepComponent = setupComponent[step] || <Step1 />;
 
   return (
     <SafeAreaProvider>
@@ -80,17 +65,13 @@ export default function Page() {
           </XStack>
 
           {/* Progress bar */}
-
           <YStack
-            style={{
-              justifyContent: "space-between",
-              padding: 25,
-              gap: 18,
-            }}>
+            style={{ justifyContent: "space-between", padding: 25, gap: 18 }}>
             <XStack style={{ justifyContent: "space-between" }}>
               <Text>{step}/5</Text>
               <Text>{progress}%</Text>
             </XStack>
+
             <YStack>
               <XStack>
                 <Progress
@@ -105,10 +86,23 @@ export default function Page() {
               </XStack>
             </YStack>
 
-            {/* Main  */}
-
+            {/* Main content */}
             <YStack backgroundColor="white" rounded={"$6"} p={"$4"}>
-              <CurrStepComponent />
+              <YStack style={{ display: step === 1 ? "flex" : "none" }}>
+                <Step1 />
+              </YStack>
+              <YStack style={{ display: step === 2 ? "flex" : "none" }}>
+                <Step2 />
+              </YStack>
+              <YStack style={{ display: step === 3 ? "flex" : "none" }}>
+                <Step3 />
+              </YStack>
+              <YStack style={{ display: step === 4 ? "flex" : "none" }}>
+                <Step4 />
+              </YStack>
+              <YStack style={{ display: step === 5 ? "flex" : "none" }}>
+                <Step5 />
+              </YStack>
             </YStack>
 
             {/* Step button */}
