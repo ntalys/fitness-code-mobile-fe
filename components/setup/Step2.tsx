@@ -27,11 +27,9 @@ const Step2 = () => {
       style={{ width: "100%" }}
       android_disableSound={false} // optional for Android
     >
-      {/* // don't force flex=1 here; keep the parent card sizing intact */}
       <YStack width="100%" gap="$4" py="$3">
         <H4 fontWeight={600}>Physical Measurements</H4>
 
-        {/* Row: Height + Unit */}
         <XStack width="100%" alignItems="flex-start" gap={12}>
           <YStack flex={1} style={{ minWidth: 0 }}>
             <Label width={90} htmlFor="height">
@@ -49,7 +47,6 @@ const Step2 = () => {
             />
           </YStack>
 
-          {/* fixed width select so it won't stretch */}
           <YStack width={90}>
             <Label width={90} htmlFor="heightUnit">
               Unit*
