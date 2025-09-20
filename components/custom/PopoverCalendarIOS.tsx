@@ -14,6 +14,8 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Calendar, ChevronDown, ChevronUp } from "lucide-react-native";
 
+import { format } from "date-fns";
+
 const PopoverCalendarIOS = (
   props: SelectProps & {
     trigger?: React.ReactNode;
@@ -31,6 +33,10 @@ const PopoverCalendarIOS = (
     [props.date]
   );
 
+  const formattedTitleLAbel = useMemo(
+    () => (props.date ? format(props.date, "dd MMM, yyyy") : ""),
+    [props.date]
+  );
   return (
     <>
       <Select value={formattedDate} disablePreventBodyScroll {...props}>
@@ -88,7 +94,7 @@ const PopoverCalendarIOS = (
           <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label bg={"hsla(0, 15%, 77%, 1)"}>
-                {props.labelTitle}
+                {formattedTitleLAbel}
               </Select.Label>
               <View
                 style={{
