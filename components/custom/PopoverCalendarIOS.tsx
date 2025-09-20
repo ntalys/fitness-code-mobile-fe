@@ -33,7 +33,7 @@ const PopoverCalendarIOS = (
     [props.date]
   );
 
-  const formattedTitleLAbel = useMemo(
+  const formattedTitleLabel = useMemo(
     () => (props.date ? format(props.date, "dd MMM, yyyy") : ""),
     [props.date]
   );
@@ -94,7 +94,7 @@ const PopoverCalendarIOS = (
           <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label bg={"hsla(0, 15%, 77%, 1)"}>
-                {formattedTitleLAbel}
+                {formattedTitleLabel}
               </Select.Label>
               <View
                 style={{
