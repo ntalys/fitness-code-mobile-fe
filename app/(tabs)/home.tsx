@@ -1,16 +1,24 @@
+import { ChevronRight, User } from "lucide-react-native";
 import React from "react";
 import { YStack, Button, Text } from "tamagui";
 export default function HomeScreen() {
   return (
     <>
       <YStack f={1} ai="center" jc="center" bg="$background">
-        <Text fontSize="$8" color="$color">
-          Hello Tamagui 👋
+        <Text fontSize="$13" color="$color">
+          Home
         </Text>
 
-        <Button theme="accent" mt="$4">
-          Accent Button
-        </Button>
+        <YStack f={1} ai="center" jc={"center"}>
+          <Button
+            theme="accent"
+            mt="$4"
+            icon={User}
+            iconAfter={ChevronRight}
+            style={{ width: 265 }}>
+            Accent Button
+          </Button>
+        </YStack>
 
         <Button theme="success" mt="$4">
           Success Button
