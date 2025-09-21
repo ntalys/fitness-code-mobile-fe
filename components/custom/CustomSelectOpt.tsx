@@ -10,6 +10,7 @@ interface CustomSelectOptProps extends Omit<SelectProps, "children"> {
   maxWidth?: number; // px
   placeholder?: string;
   value: string;
+  snapPoints?: [number] | [number, number];
   onValueChange: (val: string) => void;
   onOpenChange?: (val: boolean) => void;
 }
@@ -20,6 +21,7 @@ export const CustomSelectOpt = ({
   maxWidth = 90,
   placeholder,
   value,
+  snapPoints = [25],
   onValueChange,
   onOpenChange,
   ...props
@@ -55,9 +57,13 @@ export const CustomSelectOpt = ({
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet modal dismissOnSnapToBottom animation="medium" snapPoints={[50]}>
+        <Sheet
+          modal
+          dismissOnSnapToBottom
+          animation="medium"
+          snapPoints={snapPoints}>
           <Sheet.Handle />
-          <Sheet.Frame>
+          <Sheet.Frame borderTopLeftRadius={24} borderTopRightRadius={24}>
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay

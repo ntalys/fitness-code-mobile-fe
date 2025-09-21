@@ -61,7 +61,7 @@ const PopoverCalendarIOS = (
             animation="medium"
             snapPoints={[60]}>
             <Sheet.Handle />
-            <Sheet.Frame>
+            <Sheet.Frame borderTopLeftRadius={28} borderTopRightRadius={28}>
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
@@ -99,8 +99,6 @@ const PopoverCalendarIOS = (
               <View
                 style={{
                   alignItems: "center",
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
                 }}>
                 <DateTimePicker
                   value={props.date}

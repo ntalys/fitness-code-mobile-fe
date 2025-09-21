@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { H4, Input, Label, XStack, YStack } from "tamagui";
+import { H4, H6, Input, Label, XStack, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
 import { Keyboard, Pressable, Switch } from "react-native";
 
@@ -28,7 +28,7 @@ const Step2 = () => {
       android_disableSound={false} // optional for Android
     >
       <YStack width="100%" gap="$4" py="$3">
-        <H4 fontWeight={600}>Physical Measurements</H4>
+        <H6 fontWeight={400}>Physical Measurements</H6>
 
         <XStack width="100%" alignItems="flex-start" gap={12}>
           <YStack flex={1} style={{ minWidth: 0 }}>

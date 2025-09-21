@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { H4, Input, Label, Text, XStack, YStack } from "tamagui";
+import { H4, H6, Input, Label, Text, XStack, YStack } from "tamagui";
 import { CustomSelectOpt } from "../custom/CustomSelectOpt";
 
 import { Keyboard, Platform, Pressable } from "react-native";
@@ -27,7 +27,7 @@ const Step1 = () => {
       <YStack>
         <YStack alignItems="start" gap="$1">
           <YStack mb={15}>
-            <H4 fontWeight={600}>Personal Information</H4>
+            <H6 fontWeight={400}>Personal Information</H6>
           </YStack>
           <XStack alignItems="center" justifyContent="space-between" gap={10}>
             <YStack flex={1}>
@@ -64,6 +64,7 @@ const Step1 = () => {
             items={items}
             labelTitle="Genders"
             maxWidth={420}
+            snapPoints={[25]}
             placeholder="Select Gender"
             onOpenChange={() => Keyboard.dismiss()}
           />
