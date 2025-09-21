@@ -123,7 +123,7 @@ export default function Page() {
                 {/* Step button */}
                 <XStack width={"$100"} justify={step < 5 ? "start" : "center"}>
                   <Button
-                    size="$6"
+                    size="$5"
                     iconAfter={step < 5 ? ArrowRight : Check}
                     onPress={onProgressStepIncrease}
                     theme={"accent"}>
