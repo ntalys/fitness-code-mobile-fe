@@ -20,9 +20,9 @@ const Step4 = ({ fitnessExp, setFitnessExp }) => {
     { name: "Advance", value: "advance" },
   ];
   const workoutFrequencyOpt = [
-    { name: "1-2 time per week", value: "upTo2" },
-    { name: "3-4 time per week", value: "upTo4" },
-    { name: "5+ time per week", value: "upToWeek" },
+    { name: "1-2 time per week", value: "1-2 time per week" },
+    { name: "3-4 time per week", value: "3-4 time per week" },
+    { name: "5+ time per week", value: "5+ time per week" },
   ];
 
   return (
