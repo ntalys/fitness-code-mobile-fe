@@ -23,6 +23,26 @@ export default function Page() {
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
 
+  const [personalInfo, setPersonalInfo] = useState({
+    fname: "",
+    lname: "",
+    gender: "",
+    birthday: new Date(),
+    email: "",
+  });
+
+  const [physicalMeasurements, setPhysicalMeasurements] = useState({
+    weight: { value: 0, unit: "" },
+    height: { value: 0, unit: "" },
+  });
+
+  const [fitnessGaol, setFitnessGoal] = useState([]);
+
+  const [fitnessExp, setFitnessExp] = useState({
+    fitnessLevel: "",
+    workoutFrequency: "",
+  });
+
   function onProgressStepIncrease() {
     if (step === 5) return;
     setProgress(progress + 20);
@@ -93,10 +113,7 @@ export default function Page() {
                       value={progress}
                       max={100}
                       style={{ backgroundColor: "white" }}>
-                      <Progress.Indicator
-                        animation="quick"
-                        style={{ backgroundColor: "hsla(51, 100%, 58%, 1)" }}
-                      />
+                      <Progress.Indicator animation="quick" bg={"$accent4"} />
                     </Progress>
                   </XStack>
                 </YStack>
@@ -104,16 +121,28 @@ export default function Page() {
                 {/* Main content */}
                 <YStack backgroundColor="white" rounded={"$6"} p={"$4"}>
                   <YStack style={{ display: step === 1 ? "flex" : "none" }}>
-                    <Step1 />
+                    <Step1
+                      personalInfo={personalInfo}
+                      setPersonalInfo={setPersonalInfo}
+                    />
                   </YStack>
                   <YStack style={{ display: step === 2 ? "flex" : "none" }}>
-                    <Step2 />
+                    <Step2
+                      physicalMeasurements={physicalMeasurements}
+                      setPhysicalMeasurements={setPhysicalMeasurements}
+                    />
                   </YStack>
                   <YStack style={{ display: step === 3 ? "flex" : "none" }}>
-                    <Step3 />
+                    <Step3
+                      fitnessGaol={fitnessGaol}
+                      setFitnessGoal={setFitnessGoal}
+                    />
                   </YStack>
                   <YStack style={{ display: step === 4 ? "flex" : "none" }}>
-                    <Step4 />
+                    <Step4
+                      fitnessExp={fitnessExp}
+                      setFitnessExp={setFitnessExp}
+                    />
                   </YStack>
                   <YStack style={{ display: step === 5 ? "flex" : "none" }}>
                     <Step5 />
