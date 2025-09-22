@@ -6,9 +6,18 @@ import { Keyboard, Platform, Pressable } from "react-native";
 
 import PopoverCalendarIOS from "../custom/PopoverCalendarIOS";
 import PopoverCalendarAndroid from "../custom/PopoverCalendarAndroid";
+import CustomIcon from "../custom/CustomIcon";
+import { Eye, EyeOff } from "lucide-react-native";
 
 const Step1 = ({ personalInfo, setPersonalInfo }) => {
-  const { fname, lname, gender, birthday = new Date(), email } = personalInfo;
+  const {
+    fname,
+    lname,
+    gender,
+    birthday = new Date(),
+    email,
+    password,
+  } = personalInfo;
 
   console.log("personalInfo: ", personalInfo);
 
@@ -32,7 +41,15 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
   const onChangeEmail = (text: string) =>
     setPersonalInfo((prev) => ({ ...prev, email: text }));
 
+  const onChangePassword = (text: string) =>
+    setPersonalInfo((prev) => ({ ...prev, password: text }));
+
   const [show, setShow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   return (
     <Pressable
@@ -75,37 +92,42 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
             </YStack>
           </XStack>
 
-          <Label width={90} htmlFor="gender">
-            Gender*
-          </Label>
-          <CustomSelectOpt
-            value={gender}
-            onValueChange={onChangeGender}
-            items={items}
-            labelTitle="Genders"
-            maxWidth={420}
-            snapPoints={[25]}
-            placeholder="Select Gender"
-            onOpenChange={() => Keyboard.dismiss()}
-          />
-
-          <Label width={90} htmlFor="dateOfBirth">
-            Date of Birth*
-          </Label>
-          {Platform.OS === "ios" ? (
-            <PopoverCalendarIOS
-              setDate={onChangeBirthday}
-              date={birthday}
-              labelTitle={birthday.toLocaleDateString()}
-            />
-          ) : (
-            <PopoverCalendarAndroid
-              date={birthday}
-              show={show}
-              setDate={onChangeBirthday}
-              setShow={setShow}
-            />
-          )}
+          <XStack alignItems="center" justifyContent="space-between" gap={10}>
+            <YStack flex={1}>
+              <Label width={90} htmlFor="gender">
+                Gender*
+              </Label>
+              <CustomSelectOpt
+                value={gender}
+                onValueChange={onChangeGender}
+                items={items}
+                labelTitle="Genders"
+                maxWidth={420}
+                snapPoints={[25]}
+                placeholder="Select Gender"
+                onOpenChange={() => Keyboard.dismiss()}
+              />
+            </YStack>
+            <YStack flex={1}>
+              <Label width={90} htmlFor="dateOfBirth">
+                Date of Birth*
+              </Label>
+              {Platform.OS === "ios" ? (
+                <PopoverCalendarIOS
+                  setDate={onChangeBirthday}
+                  date={birthday}
+                  labelTitle={birthday.toLocaleDateString()}
+                />
+              ) : (
+                <PopoverCalendarAndroid
+                  date={birthday}
+                  show={show}
+                  setDate={onChangeBirthday}
+                  setShow={setShow}
+                />
+              )}
+            </YStack>
+          </XStack>
 
           <Label width={90} htmlFor="email">
             Email*
@@ -119,6 +141,28 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
             keyboardType="email-address"
             placeholder="name@example.com"
           />
+
+          <Label width={90} htmlFor="email">
+            Password*
+          </Label>
+          <XStack width="100%" justify="space-between" alignItems="center">
+            <Input
+              width="80%"
+              id="password"
+              value={password}
+              onChangeText={onChangePassword}
+              placeholder="Enter your Password"
+              secureTextEntry={!showPassword} // toggle visibility
+            />
+
+            <XStack
+              onPress={togglePasswordVisibility}
+              alignItems="center"
+              justifyContent="center"
+              px="$2">
+              {showPassword ? <Eye /> : <EyeOff />}
+            </XStack>
+          </XStack>
         </YStack>
       </YStack>
     </Pressable>
