@@ -29,6 +29,7 @@ export default function Page() {
     gender: "",
     birthday: new Date(),
     email: "",
+    password: "",
   });
 
   const [physicalMeasurements, setPhysicalMeasurements] = useState({
