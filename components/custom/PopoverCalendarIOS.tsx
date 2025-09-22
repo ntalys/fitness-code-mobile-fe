@@ -29,7 +29,7 @@ const PopoverCalendarIOS = (
   };
 
   const formattedDate = useMemo(
-    () => (props.date ? props.date.toLocaleDateString() : ""),
+    () => (props.date ? props.date.toLocaleDateString() : new Date()),
     [props.date]
   );
 
