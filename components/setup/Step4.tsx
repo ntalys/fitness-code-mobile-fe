@@ -3,9 +3,16 @@ import React, { useState } from "react";
 import { H6, Label, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
 
-const Step4 = () => {
-  const [fitnessLevel, setFitnessLevel] = useState("");
-  const [workoutFrequency, setWorkoutFrequency] = useState("");
+const Step4 = ({ fitnessExp, setFitnessExp }) => {
+  const { fitnessLevel, workoutFrequency } = fitnessExp;
+
+  console.log("fitnessExp: ", fitnessExp);
+
+  const onValueChangeFitnessLevel = (text: string) =>
+    setFitnessExp((prev) => ({ ...prev, fitnessLevel: text }));
+
+  const onValueChangeWorkoutFrequency = (text: string) =>
+    setFitnessExp((prev) => ({ ...prev, workoutFrequency: text }));
 
   const fitnessLevelOpt = [
     { name: "Beginner", value: "beginner" },
@@ -25,7 +32,7 @@ const Step4 = () => {
       android_disableSound={false} // optional for Android
     >
       <YStack width="100%" gap="$4" py="$3">
-        <H6 fontWeight={400}>Physical Measurements</H6>
+        <H6 fontWeight={400}>Fitness Experience</H6>
 
         <YStack width="100%" alignItems="flex-start" gap={12}>
           <YStack flex={1} style={{ minWidth: 0 }}>
@@ -38,7 +45,7 @@ const Step4 = () => {
               items={fitnessLevelOpt}
               maxWidth={420}
               value={fitnessLevel}
-              onValueChange={setFitnessLevel}
+              onValueChange={onValueChangeFitnessLevel}
               onOpenChange={() => Keyboard.dismiss()}
               placeholder="Enter your Fitness Level"
             />
@@ -54,7 +61,7 @@ const Step4 = () => {
               items={workoutFrequencyOpt}
               maxWidth={420}
               value={workoutFrequency}
-              onValueChange={setWorkoutFrequency}
+              onValueChange={onValueChangeWorkoutFrequency}
               onOpenChange={() => Keyboard.dismiss()}
               placeholder="Enter your Workout Frequency"
             />

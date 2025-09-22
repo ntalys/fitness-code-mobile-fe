@@ -7,16 +7,32 @@ import { Keyboard, Platform, Pressable } from "react-native";
 import PopoverCalendarIOS from "../custom/PopoverCalendarIOS";
 import PopoverCalendarAndroid from "../custom/PopoverCalendarAndroid";
 
-const Step1 = () => {
+const Step1 = ({ personalInfo, setPersonalInfo }) => {
+  const { fname, lname, gender, birthday = new Date(), email } = personalInfo;
+
+  console.log("personalInfo: ", personalInfo);
+
   const items = [
     { name: "Male", value: "male" },
     { name: "Female", value: "female" },
   ];
 
-  const [show, setShow] = useState(false);
-  const [date, setDate] = useState<Date | null>(new Date());
+  const onChangeFName = (text: string) =>
+    setPersonalInfo((prev) => ({ ...prev, fname: text }));
 
-  const [value, onValueChange] = useState("");
+  const onChangeLName = (text: string) =>
+    setPersonalInfo((prev) => ({ ...prev, lname: text }));
+
+  const onChangeGender = (text: string) =>
+    setPersonalInfo((prev) => ({ ...prev, gender: text }));
+
+  const onChangeBirthday = (text: Date) =>
+    setPersonalInfo((prev) => ({ ...prev, birthday: text }));
+
+  const onChangeEmail = (text: string) =>
+    setPersonalInfo((prev) => ({ ...prev, email: text }));
+
+  const [show, setShow] = useState(false);
 
   return (
     <Pressable
@@ -36,6 +52,8 @@ const Step1 = () => {
               </Label>
               <Input
                 id="fname"
+                value={fname}
+                onChangeText={onChangeFName}
                 defaultValue=""
                 keyboardAppearance="default"
                 keyboardType="default"
@@ -47,6 +65,8 @@ const Step1 = () => {
               </Label>
               <Input
                 id="lname"
+                value={lname}
+                onChangeText={onChangeLName}
                 defaultValue=""
                 keyboardAppearance="default"
                 keyboardType="default"
@@ -59,8 +79,8 @@ const Step1 = () => {
             Gender*
           </Label>
           <CustomSelectOpt
-            value={value}
-            onValueChange={onValueChange}
+            value={gender}
+            onValueChange={onChangeGender}
             items={items}
             labelTitle="Genders"
             maxWidth={420}
@@ -74,15 +94,15 @@ const Step1 = () => {
           </Label>
           {Platform.OS === "ios" ? (
             <PopoverCalendarIOS
-              setDate={setDate}
-              date={date}
-              labelTitle={date.toLocaleDateString()}
+              setDate={onChangeBirthday}
+              date={birthday}
+              labelTitle={birthday.toLocaleDateString()}
             />
           ) : (
             <PopoverCalendarAndroid
-              date={date}
+              date={birthday}
               show={show}
-              setDate={setDate}
+              setDate={onChangeBirthday}
               setShow={setShow}
             />
           )}
@@ -92,6 +112,8 @@ const Step1 = () => {
           </Label>
           <Input
             id="email"
+            value={email}
+            onChangeText={onChangeEmail}
             defaultValue=""
             keyboardAppearance="default"
             keyboardType="email-address"

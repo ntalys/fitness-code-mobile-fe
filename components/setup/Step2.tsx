@@ -3,12 +3,22 @@ import { H4, H6, Input, Label, XStack, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
 import { Keyboard, Pressable, Switch } from "react-native";
 
-const Step2 = () => {
-  // controlled state
-  const [height, setHeight] = useState<string>("");
-  const [weight, setWeight] = useState<string>("");
-  const [heightUnit, setHeightUnit] = useState<string>("");
-  const [weightUnit, setWeightUnit] = useState<string>("");
+const Step2 = ({ physicalMeasurements, setPhysicalMeasurements }) => {
+  const { weight, height } = physicalMeasurements;
+
+  console.log("physicalMeasurements: ", physicalMeasurements);
+
+  const onChangeHeightValue = (val: string) =>
+    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
+
+  const onChangeHeightUnit = (val: string) =>
+    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
+
+  const onChangeWeightValue = (val: string) =>
+    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
+
+  const onChangeWeightUnit = (val: string) =>
+    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
 
   const unitItems = [
     { name: "CM", value: "cm" },
@@ -21,7 +31,6 @@ const Step2 = () => {
   ];
 
   return (
-    // Wrap everything inside a Pressable to detect touches
     <Pressable
       onPress={() => Keyboard.dismiss()}
       style={{ width: "100%" }}
@@ -37,10 +46,10 @@ const Step2 = () => {
             </Label>
             <Input
               id="height"
-              value={height}
-              onChangeText={setHeight}
+              value={height.value}
+              onChangeText={onChangeHeightValue}
               keyboardAppearance="default"
-              keyboardType="phone-pad"
+              keyboardType="decimal-pad"
               placeholder="Enter your Height"
               // ensure input uses available width
               width="100%"
@@ -55,8 +64,8 @@ const Step2 = () => {
               labelTitle="Units"
               items={unitItems}
               maxWidth={90}
-              value={heightUnit}
-              onValueChange={setHeightUnit}
+              value={height.unit}
+              onValueChange={onChangeHeightUnit}
               onOpenChange={() => Keyboard.dismiss()}
               placeholder=""
             />
@@ -71,10 +80,10 @@ const Step2 = () => {
             </Label>
             <Input
               id="weight"
-              value={weight}
-              onChangeText={setWeight}
+              value={weight.value}
+              onChangeText={onChangeWeightValue}
               keyboardAppearance="default"
-              keyboardType="decimal-pad"
+              keyboardType="number-pad"
               placeholder="Enter your Weight"
               width="100%"
             />
@@ -88,8 +97,8 @@ const Step2 = () => {
               labelTitle="Units"
               items={weightItems}
               maxWidth={90}
-              value={weightUnit}
-              onValueChange={setWeightUnit}
+              value={weight.unit}
+              onValueChange={onChangeWeightUnit}
               onOpenChange={() => Keyboard.dismiss()}
               placeholder=""
             />
