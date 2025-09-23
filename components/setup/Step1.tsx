@@ -116,6 +116,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
                   setDate={onChangeBirthday}
                   date={birthday}
                   labelTitle={birthday.toLocaleDateString()}
+                  onOpenChange={() => Keyboard.dismiss()}
                 />
               ) : (
                 <PopoverCalendarAndroid
