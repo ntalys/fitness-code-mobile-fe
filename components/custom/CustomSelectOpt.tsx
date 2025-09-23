@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { Check, ChevronDown, ChevronUp } from "lucide-react-native";
-import { Adapt, Select, SelectProps, Sheet, YStack } from "tamagui";
+import { Adapt, Select, SelectProps, Sheet, Text, YStack } from "tamagui";
 
-type Item = { name: string; value: string };
+type Item = { name: string; value: string; disabled: boolean; msg?: string };
 
 interface CustomSelectOptProps extends Omit<SelectProps, "children"> {
   labelTitle?: string;
@@ -29,8 +29,16 @@ export const CustomSelectOpt = ({
   const options = useMemo(
     () =>
       items.map((item, index) => (
-        <Select.Item index={index} key={item.value} value={item.value}>
-          <Select.ItemText>{item.name}</Select.ItemText>
+        <Select.Item
+          index={index}
+          key={item.value}
+          value={item.value}
+          disabled={item.disabled}>
+          <Select.ItemText
+            fontWeight={item.disabled ? "200" : "300"}
+            opacity={item.disabled ? 0.8 : 1}>
+            {item.name}
+          </Select.ItemText>
           <Select.ItemIndicator marginLeft="auto">
             <Check size={20} />
           </Select.ItemIndicator>
