@@ -5,7 +5,6 @@ import {
   Progress,
   TamaguiProvider,
   Text,
-  Theme,
   XStack,
   YStack,
 } from "tamagui";
@@ -63,25 +62,20 @@ export default function Page() {
 
   return (
     <SafeAreaProvider>
-      <TamaguiProvider config={config} defaultTheme={"light"}>
+      <TamaguiProvider config={config} defaultTheme="light">
         <KeyboardProvider>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}>
             {/* Header */}
-            <XStack
-              alignItems="center"
-              justifyContent="center"
-              px="$4"
-              pt={"$4"}>
+            <XStack alignItems="center" justifyContent="center" px="$4" pt="$4">
               <H3>Setup Your Profile</H3>
 
               {step > 1 && (
                 <Button
                   unstyled
-                  // circular
                   size="$6"
-                  pt={"$4"}
+                  pt="$4"
                   icon={ArrowLeft}
                   onPress={onProgressStepDecrease}
                   style={{
@@ -94,91 +88,74 @@ export default function Page() {
               )}
             </XStack>
 
+            {/* Progress bar */}
+            <YStack px={25} pt={20} pb={10} gap={18}>
+              <XStack justifyContent="space-between">
+                <Text>{step}/5</Text>
+                <Text>{progress}%</Text>
+              </XStack>
+
+              <Progress value={progress} max={100} bg="white">
+                <Progress.Indicator animation="quick" bg="$accent4" />
+              </Progress>
+            </YStack>
+
+            {/* Scrollable step content */}
             <ScrollView
               contentContainerStyle={{
                 flexGrow: 1,
-                paddingVertical: 0,
+                paddingHorizontal: 25,
                 paddingBottom: 20,
               }}
               keyboardShouldPersistTaps="handled">
-              {/* Progress bar */}
-              <YStack
-                style={{
-                  justifyContent: "space-between",
-                  padding: 25,
-                  gap: 18,
-                }}>
-                <XStack style={{ justifyContent: "space-between" }}>
-                  <Text>{step}/5</Text>
-                  <Text>{progress}%</Text>
-                </XStack>
-
-                <YStack>
-                  <XStack>
-                    <Progress
-                      value={progress}
-                      max={100}
-                      style={{ backgroundColor: "white" }}>
-                      <Progress.Indicator animation="quick" bg={"$accent4"} />
-                    </Progress>
-                  </XStack>
-                </YStack>
-
-                {/* Main content */}
-                <YStack backgroundColor="white" rounded={"$6"} p={"$4"}>
-                  <YStack style={{ display: step === 1 ? "flex" : "none" }}>
-                    <Step1
-                      personalInfo={personalInfo}
-                      setPersonalInfo={setPersonalInfo}
-                    />
-                  </YStack>
-                  <YStack style={{ display: step === 2 ? "flex" : "none" }}>
-                    <Step2
-                      physicalMeasurements={physicalMeasurements}
-                      setPhysicalMeasurements={setPhysicalMeasurements}
-                    />
-                  </YStack>
-                  <YStack style={{ display: step === 3 ? "flex" : "none" }}>
-                    <Step3
-                      fitnessGaol={fitnessGaol}
-                      setFitnessGoal={setFitnessGoal}
-                    />
-                  </YStack>
-                  <YStack style={{ display: step === 4 ? "flex" : "none" }}>
-                    <Step4
-                      fitnessExp={fitnessExp}
-                      setFitnessExp={setFitnessExp}
-                    />
-                  </YStack>
-                  <YStack style={{ display: step === 5 ? "flex" : "none" }}>
-                    <Step5
-                      personalInfo={personalInfo}
-                      physicalMeasurements={physicalMeasurements}
-                      fitnessGaol={fitnessGaol}
-                      fitnessExp={fitnessExp}
-                    />
-                  </YStack>
-                </YStack>
-
-                {/* Step button */}
-              </YStack>
-              <YStack
-                flex={1}
-                justify="flex-end"
-                height={"$100"}
-                p={25}
-                mb={40}>
-                <XStack width={"$100"} justify={step < 5 ? "start" : "center"}>
-                  <Button
-                    size="$5"
-                    iconAfter={step < 5 ? ArrowRight : Check}
-                    onPress={onProgressStepIncrease}
-                    theme={"accent"}>
-                    {step < 5 ? "Continue" : "Complete Setup"}
-                  </Button>
-                </XStack>
+              <YStack backgroundColor="white" rounded="$6" p="$4">
+                {step === 1 && (
+                  <Step1
+                    personalInfo={personalInfo}
+                    setPersonalInfo={setPersonalInfo}
+                  />
+                )}
+                {step === 2 && (
+                  <Step2
+                    physicalMeasurements={physicalMeasurements}
+                    setPhysicalMeasurements={setPhysicalMeasurements}
+                  />
+                )}
+                {step === 3 && (
+                  <Step3
+                    fitnessGaol={fitnessGaol}
+                    setFitnessGoal={setFitnessGoal}
+                  />
+                )}
+                {step === 4 && (
+                  <Step4
+                    fitnessExp={fitnessExp}
+                    setFitnessExp={setFitnessExp}
+                  />
+                )}
+                {step === 5 && (
+                  <Step5
+                    personalInfo={personalInfo}
+                    physicalMeasurements={physicalMeasurements}
+                    fitnessGaol={fitnessGaol}
+                    fitnessExp={fitnessExp}
+                  />
+                )}
               </YStack>
             </ScrollView>
+
+            {/* Step button (fixed at bottom) */}
+            <YStack p={25} mb={40}>
+              <XStack width="$100" justify={step < 5 ? "start" : "center"}>
+                <Button
+                  size="$5"
+                  iconAfter={step < 5 ? ArrowRight : Check}
+                  onPress={onProgressStepIncrease}
+                  theme="accent">
+                  {step < 5 ? "Continue" : "Complete Setup"}
+                </Button>
+              </XStack>
+            </YStack>
           </KeyboardAvoidingView>
         </KeyboardProvider>
       </TamaguiProvider>
