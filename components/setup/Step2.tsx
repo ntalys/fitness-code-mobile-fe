@@ -33,13 +33,13 @@ const Step2 = ({ physicalMeasurements, setPhysicalMeasurements }) => {
     }));
 
   const unitItems = [
-    { name: "CM", value: "cm" },
-    { name: "FT", value: "ft" },
+    { name: "CM", value: "cm", disabled: false },
+    { name: "FT", value: "ft", disabled: true, msg: "Not Available" },
   ];
 
   const weightItems = [
-    { name: "KG", value: "kg" },
-    { name: "LBS", value: "lbs" },
+    { name: "KG", value: "kg", disabled: false },
+    { name: "LBS", value: "lbs", disabled: true, msg: "Not Available" },
   ];
 
   return (
