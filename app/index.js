@@ -157,7 +157,7 @@ export default function Page() {
 
                 {/* Step button */}
               </YStack>
-              <YStack flex={1} justify="flex-end" height={"$100"} p={28}>
+              <YStack flex={1} justify="flex-end" height={"$100"} p={25}>
                 <XStack width={"$100"} justify={step < 5 ? "start" : "center"}>
                   <Button
                     size="$5"
