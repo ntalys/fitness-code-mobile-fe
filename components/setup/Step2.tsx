@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { H4, H6, Input, Label, XStack, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
-import { Keyboard, Pressable, Switch } from "react-native";
+import { Keyboard, Pressable } from "react-native";
 
 const Step2 = ({ physicalMeasurements, setPhysicalMeasurements }) => {
   const { weight, height } = physicalMeasurements;
@@ -9,16 +9,28 @@ const Step2 = ({ physicalMeasurements, setPhysicalMeasurements }) => {
   console.log("physicalMeasurements: ", physicalMeasurements);
 
   const onChangeHeightValue = (val: string) =>
-    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
+    setPhysicalMeasurements((prev) => ({
+      ...prev,
+      height: { value: val, unit: height.unit },
+    }));
 
   const onChangeHeightUnit = (val: string) =>
-    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
+    setPhysicalMeasurements((prev) => ({
+      ...prev,
+      height: { value: height.value, unit: val },
+    }));
 
   const onChangeWeightValue = (val: string) =>
-    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
+    setPhysicalMeasurements((prev) => ({
+      ...prev,
+      weight: { value: val, unit: weight.unit },
+    }));
 
   const onChangeWeightUnit = (val: string) =>
-    setPhysicalMeasurements((prev) => ({ ...prev, height: val }));
+    setPhysicalMeasurements((prev) => ({
+      ...prev,
+      weight: { value: weight.value, unit: val },
+    }));
 
   const unitItems = [
     { name: "CM", value: "cm" },
