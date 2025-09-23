@@ -18,8 +18,10 @@ import {
   KeyboardProvider,
 } from "react-native-keyboard-controller";
 import { Platform, ScrollView } from "react-native";
+import { useRouter } from "expo-router";
 
 export default function Page() {
+  const router = useRouter();
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
 
@@ -45,7 +47,10 @@ export default function Page() {
   });
 
   function onProgressStepIncrease() {
-    if (step === 5) return;
+    if (step === 5) {
+      router.replace("/home");
+      return;
+    }
     setProgress(progress + 20);
     setStep(step + 1);
   }
