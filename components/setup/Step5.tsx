@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import React from "react";
 import { H6, Text, XStack, YStack } from "tamagui";
 
@@ -39,7 +40,9 @@ const Step5 = ({
             </XStack>
             <XStack flex={1} gap={3}>
               <Text>Birthday:</Text>
-              <Text color={"$color10"}>{personalInfo.birthdays}</Text>
+              <Text color={"$color10"}>
+                {format(personalInfo.birthday, "dd MMM, yyyy")}
+              </Text>
             </XStack>
             <XStack flex={1} gap={3}>
               <Text>Email:</Text>
