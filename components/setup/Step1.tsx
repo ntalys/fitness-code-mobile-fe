@@ -6,7 +6,6 @@ import { Keyboard, Platform, Pressable } from "react-native";
 
 import PopoverCalendarIOS from "../custom/PopoverCalendarIOS";
 import PopoverCalendarAndroid from "../custom/PopoverCalendarAndroid";
-import CustomIcon from "../custom/CustomIcon";
 import { Eye, EyeOff } from "lucide-react-native";
 
 const Step1 = ({ personalInfo, setPersonalInfo }) => {
