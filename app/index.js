@@ -146,7 +146,12 @@ export default function Page() {
                     />
                   </YStack>
                   <YStack style={{ display: step === 5 ? "flex" : "none" }}>
-                    <Step5 />
+                    <Step5
+                      personalInfo={personalInfo}
+                      physicalMeasurements={physicalMeasurements}
+                      fitnessGaol={fitnessGaol}
+                      fitnessExp={fitnessExp}
+                    />
                   </YStack>
                 </YStack>
 
