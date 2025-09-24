@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Check, ChevronDown, ChevronUp } from "lucide-react-native";
 import { Adapt, Select, SelectProps, Sheet, Text, YStack } from "tamagui";
 
-type Item = { name: string; value: string; disabled: boolean; msg?: string };
+type Item = { name: string; value: string; disabled?: boolean; msg?: string };
 
 interface CustomSelectOptProps extends Omit<SelectProps, "children"> {
   labelTitle?: string;
