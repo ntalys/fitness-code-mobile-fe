@@ -1,12 +1,15 @@
 import { format } from "date-fns";
+import { Check } from "lucide-react-native";
 import React from "react";
-import { H6, Text, XStack, YStack } from "tamagui";
+import { Checkbox, H6, Label, Text, XStack, YStack } from "tamagui";
 
 const Step5 = ({
   personalInfo,
   physicalMeasurements,
   fitnessGaol,
   fitnessExp,
+  acceptConditionsValue,
+  setAcceptConditions,
 }) => {
   return (
     <YStack>
@@ -146,6 +149,22 @@ const Step5 = ({
             </XStack>
           </YStack>
         </YStack>
+
+        <XStack px={6} alignItems="center" gap="$2">
+          <Checkbox
+            size={"$4"}
+            value={acceptConditionsValue}
+            onCheckedChange={setAcceptConditions}>
+            <Checkbox.Indicator>
+              <Check />
+            </Checkbox.Indicator>
+          </Checkbox>
+
+          <Text>
+            I accept and agree to comply with{" "}
+            <Text color={"$accent1"}>Fitness Code's</Text> Term and Conditions
+          </Text>
+        </XStack>
       </YStack>
     </YStack>
   );
