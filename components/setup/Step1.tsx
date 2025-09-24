@@ -145,25 +145,29 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
           <Label width={90} htmlFor="email">
             Password*
           </Label>
-          <XStack width="100%" justify="space-between" alignItems="center">
+          <YStack width="100%" position="relative">
             <Input
-              width="90%"
               id="password"
               value={password}
               onChangeText={onChangePassword}
               placeholder="Enter your Password"
-              secureTextEntry={!showPassword} // toggle visibility
+              secureTextEntry={!showPassword}
+              width="100%"
             />
 
             <Button
               unstyled
               onPress={togglePasswordVisibility}
-              alignItems="center"
+              position="absolute"
+              t={0}
+              right={10}
+              height="100%"
+              width={40}
               justifyContent="center"
-              px="$-20">
+              alignItems="center">
               {showPassword ? <Eye /> : <EyeOff />}
             </Button>
-          </XStack>
+          </YStack>
         </YStack>
       </YStack>
     </Pressable>
