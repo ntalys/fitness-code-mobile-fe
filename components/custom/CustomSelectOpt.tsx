@@ -82,41 +82,42 @@ export const CustomSelectOpt = ({
           />
         </Sheet>
       </Adapt>
+      <Select.FocusScope>
+        <Select.Content zIndex={200000}>
+          <Select.ScrollUpButton
+            alignItems="center"
+            justifyContent="center"
+            position="relative"
+            width="100%"
+            height="$3">
+            <YStack zIndex={10}>
+              <ChevronUp size={20} />
+            </YStack>
+          </Select.ScrollUpButton>
 
-      <Select.Content zIndex={200000}>
-        <Select.ScrollUpButton
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
-          width="100%"
-          height="$3">
-          <YStack zIndex={10}>
-            <ChevronUp size={20} />
-          </YStack>
-        </Select.ScrollUpButton>
+          <Select.Viewport minWidth={200}>
+            <Select.Group>
+              {labelTitle && (
+                <Select.Label textAlign="center" bg={"hsla(0, 15%, 77%, 1)"}>
+                  {labelTitle}
+                </Select.Label>
+              )}
+              {options}
+            </Select.Group>
+          </Select.Viewport>
 
-        <Select.Viewport minWidth={200}>
-          <Select.Group>
-            {labelTitle && (
-              <Select.Label textAlign="center" bg={"hsla(0, 15%, 77%, 1)"}>
-                {labelTitle}
-              </Select.Label>
-            )}
-            {options}
-          </Select.Group>
-        </Select.Viewport>
-
-        <Select.ScrollDownButton
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
-          width="100%"
-          height="$3">
-          <YStack zIndex={10}>
-            <ChevronDown size={20} />
-          </YStack>
-        </Select.ScrollDownButton>
-      </Select.Content>
+          <Select.ScrollDownButton
+            alignItems="center"
+            justifyContent="center"
+            position="relative"
+            width="100%"
+            height="$3">
+            <YStack zIndex={10}>
+              <ChevronDown size={20} />
+            </YStack>
+          </Select.ScrollDownButton>
+        </Select.Content>
+      </Select.FocusScope>
     </Select>
   );
 };
