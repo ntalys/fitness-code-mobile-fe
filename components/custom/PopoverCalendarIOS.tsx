@@ -94,7 +94,7 @@ const PopoverCalendarIOS = (
           <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label textAlign="center" bg={"hsla(0, 15%, 77%, 1)"}>
-                {formattedTitleLabel}
+                Date of Birth
               </Select.Label>
               <View
                 style={{
