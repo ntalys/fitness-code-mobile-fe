@@ -10,13 +10,18 @@ import {
 } from "tamagui";
 import config from "../tamagui.config";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  TriangleAlert,
+} from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
 import {
   KeyboardAvoidingView,
   KeyboardProvider,
 } from "react-native-keyboard-controller";
-import { Platform, ScrollView } from "react-native";
+import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function Page() {
@@ -52,6 +57,8 @@ export default function Page() {
     fitnessLevel: "",
     workoutFrequency: "",
   });
+
+  const [acceptConditions, setAcceptConditions] = useState(false);
 
   function onProgressStepIncrease() {
     if (step === 5) {
@@ -130,6 +137,8 @@ export default function Page() {
                       setFitnessGoal={setFitnessGoal}
                       fitnessExp={fitnessExp}
                       setFitnessExp={setFitnessExp}
+                      acceptConditionsValue={acceptConditions}
+                      setAcceptConditions={setAcceptConditions}
                     />
                   </YStack>
                 ))}
@@ -139,13 +148,25 @@ export default function Page() {
             {/* Step button (fixed at bottom) */}
             <YStack p={25} mb={40}>
               <XStack width="$100" justify={step < 5 ? "start" : "center"}>
-                <Button
-                  size="$5"
-                  iconAfter={step < 5 ? ArrowRight : Check}
-                  onPress={onProgressStepIncrease}
-                  theme="accent">
-                  {step < 5 ? "Continue" : "Complete Setup"}
-                </Button>
+                <Pressable
+                  onPress={() => {
+                    if (step == 5 && !acceptConditions) {
+                      Alert.alert(
+                        "Alert",
+                        "Please accept terms and conditions"
+                      );
+                    }
+                  }}>
+                  <Button
+                    disabled={step === 5 && !acceptConditions}
+                    disabledStyle={{ opacity: 0.5 }}
+                    size="$5"
+                    iconAfter={step < 5 ? ArrowRight : Check}
+                    onPress={onProgressStepIncrease}
+                    theme="accent">
+                    {step < 5 ? "Continue" : "Complete Setup"}
+                  </Button>
+                </Pressable>
               </XStack>
             </YStack>
           </KeyboardAvoidingView>
