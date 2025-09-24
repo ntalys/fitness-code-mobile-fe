@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { H4, H6, Input, Label, Text, XStack, YStack } from "tamagui";
+import { Button, H6, Input, Label, XStack, YStack } from "tamagui";
 import { CustomSelectOpt } from "../custom/CustomSelectOpt";
 
 import { Keyboard, Platform, Pressable } from "react-native";
@@ -147,7 +147,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
           </Label>
           <XStack width="100%" justify="space-between" alignItems="center">
             <Input
-              width="80%"
+              width="90%"
               id="password"
               value={password}
               onChangeText={onChangePassword}
@@ -155,13 +155,14 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
               secureTextEntry={!showPassword} // toggle visibility
             />
 
-            <XStack
+            <Button
+              unstyled
               onPress={togglePasswordVisibility}
               alignItems="center"
               justifyContent="center"
-              px="$2">
+              px="$-20">
               {showPassword ? <Eye /> : <EyeOff />}
-            </XStack>
+            </Button>
           </XStack>
         </YStack>
       </YStack>
