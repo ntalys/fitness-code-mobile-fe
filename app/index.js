@@ -24,6 +24,14 @@ export default function Page() {
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
 
+  const currStepComponent = {
+    1: Step1,
+    2: Step2,
+    3: Step3,
+    4: Step4,
+    5: Step5,
+  };
+
   const [personalInfo, setPersonalInfo] = useState({
     fname: "",
     lname: "",
@@ -109,38 +117,22 @@ export default function Page() {
               }}
               keyboardShouldPersistTaps="handled">
               <YStack backgroundColor="white" rounded="$6" p="$4">
-                {step === 1 && (
-                  <Step1
-                    personalInfo={personalInfo}
-                    setPersonalInfo={setPersonalInfo}
-                  />
-                )}
-                {step === 2 && (
-                  <Step2
-                    physicalMeasurements={physicalMeasurements}
-                    setPhysicalMeasurements={setPhysicalMeasurements}
-                  />
-                )}
-                {step === 3 && (
-                  <Step3
-                    fitnessGaol={fitnessGaol}
-                    setFitnessGoal={setFitnessGoal}
-                  />
-                )}
-                {step === 4 && (
-                  <Step4
-                    fitnessExp={fitnessExp}
-                    setFitnessExp={setFitnessExp}
-                  />
-                )}
-                {step === 5 && (
-                  <Step5
-                    personalInfo={personalInfo}
-                    physicalMeasurements={physicalMeasurements}
-                    fitnessGaol={fitnessGaol}
-                    fitnessExp={fitnessExp}
-                  />
-                )}
+                {Object.entries(currStepComponent).map(([key, Comp]) => (
+                  <YStack
+                    key={key}
+                    display={step === Number(key) ? "flex" : "none"}>
+                    <Comp
+                      personalInfo={personalInfo}
+                      setPersonalInfo={setPersonalInfo}
+                      physicalMeasurements={physicalMeasurements}
+                      setPhysicalMeasurements={setPhysicalMeasurements}
+                      fitnessGaol={fitnessGaol}
+                      setFitnessGoal={setFitnessGoal}
+                      fitnessExp={fitnessExp}
+                      setFitnessExp={setFitnessExp}
+                    />
+                  </YStack>
+                ))}
               </YStack>
             </ScrollView>
 
