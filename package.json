@@ -16,6 +16,7 @@
     "@tamagui/button": "^1.132.23",
     "@tamagui/config": "^1.132.23",
     "@tamagui/font-inter": "^1.132.23",
+    "@tamagui/image": "^1.134.0",
     "@tamagui/input": "^1.132.23",
     "@tamagui/portal": "^1.132.23",
     "@tamagui/progress": "^1.132.23",
