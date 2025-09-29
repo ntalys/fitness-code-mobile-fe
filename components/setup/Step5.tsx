@@ -160,7 +160,7 @@ const Step5 = ({
             </Checkbox.Indicator>
           </Checkbox>
 
-          <Text>
+          <Text p={6}>
             I accept and agree to comply with{" "}
             <Text color={"$accent1"}>Fitness Code's</Text> Term and Conditions
           </Text>
