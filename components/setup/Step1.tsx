@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Button, H6, Input, Label, XStack, YStack } from "tamagui";
+import {
+  Button,
+  H6,
+  Input,
+  Label,
+  Paragraph,
+  Text,
+  XStack,
+  YStack,
+} from "tamagui";
 import { CustomSelectOpt } from "../custom/CustomSelectOpt";
 
 import { Keyboard, Platform, Pressable } from "react-native";
@@ -7,8 +16,18 @@ import { Keyboard, Platform, Pressable } from "react-native";
 import PopoverCalendarIOS from "../custom/PopoverCalendarIOS";
 import PopoverCalendarAndroid from "../custom/PopoverCalendarAndroid";
 import { Eye, EyeOff } from "lucide-react-native";
+import { Controller } from "react-hook-form";
 
-const Step1 = ({ personalInfo, setPersonalInfo }) => {
+const Step1 = ({
+  personalInfo,
+  setPersonalInfo,
+  control,
+  errors,
+  trigger,
+  register,
+  onStepValidationChange,
+  currentStepFields,
+}) => {
   const {
     fname,
     lname,
@@ -19,6 +38,8 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
   } = personalInfo;
 
   console.log("personalInfo: ", personalInfo);
+
+  // console.log("control: ", JSON.stringify(control, null, 2));
 
   const items = [
     { name: "Male", value: "male" },
@@ -66,28 +87,54 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
               <Label width={90} htmlFor="fname">
                 First Name*
               </Label>
-              <Input
-                id="fname"
-                value={fname}
-                onChangeText={onChangeFName}
-                defaultValue=""
-                keyboardAppearance="default"
-                keyboardType="default"
-                placeholder="First name"></Input>
+              <Controller
+                control={control}
+                name="fname"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    id="fname"
+                    value={value}
+                    onChangeText={(text) => {
+                      onChange(text); // update react-hook-form
+                      setPersonalInfo((prev) => ({ ...prev, fname: text })); // sync with your state
+                    }}
+                    onBlur={onBlur}
+                    defaultValue=""
+                    keyboardAppearance="default"
+                    keyboardType="default"
+                    placeholder="First name"></Input>
+                )}
+              />
+              {errors.fname && (
+                <Paragraph color={"red"}>{errors.fname.message}</Paragraph>
+              )}
             </YStack>
             <YStack flex={1}>
               <Label width={90} htmlFor="lname">
                 Last Name*
               </Label>
-              <Input
-                id="lname"
-                value={lname}
-                onChangeText={onChangeLName}
-                defaultValue=""
-                keyboardAppearance="default"
-                keyboardType="default"
-                placeholder="Last name"
+              <Controller
+                control={control}
+                name="lname"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    id="lname"
+                    value={value}
+                    onChangeText={(text) => {
+                      onChange(text); // update react-hook-form
+                      setPersonalInfo((prev) => ({ ...prev, lname: text })); // sync with your state
+                    }}
+                    onBlur={onBlur}
+                    defaultValue=""
+                    keyboardAppearance="default"
+                    keyboardType="default"
+                    placeholder="Last name"
+                  />
+                )}
               />
+              {errors.lname && (
+                <Paragraph color={"red"}>{errors.lname.message}</Paragraph>
+              )}
             </YStack>
           </XStack>
 
@@ -96,16 +143,28 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
               <Label width={90} htmlFor="gender">
                 Gender*
               </Label>
-              <CustomSelectOpt
-                value={gender}
-                onValueChange={onChangeGender}
-                items={items}
-                labelTitle="Genders"
-                maxWidth={420}
-                snapPoints={[25]}
-                placeholder="Select Gender"
-                onOpenChange={() => Keyboard.dismiss()}
+              <Controller
+                control={control}
+                name="gender"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <CustomSelectOpt
+                    value={value}
+                    onValueChange={(text) => {
+                      onChange(text); // update react-hook-form
+                      setPersonalInfo((prev) => ({ ...prev, gender: text })); // sync with your state
+                    }}
+                    items={items}
+                    labelTitle="Genders"
+                    maxWidth={420}
+                    snapPoints={[25]}
+                    placeholder="Select Gender"
+                    onOpenChange={() => Keyboard.dismiss()}
+                  />
+                )}
               />
+              {errors.gender && (
+                <Paragraph color={"red"}>{errors.gender.message}</Paragraph>
+              )}
             </YStack>
             <YStack flex={1}>
               <Label width={90} htmlFor="dateOfBirth">
@@ -132,29 +191,54 @@ const Step1 = ({ personalInfo, setPersonalInfo }) => {
           <Label width={90} htmlFor="email">
             Email*
           </Label>
-          <Input
-            id="email"
-            value={email}
-            onChangeText={onChangeEmail}
-            defaultValue=""
-            keyboardAppearance="default"
-            keyboardType="email-address"
-            placeholder="name@example.com"
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                id="email"
+                value={value}
+                onChangeText={(text) => {
+                  onChange(text); // update react-hook-form
+                  setPersonalInfo((prev) => ({ ...prev, email: text })); // sync with your state
+                }}
+                onBlur={onBlur}
+                defaultValue=""
+                keyboardAppearance="default"
+                keyboardType="email-address"
+                placeholder="name@example.com"
+              />
+            )}
           />
+          {errors.email && (
+            <Paragraph color={"red"}>{errors.email.message}</Paragraph>
+          )}
 
           <Label width={90} htmlFor="email">
             Password*
           </Label>
           <YStack width="100%" position="relative">
-            <Input
-              id="password"
-              value={password}
-              onChangeText={onChangePassword}
-              placeholder="Enter your Password"
-              secureTextEntry={!showPassword}
-              width="100%"
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  id="password"
+                  value={value}
+                  onChangeText={(text) => {
+                    onChange(text); // update react-hook-form
+                    setPersonalInfo((prev) => ({ ...prev, password: text })); // sync with your state
+                  }}
+                  onBlur={onBlur}
+                  placeholder="Enter your Password"
+                  secureTextEntry={!showPassword}
+                  width="100%"
+                />
+              )}
             />
-
+            {errors.password && (
+              <Paragraph color={"red"}>{errors.password.message}</Paragraph>
+            )}
             <Button
               unstyled
               onPress={togglePasswordVisibility}

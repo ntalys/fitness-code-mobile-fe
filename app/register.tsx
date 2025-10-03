@@ -10,7 +10,7 @@ import {
 } from "tamagui";
 import config from "../tamagui.config";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
+import { ArrowLeft, ArrowRight, Check, Watch } from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
 import {
   KeyboardAvoidingView,
@@ -18,6 +18,9 @@ import {
 } from "react-native-keyboard-controller";
 import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { user } from "../@types/user";
 
 export default function Page() {
   const router = useRouter();
@@ -55,7 +58,44 @@ export default function Page() {
 
   const [acceptConditions, setAcceptConditions] = useState(false);
 
-  function onProgressStepIncrease() {
+  const {
+    control,
+    trigger,
+    register,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: zodResolver(user),
+    defaultValues: {
+      fname: personalInfo.fname,
+      lname: personalInfo.lname,
+      gender: personalInfo.gender,
+      dateOfBirth: personalInfo.birthday,
+      email: personalInfo.email,
+      height: {
+        value: physicalMeasurements.height.value,
+        unit: physicalMeasurements.height.unit,
+      },
+      weight: {
+        value: physicalMeasurements.weight.value,
+        unit: physicalMeasurements.weight.unit,
+      },
+      fitnessGaol: fitnessGaol,
+      fitnessLevel: fitnessExp.fitnessLevel,
+      workoutFrequency: fitnessExp.workoutFrequency,
+    },
+    mode: "onChange",
+  });
+
+  const stepFields: Record<number, string[]> = {
+    1: ["fname", "lname", "gender", "email", "password"],
+    2: ["height.value", "height.unit", "weight.value", "weight.unit"],
+    3: ["fitnessGaol"],
+    4: ["fitnessLevel", "workoutFrequency"], // maybe goal step, add later
+    // 5: [], // terms & conditions
+  };
+
+  async function onProgressStepIncrease() {
     if (step === 5) {
       router.replace("/home");
       return;
@@ -69,6 +109,12 @@ export default function Page() {
     setProgress(progress - 20);
     setStep(step - 1);
   }
+
+  const [stepValid, setStepValid] = useState(false);
+
+  const handleStepValidation = (valid: boolean) => {
+    setStepValid(valid);
+  };
 
   return (
     <SafeAreaProvider>
@@ -100,7 +146,7 @@ export default function Page() {
 
             {/* Progress bar */}
             <YStack px={25} pt={20} pb={10} gap={18}>
-              <XStack justifyContent="space-between">
+              <XStack justify="space-between">
                 <Text>{step}/5</Text>
                 <Text>{progress}%</Text>
               </XStack>
@@ -118,7 +164,7 @@ export default function Page() {
                 paddingBottom: 20,
               }}
               keyboardShouldPersistTaps="handled">
-              <YStack backgroundColor="white" rounded="$6" p="$4">
+              <YStack bg="white" rounded="$6" p="$4">
                 {Object.entries(currStepComponent).map(([key, Comp]) => (
                   <YStack
                     key={key}
@@ -134,11 +180,27 @@ export default function Page() {
                       setFitnessExp={setFitnessExp}
                       acceptConditionsValue={acceptConditions}
                       setAcceptConditions={setAcceptConditions}
+                      control={control}
+                      errors={errors}
+                      onStepValidationChange={handleStepValidation}
+                      trigger={trigger}
+                      register={register}
+                      currentStepFields={stepFields[step]}
                     />
                   </YStack>
                 ))}
               </YStack>
             </ScrollView>
+
+            <Text>
+              fname: {watch("fname")} | lname: {watch("lname")} | gender:{" "}
+              {watch("gender")} | email: {watch("email")} | height.value:{" "}
+              {watch("height.value")} | height.unit: {watch("height.unit")}|
+              weight.value: {watch("weight.value")} | weight.unit:{" "}
+              {watch("weight.unit")} | fitnessGaol: {watch("fitnessGaol")}|
+              fitnessLevel: {watch("fitnessLevel")} | workoutFrequency:{" "}
+              {watch("workoutFrequency")} | isValid: {isValid ? "✅" : "❌"}
+            </Text>
 
             {/* Step button (fixed at bottom) */}
             <YStack p={25} mb={40}>
@@ -152,15 +214,27 @@ export default function Page() {
                       );
                     }
                   }}>
-                  <Button
-                    disabled={step === 5 && !acceptConditions}
-                    disabledStyle={{ opacity: 0.5 }}
-                    size="$5"
-                    iconAfter={step < 5 ? ArrowRight : Check}
-                    onPress={onProgressStepIncrease}
-                    theme="accent">
-                    {step < 5 ? "Continue" : "Complete Setup"}
-                  </Button>
+                  {step === 5 ? (
+                    <Button
+                      disabled={!acceptConditions}
+                      disabledStyle={{ opacity: 0.5 }}
+                      size="$5"
+                      iconAfter={Check}
+                      onPress={onProgressStepIncrease}
+                      theme="accent">
+                      {"Complete Setup"}
+                    </Button>
+                  ) : (
+                    <Button
+                      // disabled={!stepValid}
+                      disabledStyle={{ opacity: 0.5 }}
+                      size="$5"
+                      iconAfter={ArrowRight}
+                      onPress={onProgressStepIncrease}
+                      theme="accent">
+                      {"Continue"}
+                    </Button>
+                  )}
                 </Pressable>
               </XStack>
             </YStack>

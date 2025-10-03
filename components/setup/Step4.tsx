@@ -1,9 +1,16 @@
 import { Pressable, Keyboard } from "react-native";
 import React, { useState } from "react";
-import { H6, Label, YStack } from "tamagui";
+import { H6, Label, Paragraph, Text, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
+import { Controller } from "react-hook-form";
 
-const Step4 = ({ fitnessExp, setFitnessExp }) => {
+const Step4 = ({
+  fitnessExp,
+  setFitnessExp,
+  control,
+  errors,
+  onStepValidationChange,
+}) => {
   const { fitnessLevel, workoutFrequency } = fitnessExp;
 
   console.log("fitnessExp: ", fitnessExp);
@@ -39,32 +46,61 @@ const Step4 = ({ fitnessExp, setFitnessExp }) => {
             <Label width={420} htmlFor="fitnessLevel">
               Fitness Level*
             </Label>
-            <CustomSelectOpt
-              labelTitle="Fitness Level"
-              snapPoints={[35]}
-              items={fitnessLevelOpt}
-              maxWidth={420}
-              value={fitnessLevel}
-              onValueChange={onValueChangeFitnessLevel}
-              onOpenChange={() => Keyboard.dismiss()}
-              placeholder="Enter your Fitness Level"
+            <Controller
+              control={control}
+              name="fitnessLevel"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CustomSelectOpt
+                  labelTitle="Fitness Level"
+                  snapPoints={[35]}
+                  items={fitnessLevelOpt}
+                  maxWidth={420}
+                  value={value}
+                  onValueChange={(text) => {
+                    onChange(text); // update react-hook-form
+                    setFitnessExp((prev) => ({ ...prev, fitnessLevel: text }));
+                  }}
+                  onOpenChange={() => Keyboard.dismiss()}
+                  placeholder="Enter your Fitness Level"
+                />
+              )}
             />
+            {errors.fitnessLevel && (
+              <Paragraph color={"red"}>{errors.fitnessLevel.message}</Paragraph>
+            )}
           </YStack>
 
           <YStack flex={1} style={{ minWidth: 0 }}>
             <Label width={420} htmlFor="workoutFrequency">
               Workout Frequency*
             </Label>
-            <CustomSelectOpt
-              labelTitle="Workout Frequency"
-              snapPoints={[35]}
-              items={workoutFrequencyOpt}
-              maxWidth={420}
-              value={workoutFrequency}
-              onValueChange={onValueChangeWorkoutFrequency}
-              onOpenChange={() => Keyboard.dismiss()}
-              placeholder="Enter your Workout Frequency"
+            <Controller
+              control={control}
+              name="workoutFrequency"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CustomSelectOpt
+                  labelTitle="Workout Frequency"
+                  snapPoints={[35]}
+                  items={workoutFrequencyOpt}
+                  maxWidth={420}
+                  value={value}
+                  onValueChange={(text) => {
+                    onChange(text); // update react-hook-form
+                    setFitnessExp((prev) => ({
+                      ...prev,
+                      workoutFrequency: text,
+                    }));
+                  }}
+                  onOpenChange={() => Keyboard.dismiss()}
+                  placeholder="Enter your Workout Frequency"
+                />
+              )}
             />
+            {errors.workoutFrequency && (
+              <Paragraph color={"red"}>
+                {errors.workoutFrequency.message}
+              </Paragraph>
+            )}
           </YStack>
         </YStack>
       </YStack>
