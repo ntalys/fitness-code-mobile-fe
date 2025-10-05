@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useRouter } from "expo-router";
 import { Check } from "lucide-react-native";
 import React from "react";
 import { Checkbox, H6, Label, Text, XStack, YStack } from "tamagui";
@@ -11,6 +12,7 @@ const Step5 = ({
   acceptConditionsValue,
   setAcceptConditions,
 }) => {
+  const router = useRouter();
   return (
     <YStack>
       <YStack alignItems="start" gap="$3">
@@ -162,7 +164,12 @@ const Step5 = ({
 
           <Text p={6}>
             I accept and agree to comply with{" "}
-            <Text color={"$accent1"}>Fitness Code's</Text> Term and Conditions
+            <Text
+              textDecorationLine="underline"
+              onPress={() => router.push("/policies")}
+              color={"$color10"}>
+              Fitness Code's Term and Conditions
+            </Text>
           </Text>
         </XStack>
       </YStack>
