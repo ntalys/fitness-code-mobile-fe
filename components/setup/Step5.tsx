@@ -152,26 +152,28 @@ const Step5 = ({
           </YStack>
         </YStack>
 
-        <XStack px={6} alignItems="center" gap="$2">
-          <Checkbox
-            size={"$4"}
-            value={acceptConditionsValue}
-            onCheckedChange={setAcceptConditions}>
-            <Checkbox.Indicator>
-              <Check />
-            </Checkbox.Indicator>
-          </Checkbox>
+        <YStack py={12}>
+          <XStack px={6} alignItems="center" gap="$2">
+            <Checkbox
+              size={"$4"}
+              value={acceptConditionsValue}
+              onCheckedChange={setAcceptConditions}>
+              <Checkbox.Indicator>
+                <Check />
+              </Checkbox.Indicator>
+            </Checkbox>
 
-          <Text p={6}>
-            I accept and agree to comply with{" "}
-            <Text
-              textDecorationLine="underline"
-              onPress={() => router.push("/policies")}
-              color={"$color10"}>
-              Fitness Code's Term and Conditions
+            <Text px={12}>
+              I accept and agree to comply with{" "}
+              <Text
+                textDecorationLine="underline"
+                onPress={() => router.push("/policies")}
+                color={"$color10"}>
+                Fitness Code's Term and Conditions
+              </Text>
             </Text>
-          </Text>
-        </XStack>
+          </XStack>
+        </YStack>
       </YStack>
     </YStack>
   );
