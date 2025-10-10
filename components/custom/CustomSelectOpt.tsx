@@ -44,13 +44,26 @@ export const CustomSelectOpt = ({
           </Select.ItemIndicator>
         </Select.Item>
       )),
-    []
+    [items]
   );
+
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    // wait one render cycle
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  if (!mounted) {
+    // prevent rendering until layout is stable
+    return <YStack height={45} width={maxWidth} bg="transparent" />;
+  }
 
   return (
     <Select
-      value={value}
-      onValueChange={onValueChange}
+      value={value || ""}
+      onValueChange={(val) => onValueChange(val)}
       onOpenChange={onOpenChange}
       disablePreventBodyScroll
       {...props}>
