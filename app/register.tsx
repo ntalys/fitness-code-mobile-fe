@@ -10,7 +10,7 @@ import {
 } from "tamagui";
 import config from "../tamagui.config";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Watch } from "lucide-react-native";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
 import {
   KeyboardAvoidingView,
@@ -18,14 +18,18 @@ import {
 } from "react-native-keyboard-controller";
 import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { user } from "../@types/user";
+import { user, User } from "../@types/user";
 
 export default function Page() {
   const router = useRouter();
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
+  const [stepValid, setStepValid] = useState({
+    step: step,
+    isStepValid: undefined,
+  });
 
   const currStepComponent = {
     1: Step1,
@@ -58,42 +62,10 @@ export default function Page() {
 
   const [acceptConditions, setAcceptConditions] = useState(false);
 
-  const {
-    control,
-    trigger,
-    register,
-    watch,
-    formState: { errors, isValid },
-  } = useForm({
+  const methods = useForm<User>({
     resolver: zodResolver(user),
-    defaultValues: {
-      fname: personalInfo.fname,
-      lname: personalInfo.lname,
-      gender: personalInfo.gender,
-      dateOfBirth: personalInfo.birthday,
-      email: personalInfo.email,
-      height: {
-        value: physicalMeasurements.height.value,
-        unit: physicalMeasurements.height.unit,
-      },
-      weight: {
-        value: physicalMeasurements.weight.value,
-        unit: physicalMeasurements.weight.unit,
-      },
-      fitnessGaol: fitnessGaol,
-      fitnessLevel: fitnessExp.fitnessLevel,
-      workoutFrequency: fitnessExp.workoutFrequency,
-    },
-    mode: "onChange",
+    mode: "onChange", // validates automatically as the user types
   });
-
-  const stepFields: Record<number, string[]> = {
-    1: ["fname", "lname", "gender", "email", "password"],
-    2: ["height.value", "height.unit", "weight.value", "weight.unit"],
-    3: ["fitnessGaol"],
-    4: ["fitnessLevel", "workoutFrequency"], // maybe goal step, add later
-    // 5: [], // terms & conditions
-  };
 
   async function onProgressStepIncrease() {
     if (step === 5) {
@@ -109,12 +81,6 @@ export default function Page() {
     setProgress(progress - 20);
     setStep(step - 1);
   }
-
-  const [stepValid, setStepValid] = useState(false);
-
-  const handleStepValidation = (valid: boolean) => {
-    setStepValid(valid);
-  };
 
   return (
     <SafeAreaProvider>
@@ -169,42 +135,30 @@ export default function Page() {
                   <YStack
                     key={key}
                     display={step === Number(key) ? "flex" : "none"}>
-                    <Comp
-                      personalInfo={personalInfo}
-                      setPersonalInfo={setPersonalInfo}
-                      physicalMeasurements={physicalMeasurements}
-                      setPhysicalMeasurements={setPhysicalMeasurements}
-                      fitnessGaol={fitnessGaol}
-                      setFitnessGoal={setFitnessGoal}
-                      fitnessExp={fitnessExp}
-                      setFitnessExp={setFitnessExp}
-                      acceptConditionsValue={acceptConditions}
-                      setAcceptConditions={setAcceptConditions}
-                      control={control}
-                      errors={errors}
-                      onStepValidationChange={handleStepValidation}
-                      trigger={trigger}
-                      register={register}
-                      currentStepFields={stepFields[step]}
-                    />
+                    <FormProvider {...methods}>
+                      <Comp
+                        personalInfo={personalInfo}
+                        setPersonalInfo={setPersonalInfo}
+                        physicalMeasurements={physicalMeasurements}
+                        setPhysicalMeasurements={setPhysicalMeasurements}
+                        fitnessGaol={fitnessGaol}
+                        setFitnessGoal={setFitnessGoal}
+                        fitnessExp={fitnessExp}
+                        setFitnessExp={setFitnessExp}
+                        acceptConditionsValue={acceptConditions}
+                        setAcceptConditions={setAcceptConditions}
+                      />
+                    </FormProvider>
                   </YStack>
                 ))}
               </YStack>
             </ScrollView>
 
-            <Text>
-              fname: {watch("fname")} | lname: {watch("lname")} | gender:{" "}
-              {watch("gender")} | email: {watch("email")} | height.value:{" "}
-              {watch("height.value")} | height.unit: {watch("height.unit")}|
-              weight.value: {watch("weight.value")} | weight.unit:{" "}
-              {watch("weight.unit")} | fitnessGaol: {watch("fitnessGaol")}|
-              fitnessLevel: {watch("fitnessLevel")} | workoutFrequency:{" "}
-              {watch("workoutFrequency")} | isValid: {isValid ? "✅" : "❌"}
-            </Text>
+            <Text>Step: {step}</Text>
+            <Text>stepValid.isStepValid: {Number(!stepValid.isStepValid)}</Text>
 
-            {/* Step button (fixed at bottom) */}
             <YStack p={25} mb={40}>
-              <XStack width="$100" justify={step < 5 ? "start" : "center"}>
+              <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
                 <Pressable
                   onPress={() => {
                     if (step == 5 && !acceptConditions) {
@@ -226,7 +180,7 @@ export default function Page() {
                     </Button>
                   ) : (
                     <Button
-                      // disabled={!stepValid}
+                      // disabled={stepValid[step]}
                       disabledStyle={{ opacity: 0.5 }}
                       size="$5"
                       iconAfter={ArrowRight}
