@@ -1,44 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { H4, H6, Input, Label, Paragraph, Text, XStack, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
 import { Keyboard, Pressable } from "react-native";
-import { Controller } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrorsImpl,
+  useFormContext,
+  UseFormWatch,
+} from "react-hook-form";
+import { UserPhysicalMeasurements } from "../../@types/user";
+
+type Step2Props = {
+  physicalMeasurements: UserPhysicalMeasurements;
+  setPhysicalMeasurements: React.Dispatch<
+    React.SetStateAction<UserPhysicalMeasurements>
+  >;
+};
 
 const Step2 = ({
   physicalMeasurements,
   setPhysicalMeasurements,
-  control,
-  errors,
-  trigger,
-  onStepValidationChange,
-  currentStepFields,
-}) => {
+}: Step2Props) => {
   const { weight, height } = physicalMeasurements;
 
-  console.log("physicalMeasurements: ", physicalMeasurements);
+  const {
+    control,
+    formState: { errors, isValid },
+    watch,
+  }: {
+    control: Control<{ userPhysicalMeasurements: UserPhysicalMeasurements }>;
+    formState: {
+      errors: FieldErrorsImpl<{
+        userPhysicalMeasurements: UserPhysicalMeasurements;
+      }>;
+      isValid: boolean;
+    };
+    watch: UseFormWatch<{ userPhysicalMeasurements: UserPhysicalMeasurements }>;
+  } = useFormContext<{ userPhysicalMeasurements: UserPhysicalMeasurements }>();
 
   const onChangeHeightValue = (val: string) =>
     setPhysicalMeasurements((prev) => ({
       ...prev,
-      height: { value: val, unit: height.unit },
+      height: { value: Number(val), unit: height.unit },
     }));
 
   const onChangeHeightUnit = (val: string) =>
     setPhysicalMeasurements((prev) => ({
       ...prev,
-      height: { value: height.value, unit: val },
+      height: { value: height.value, unit: val as "cm" | "ft" },
     }));
 
   const onChangeWeightValue = (val: string) =>
     setPhysicalMeasurements((prev) => ({
       ...prev,
-      weight: { value: val, unit: weight.unit },
+      weight: { value: Number(val), unit: weight.unit },
     }));
 
   const onChangeWeightUnit = (val: string) =>
     setPhysicalMeasurements((prev) => ({
       ...prev,
-      weight: { value: weight.value, unit: val },
+      weight: { value: weight.value, unit: val as "kg" | "lbs" },
     }));
 
   const unitItems = [
@@ -60,24 +82,21 @@ const Step2 = ({
       <YStack width="100%" gap="$4" py="$3">
         <H6 fontWeight={400}>Physical Measurements</H6>
 
-        <XStack width="100%" alignItems="flex-start" gap={12}>
+        <XStack width="100%" justify="flex-start" gap={12}>
           <YStack flex={1} style={{ minWidth: 0 }}>
             <Label width={90} htmlFor="height">
               Height*
             </Label>
             <Controller
               control={control}
-              name="height.value"
+              name="userPhysicalMeasurements.height.value"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   id="height"
                   value={value}
                   onChangeText={(text) => {
                     onChange(text); // update react-hook-form
-                    setPhysicalMeasurements((prev) => ({
-                      ...prev,
-                      height: { value: text, unit: height.unit },
-                    })); // sync with your state
+                    onChangeHeightValue(text);
                   }}
                   onBlur={onBlur}
                   keyboardAppearance="default"
@@ -88,8 +107,10 @@ const Step2 = ({
                 />
               )}
             />
-            {errors.height?.value && (
-              <Paragraph color={"red"}>{errors.height.value.message}</Paragraph>
+            {errors.userPhysicalMeasurements && (
+              <Paragraph color={"red"}>
+                {errors.userPhysicalMeasurements.height?.value?.message}
+              </Paragraph>
             )}
           </YStack>
 
@@ -99,7 +120,7 @@ const Step2 = ({
             </Label>
             <Controller
               control={control}
-              name="height.unit"
+              name="userPhysicalMeasurements.height.unit"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Units"
@@ -108,41 +129,37 @@ const Step2 = ({
                   value={value}
                   onValueChange={(text) => {
                     onChange(text); // update react-hook-form
-                    setPhysicalMeasurements((prev) => ({
-                      ...prev,
-                      height: { value: height.value, unit: text },
-                    })); // sync with your state
+                    onChangeHeightUnit(text);
                   }}
                   onOpenChange={() => Keyboard.dismiss()}
                   placeholder=""
                 />
               )}
             />
-            {errors.height?.unit && (
-              <Paragraph color={"red"}>{errors.height.unit.message}</Paragraph>
+            {errors.userPhysicalMeasurements && (
+              <Paragraph color={"red"}>
+                {errors.userPhysicalMeasurements.height?.unit?.message}
+              </Paragraph>
             )}
           </YStack>
         </XStack>
 
         {/* Row: Weight + Unit */}
-        <XStack width="100%" alignItems="flex-start" gap={12}>
+        <XStack width="100%" justify="flex-start" gap={12}>
           <YStack flex={1} style={{ minWidth: 0 }}>
             <Label width={90} htmlFor="weight">
               Weight*
             </Label>
             <Controller
               control={control}
-              name="weight.value"
+              name="userPhysicalMeasurements.weight.value"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   id="weight"
                   value={value}
                   onChangeText={(text) => {
                     onChange(text); // update react-hook-form
-                    setPhysicalMeasurements((prev) => ({
-                      ...prev,
-                      height: { value: text, unit: weight.unit },
-                    })); // sync with your state
+                    onChangeWeightValue(text);
                   }}
                   onBlur={onBlur}
                   keyboardAppearance="default"
@@ -152,9 +169,9 @@ const Step2 = ({
                 />
               )}
             />
-            {errors.weight?.value && (
+            {errors.userPhysicalMeasurements && (
               <Paragraph color={"red"}>
-                {errors.weight?.value.message}
+                {errors.userPhysicalMeasurements.weight?.value?.message}
               </Paragraph>
             )}
           </YStack>
@@ -165,7 +182,7 @@ const Step2 = ({
             </Label>
             <Controller
               control={control}
-              name="weight.unit"
+              name="userPhysicalMeasurements.weight.unit"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Units"
@@ -174,21 +191,27 @@ const Step2 = ({
                   value={value}
                   onValueChange={(text) => {
                     onChange(text); // update react-hook-form
-                    setPhysicalMeasurements((prev) => ({
-                      ...prev,
-                      height: { value: weight.value, unit: text },
-                    })); // sync with your state
+                    onChangeWeightUnit(text);
                   }}
                   onOpenChange={() => Keyboard.dismiss()}
                   placeholder=""
                 />
               )}
             />
-            {errors.weight?.unit && (
-              <Paragraph color={"red"}>{errors.weight?.unit.message}</Paragraph>
+            {errors.userPhysicalMeasurements && (
+              <Paragraph color={"red"}>
+                {errors.userPhysicalMeasurements.weight?.unit?.message}
+              </Paragraph>
             )}
           </YStack>
         </XStack>
+        <Text>
+          height.value: {watch("userPhysicalMeasurements.height.value")} |
+          height.unit: {watch("userPhysicalMeasurements.height.unit")} |
+          weight.value: {watch("userPhysicalMeasurements.weight.value")} |
+          weight.unit: {watch("userPhysicalMeasurements.weight.unit")} |
+          isValid: {isValid ? "✅" : "❌"}
+        </Text>
       </YStack>
     </Pressable>
   );
