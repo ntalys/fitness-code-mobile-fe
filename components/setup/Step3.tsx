@@ -2,121 +2,89 @@ import { Pressable, Keyboard } from "react-native";
 import React from "react";
 import { H6, Paragraph, Text, XStack, YStack } from "tamagui";
 import { CustomCheckbox } from "../custom/CustomCheckbox";
-import { Controller } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
+import { UserFitnessGoal } from "../../@types/user";
 
-const Step3 = ({
-  fitnessGaol,
-  setFitnessGoal,
-  control,
-  errors,
-  onStepValidationChange,
-}) => {
-  console.log("fitnessGaol: ", fitnessGaol);
+type Step3Props = {
+  fitnessGaol: UserFitnessGoal;
+  setFitnessGoal: React.Dispatch<React.SetStateAction<UserFitnessGoal>>;
+};
 
-  // const onCheckedChange = (
-  //   value: string,
-  //   gaol: string,
-  //   checked: boolean,
-  //   onChange: Function
-  // ) => {
-  //   if (checked) {
-  //     onChange([...(value || []), goal]); // add goal
-  //   } else {
-  //     onChange((value || []).filter((g: string) => g !== goal)); // remove goal
-  //   }
-  // };
+const Step3 = ({ fitnessGaol, setFitnessGoal }: Step3Props) => {
+  const {
+    control,
+    formState: { errors, isValid },
+    watch,
+  } = useFormContext<{ userFitnessGoal: { fitnessGaol: UserFitnessGoal[] } }>();
+
+  const handleCheckboxChange = (
+    goal: string,
+    checked: boolean,
+    formValue: string[],
+    onChange: (value: string[]) => void
+  ) => {
+    let updatedGoals: string[];
+
+    if (checked) {
+      // Add if not already present
+      updatedGoals = formValue.includes(goal)
+        ? formValue
+        : [...formValue, goal];
+    } else {
+      // Remove if unchecked
+      updatedGoals = formValue.filter((item) => item !== goal);
+    }
+
+    onChange(updatedGoals); // ✅ update RHF
+    setFitnessGoal(updatedGoals); // ✅ sync local state
+  };
+
   return (
     <Pressable
       onPress={() => Keyboard.dismiss()}
       style={{ width: "100%" }}
-      android_disableSound={false} // optional for Android
-    >
+      android_disableSound={false}>
       <YStack width="100%" gap="$4" py="$3">
         <H6 fontWeight={400}>Fitness Goals</H6>
 
-        <XStack width="100%" alignItems="flex-start" gap={12}>
-          <YStack flex={1} style={{ minWidth: 0 }}>
-            <Controller
-              control={control}
-              name="fitnessGoal" // must match your schema
-              render={({ field: { value, onChange } }) => {
-                const handleCheckedChange = (
-                  goal: string,
-                  checked: boolean
-                ) => {
-                  if (checked) {
-                    onChange([...(value || []), goal]); // add goal
-                  } else {
-                    onChange((value || []).filter((g: string) => g !== goal)); // remove goal
+        <Controller
+          control={control}
+          name="userFitnessGoal.fitnessGaol"
+          render={({ field: { value = [], onChange } }) => (
+            <YStack>
+              {[
+                "Weight Loss",
+                "Muscle Gain",
+                "Increase Strength",
+                "Improve Endurance",
+                "Improve Flexibility",
+                "General Health",
+              ].map((goal) => (
+                <CustomCheckbox
+                  key={goal}
+                  size="$5"
+                  label={goal}
+                  value={goal}
+                  checked={value.includes(goal)}
+                  onCheckedChange={(checked) =>
+                    handleCheckboxChange(goal, checked, value, onChange)
                   }
-                };
+                />
+              ))}
+            </YStack>
+          )}
+        />
 
-                return (
-                  <>
-                    <CustomCheckbox
-                      size="$5"
-                      label="Weight Loss"
-                      value="Weight Loss"
-                      checked={value?.includes("Weight Loss")}
-                      onCheckedChange={(checked: boolean) =>
-                        handleCheckedChange("Weight Loss", checked)
-                      }
-                    />
-                    <CustomCheckbox
-                      size="$5"
-                      label="Muscle Gain"
-                      value="Muscle Gain"
-                      checked={value?.includes("Muscle Gain")}
-                      onCheckedChange={(checked: boolean) =>
-                        handleCheckedChange("Muscle Gain", checked)
-                      }
-                    />
-                    <CustomCheckbox
-                      size="$5"
-                      label="Increase Strength"
-                      value="Increase Strength"
-                      checked={value?.includes("Increase Strength")}
-                      onCheckedChange={(checked: boolean) =>
-                        handleCheckedChange("Increase Strength", checked)
-                      }
-                    />
-                    <CustomCheckbox
-                      size="$5"
-                      label="Improve Endurance"
-                      value="Improve Endurance"
-                      checked={value?.includes("Improve Endurance")}
-                      onCheckedChange={(checked: boolean) =>
-                        handleCheckedChange("Improve Endurance", checked)
-                      }
-                    />
-                    <CustomCheckbox
-                      size="$5"
-                      label="Improve Flexibility"
-                      value="Improve Flexibility"
-                      checked={value?.includes("Improve Flexibility")}
-                      onCheckedChange={(checked: boolean) =>
-                        handleCheckedChange("Improve Flexibility", checked)
-                      }
-                    />
-                    <CustomCheckbox
-                      size="$5"
-                      label="General Health"
-                      value="General Health"
-                      checked={value?.includes("General Health")}
-                      onCheckedChange={(checked: boolean) =>
-                        handleCheckedChange("General Health", checked)
-                      }
-                    />
-                  </>
-                );
-              }}
-            />
+        {errors?.userFitnessGoal && (
+          <Paragraph color={"red"}>
+            {errors.userFitnessGoal.fitnessGaol.message as string}
+          </Paragraph>
+        )}
 
-            {errors.fitnessGaol && (
-              <Paragraph color={"red"}>{errors.fitnessGaol.message}</Paragraph>
-            )}
-          </YStack>
-        </XStack>
+        <Text>
+          fitnessGoal: {JSON.stringify(watch("userFitnessGoal.fitnessGaol"))} |
+          isValid: {isValid ? "✅" : "❌"}
+        </Text>
       </YStack>
     </Pressable>
   );
