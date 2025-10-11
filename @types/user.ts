@@ -1,10 +1,6 @@
 import * as z from "zod";
 
 const onlyCharactersRegex = /^[A-Za-z]+$/;
-const atLeastOneSpecialCharacter = /[*@!#%&()^~{}]+/;
-const atLeastOneUpperCharacter = /[A-Z]+/;
-const atLeastOneLowerCharacter = /[a-z]+$/;
-const atLeastOneNumberCharacter = /[0-9]+/;
 export const userPersonalInformation = z.object({
   fname: z
     .string()
@@ -26,15 +22,10 @@ export const userPersonalInformation = z.object({
   password: z
     .string()
     .min(8, { message: "Password field required at least 8 characters" })
-    .regex(atLeastOneNumberCharacter, {
-      message: "Required at least one number character",
-    })
-    .regex(atLeastOneUpperCharacter, {
-      message: "Required at least one upper character",
-    })
-    .regex(atLeastOneSpecialCharacter, {
-      message: "Required at least one special character",
-    }),
+    .regex(/[A-Z]/, "Password must include at least one uppercase letter")
+    .regex(/[a-z]/, "Password must include at least one lowercase letter")
+    .regex(/[0-9]/, "Password must include at least one number")
+    .regex(/[\W_]/, "Password must include at least one symbol"),
 });
 
 export type UserPersonalInformation = z.infer<typeof userPersonalInformation>;
