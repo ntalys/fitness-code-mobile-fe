@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   H6,
@@ -16,18 +16,23 @@ import { Keyboard, Platform, Pressable } from "react-native";
 import PopoverCalendarIOS from "../custom/PopoverCalendarIOS";
 import PopoverCalendarAndroid from "../custom/PopoverCalendarAndroid";
 import { Eye, EyeOff } from "lucide-react-native";
-import { Controller } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrorsImpl,
+  useFormContext,
+  UseFormWatch,
+} from "react-hook-form";
+import { UserPersonalInformation } from "../../@types/user";
 
-const Step1 = ({
-  personalInfo,
-  setPersonalInfo,
-  control,
-  errors,
-  trigger,
-  register,
-  onStepValidationChange,
-  currentStepFields,
-}) => {
+type Step1Props = {
+  personalInfo: UserPersonalInformation;
+  setPersonalInfo: React.Dispatch<
+    React.SetStateAction<UserPersonalInformation>
+  >;
+};
+
+const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
   const {
     fname,
     lname,
@@ -37,14 +42,28 @@ const Step1 = ({
     password,
   } = personalInfo;
 
-  console.log("personalInfo: ", personalInfo);
+  const {
+    control,
+    formState: { errors, isValid },
+    watch,
+  }: {
+    control: Control<{ userPersonalInformation: UserPersonalInformation }>;
+    formState: {
+      errors: FieldErrorsImpl<{
+        userPersonalInformation: UserPersonalInformation;
+      }>;
+      isValid: boolean;
+    };
+    watch: UseFormWatch<{ userPersonalInformation: UserPersonalInformation }>;
+  } = useFormContext<{ userPersonalInformation: UserPersonalInformation }>();
 
-  // console.log("control: ", JSON.stringify(control, null, 2));
-
-  const items = [
-    { name: "Male", value: "male" },
-    { name: "Female", value: "female" },
-  ];
+  const items = useMemo(
+    () => [
+      { name: "Male", value: "male" },
+      { name: "Female", value: "female" },
+    ],
+    []
+  );
 
   const onChangeFName = (text: string) =>
     setPersonalInfo((prev) => ({ ...prev, fname: text }));
@@ -78,18 +97,18 @@ const Step1 = ({
       android_disableSound={false} // optional for Android
     >
       <YStack>
-        <YStack alignItems="start" gap="$1">
+        <YStack justify="flex-start" gap="$3.5">
           <YStack mb={15}>
             <H6 fontWeight={400}>Personal Information</H6>
           </YStack>
-          <XStack alignItems="center" justifyContent="space-between" gap={10}>
+          <XStack justify="space-between" gap={10}>
             <YStack flex={1}>
               <Label width={90} htmlFor="fname">
                 First Name*
               </Label>
               <Controller
                 control={control}
-                name="fname"
+                name="userPersonalInformation.fname"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     id="fname"
@@ -105,8 +124,10 @@ const Step1 = ({
                     placeholder="First name"></Input>
                 )}
               />
-              {errors.fname && (
-                <Paragraph color={"red"}>{errors.fname.message}</Paragraph>
+              {errors.userPersonalInformation && (
+                <Paragraph position="absolute" t={"$12"} color={"red"}>
+                  {errors.userPersonalInformation.fname?.message}
+                </Paragraph>
               )}
             </YStack>
             <YStack flex={1}>
@@ -115,7 +136,7 @@ const Step1 = ({
               </Label>
               <Controller
                 control={control}
-                name="lname"
+                name="userPersonalInformation.lname"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     id="lname"
@@ -132,20 +153,22 @@ const Step1 = ({
                   />
                 )}
               />
-              {errors.lname && (
-                <Paragraph color={"red"}>{errors.lname.message}</Paragraph>
+              {errors.userPersonalInformation && (
+                <Paragraph position="absolute" t={"$12"} color={"red"}>
+                  {errors.userPersonalInformation.lname?.message}
+                </Paragraph>
               )}
             </YStack>
           </XStack>
 
-          <XStack alignItems="center" justifyContent="space-between" gap={10}>
+          <XStack justify="space-between" gap={10}>
             <YStack flex={1}>
               <Label width={90} htmlFor="gender">
                 Gender*
               </Label>
               <Controller
                 control={control}
-                name="gender"
+                name="userPersonalInformation.gender"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <CustomSelectOpt
                     value={value}
@@ -162,8 +185,10 @@ const Step1 = ({
                   />
                 )}
               />
-              {errors.gender && (
-                <Paragraph color={"red"}>{errors.gender.message}</Paragraph>
+              {errors.userPersonalInformation && (
+                <Paragraph color={"red"}>
+                  {errors.userPersonalInformation.gender?.message}
+                </Paragraph>
               )}
             </YStack>
             <YStack flex={1}>
@@ -188,72 +213,88 @@ const Step1 = ({
             </YStack>
           </XStack>
 
-          <Label width={90} htmlFor="email">
-            Email*
-          </Label>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                id="email"
-                value={value}
-                onChangeText={(text) => {
-                  onChange(text); // update react-hook-form
-                  setPersonalInfo((prev) => ({ ...prev, email: text })); // sync with your state
-                }}
-                onBlur={onBlur}
-                defaultValue=""
-                keyboardAppearance="default"
-                keyboardType="email-address"
-                placeholder="name@example.com"
-              />
-            )}
-          />
-          {errors.email && (
-            <Paragraph color={"red"}>{errors.email.message}</Paragraph>
-          )}
-
-          <Label width={90} htmlFor="email">
-            Password*
-          </Label>
-          <YStack width="100%" position="relative">
+          <YStack flex={1} mt={-20}>
+            <Label width={90} htmlFor="email">
+              Email*
+            </Label>
             <Controller
               control={control}
-              name="password"
+              name="userPersonalInformation.email"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
-                  id="password"
+                  id="email"
                   value={value}
                   onChangeText={(text) => {
                     onChange(text); // update react-hook-form
-                    setPersonalInfo((prev) => ({ ...prev, password: text })); // sync with your state
+                    setPersonalInfo((prev) => ({ ...prev, email: text })); // sync with your state
                   }}
                   onBlur={onBlur}
-                  placeholder="Enter your Password"
-                  secureTextEntry={!showPassword}
-                  width="100%"
+                  defaultValue=""
+                  keyboardAppearance="default"
+                  keyboardType="email-address"
+                  placeholder="name@example.com"
                 />
               )}
             />
-            {errors.password && (
-              <Paragraph color={"red"}>{errors.password.message}</Paragraph>
+            {errors.userPersonalInformation && (
+              <Paragraph position="absolute" t={"$12"} color={"red"}>
+                {errors.userPersonalInformation.email?.message}
+              </Paragraph>
             )}
-            <Button
-              unstyled
-              onPress={togglePasswordVisibility}
-              position="absolute"
-              t={0}
-              right={10}
-              height="100%"
-              width={40}
-              justifyContent="center"
-              alignItems="center">
-              {showPassword ? <Eye /> : <EyeOff />}
-            </Button>
+          </YStack>
+
+          <YStack flex={1}>
+            <Label width={90} htmlFor="email">
+              Password*
+            </Label>
+            <YStack width="100%" position="relative">
+              <Controller
+                control={control}
+                name="userPersonalInformation.password"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    id="password"
+                    value={value}
+                    onChangeText={(text) => {
+                      onChange(text); // update react-hook-form
+                      setPersonalInfo((prev) => ({ ...prev, password: text })); // sync with your state
+                    }}
+                    onBlur={onBlur}
+                    placeholder="Enter your Password"
+                    secureTextEntry={!showPassword}
+                    width="100%"
+                  />
+                )}
+              />
+
+              <Button
+                unstyled
+                onPress={togglePasswordVisibility}
+                position="absolute"
+                t={0}
+                r={10}
+                height="100%"
+                width={40}
+                justify="center">
+                {showPassword ? <Eye /> : <EyeOff />}
+              </Button>
+            </YStack>
+            {errors.userPersonalInformation && (
+              <Paragraph position="absolute" t={"$12"} color={"red"}>
+                {errors.userPersonalInformation.password?.message}
+              </Paragraph>
+            )}
           </YStack>
         </YStack>
       </YStack>
+      <Text>
+        fname: {watch("userPersonalInformation.fname")} | lname:{" "}
+        {watch("userPersonalInformation.lname")} | gender:{" "}
+        {watch("userPersonalInformation.gender")} | email:{" "}
+        {watch("userPersonalInformation.email")} | password:{" "}
+        {watch("userPersonalInformation.password")} | isValid:{" "}
+        {isValid ? "✅" : "❌"}
+      </Text>
     </Pressable>
   );
 };
