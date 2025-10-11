@@ -26,10 +26,6 @@ export default function Page() {
   const router = useRouter();
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
-  const [stepValid, setStepValid] = useState({
-    step: step,
-    isStepValid: undefined,
-  });
 
   const currStepComponent = {
     1: Step1,
@@ -49,8 +45,8 @@ export default function Page() {
   });
 
   const [physicalMeasurements, setPhysicalMeasurements] = useState({
-    weight: { value: 0, unit: "" },
-    height: { value: 0, unit: "" },
+    weight: { value: 0, unit: "" as "cm" | "ft" },
+    height: { value: 0, unit: "" as "kg" | "lbs" },
   });
 
   const [fitnessGaol, setFitnessGoal] = useState([]);
@@ -90,7 +86,7 @@ export default function Page() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}>
             {/* Header */}
-            <XStack alignItems="center" justifyContent="center" px="$4" pt="$4">
+            <XStack justify="center" px="$4" pt="$4">
               <H3>Setup Your Profile</H3>
 
               {step > 1 && (
@@ -153,9 +149,6 @@ export default function Page() {
                 ))}
               </YStack>
             </ScrollView>
-
-            <Text>Step: {step}</Text>
-            <Text>stepValid.isStepValid: {Number(!stepValid.isStepValid)}</Text>
 
             <YStack p={25} mb={40}>
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
