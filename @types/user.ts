@@ -29,20 +29,17 @@ export const userPersonalInformation = z.object({
     .regex(atLeastOneNumberCharacter, {
       message: "Required at least one number character",
     })
-    // .regex(atLeastOneLowerCharacter, {
-    //   message: "Required at least one lower character",
-    // })
     .regex(atLeastOneUpperCharacter, {
       message: "Required at least one upper character",
+    })
+    .regex(atLeastOneSpecialCharacter, {
+      message: "Required at least one special character",
     }),
-  // .regex(atLeastOneSpecialCharacter, {
-  //   message: "Required at least one special character",
-  // }),
 });
 
 export type UserPersonalInformation = z.infer<typeof userPersonalInformation>;
 
-const userPhysicalMeasurements = z.object({
+export const userPhysicalMeasurements = z.object({
   height: z.object({
     value: z.preprocess(
       (val) => Number(val),
@@ -59,18 +56,24 @@ const userPhysicalMeasurements = z.object({
   }),
 });
 
-export const userFitnessGoal = z
-  .array(
-    z.enum([
-      "Weight Loss",
-      "Muscle Gain",
-      "Increase Strength",
-      "Improve Endurance",
-      "Improve Flexibility",
-      "General Health",
-    ])
-  )
-  .min(1, { message: "At least one option must be select" });
+export type UserPhysicalMeasurements = z.infer<typeof userPhysicalMeasurements>;
+
+export const userFitnessGoal = z.object({
+  fitnessGaol: z
+    .array(
+      z.enum([
+        "Weight Loss",
+        "Muscle Gain",
+        "Increase Strength",
+        "Improve Endurance",
+        "Improve Flexibility",
+        "General Health",
+      ])
+    )
+    .min(1, { message: "At least one goal must be selected" }),
+});
+
+export type UserFitnessGoal = z.infer<typeof userFitnessGoal>;
 
 export const userFitnessExp = z.object({
   fitnessLevel: z.enum(["beginner", "intermediate", "advance"]),
@@ -81,11 +84,13 @@ export const userFitnessExp = z.object({
   ]),
 });
 
-export const user = z.union([
+export type UserFitnessExp = z.infer<typeof userFitnessExp>;
+
+export const user = z.object({
   userPersonalInformation,
   userPhysicalMeasurements,
   userFitnessGoal,
   userFitnessExp,
-]);
+});
 
 export type User = z.infer<typeof user>;
