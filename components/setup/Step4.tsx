@@ -1,19 +1,34 @@
 import { Pressable, Keyboard } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { H6, Label, Paragraph, Text, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
-import { Controller } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrorsImpl,
+  useForm,
+  useFormContext,
+  UseFormWatch,
+} from "react-hook-form";
+import { UserFitnessExp } from "../../@types/user";
 
-const Step4 = ({
-  fitnessExp,
-  setFitnessExp,
-  control,
-  errors,
-  onStepValidationChange,
-}) => {
+const Step4 = ({ fitnessExp, setFitnessExp }) => {
   const { fitnessLevel, workoutFrequency } = fitnessExp;
 
-  console.log("fitnessExp: ", fitnessExp);
+  const {
+    control,
+    formState: { errors, isValid },
+    watch,
+  }: {
+    control: Control<{ userFitnessExp: UserFitnessExp }>;
+    formState: {
+      errors: FieldErrorsImpl<{ userFitnessExp: UserFitnessExp }>;
+      isValid: boolean;
+    };
+    watch: UseFormWatch<{ userFitnessExp: UserFitnessExp }>;
+  } = useFormContext<{ userFitnessExp: UserFitnessExp }>();
+
+  // console.log("fitnessExp: ", fitnessExp);
 
   const onValueChangeFitnessLevel = (text: string) =>
     setFitnessExp((prev) => ({ ...prev, fitnessLevel: text }));
@@ -48,7 +63,7 @@ const Step4 = ({
             </Label>
             <Controller
               control={control}
-              name="fitnessLevel"
+              name="userFitnessExp.fitnessLevel"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Fitness Level"
@@ -58,15 +73,17 @@ const Step4 = ({
                   value={value}
                   onValueChange={(text) => {
                     onChange(text); // update react-hook-form
-                    setFitnessExp((prev) => ({ ...prev, fitnessLevel: text }));
+                    onValueChangeFitnessLevel(text);
                   }}
                   onOpenChange={() => Keyboard.dismiss()}
                   placeholder="Enter your Fitness Level"
                 />
               )}
             />
-            {errors.fitnessLevel && (
-              <Paragraph color={"red"}>{errors.fitnessLevel.message}</Paragraph>
+            {errors.userFitnessExp && (
+              <Paragraph color={"red"}>
+                {errors.userFitnessExp.fitnessLevel.message}
+              </Paragraph>
             )}
           </YStack>
 
@@ -76,7 +93,7 @@ const Step4 = ({
             </Label>
             <Controller
               control={control}
-              name="workoutFrequency"
+              name="userFitnessExp.workoutFrequency"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Workout Frequency"
@@ -86,23 +103,26 @@ const Step4 = ({
                   value={value}
                   onValueChange={(text) => {
                     onChange(text); // update react-hook-form
-                    setFitnessExp((prev) => ({
-                      ...prev,
-                      workoutFrequency: text,
-                    }));
+                    onValueChangeWorkoutFrequency(text);
                   }}
                   onOpenChange={() => Keyboard.dismiss()}
                   placeholder="Enter your Workout Frequency"
                 />
               )}
             />
-            {errors.workoutFrequency && (
+            {errors.userFitnessExp && (
               <Paragraph color={"red"}>
-                {errors.workoutFrequency.message}
+                {errors.userFitnessExp.workoutFrequency.message}
               </Paragraph>
             )}
           </YStack>
         </YStack>
+        <Text>
+          fitnessLevel: {watch("userFitnessExp.fitnessLevel")} |
+          workoutFrequency:
+          {watch("userFitnessExp.workoutFrequency")} | isValid:{" "}
+          {isValid ? "✅" : "❌"}
+        </Text>
       </YStack>
     </Pressable>
   );
