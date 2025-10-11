@@ -72,7 +72,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
     setPersonalInfo((prev) => ({ ...prev, lname: text }));
 
   const onChangeGender = (text: string) =>
-    setPersonalInfo((prev) => ({ ...prev, gender: text }));
+    setPersonalInfo((prev) => ({ ...prev, gender: text as "male" | "female" }));
 
   const onChangeBirthday = (text: Date) =>
     setPersonalInfo((prev) => ({ ...prev, birthday: text }));
@@ -115,7 +115,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                     value={value}
                     onChangeText={(text) => {
                       onChange(text); // update react-hook-form
-                      setPersonalInfo((prev) => ({ ...prev, fname: text })); // sync with your state
+                      onChangeFName(text); // sync with your state
                     }}
                     onBlur={onBlur}
                     defaultValue=""
@@ -143,7 +143,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                     value={value}
                     onChangeText={(text) => {
                       onChange(text); // update react-hook-form
-                      setPersonalInfo((prev) => ({ ...prev, lname: text })); // sync with your state
+                      onChangeLName(text); // sync with your state
                     }}
                     onBlur={onBlur}
                     defaultValue=""
@@ -174,7 +174,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                     value={value}
                     onValueChange={(text) => {
                       onChange(text); // update react-hook-form
-                      setPersonalInfo((prev) => ({ ...prev, gender: text })); // sync with your state
+                      onChangeGender(text); // sync with your state
                     }}
                     items={items}
                     labelTitle="Genders"
@@ -213,7 +213,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
             </YStack>
           </XStack>
 
-          <YStack flex={1} mt={-20}>
+          <YStack flex={1}>
             <Label width={90} htmlFor="email">
               Email*
             </Label>
@@ -226,7 +226,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                   value={value}
                   onChangeText={(text) => {
                     onChange(text); // update react-hook-form
-                    setPersonalInfo((prev) => ({ ...prev, email: text })); // sync with your state
+                    onChangeEmail(text); // sync with your state
                   }}
                   onBlur={onBlur}
                   defaultValue=""
@@ -257,7 +257,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                     value={value}
                     onChangeText={(text) => {
                       onChange(text); // update react-hook-form
-                      setPersonalInfo((prev) => ({ ...prev, password: text })); // sync with your state
+                      onChangePassword(text); // sync with your state
                     }}
                     onBlur={onBlur}
                     placeholder="Enter your Password"
