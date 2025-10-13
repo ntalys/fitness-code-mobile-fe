@@ -244,7 +244,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
           </YStack>
 
           <YStack flex={1}>
-            <Label width={90} htmlFor="email">
+            <Label width={90} htmlFor="password">
               Password*
             </Label>
             <YStack width="100%" position="relative">
