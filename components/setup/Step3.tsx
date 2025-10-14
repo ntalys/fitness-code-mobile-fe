@@ -15,7 +15,7 @@ const Step3 = ({ fitnessGaol, setFitnessGoal }: Step3Props) => {
     control,
     formState: { errors, isValid },
     watch,
-  } = useFormContext<{ userFitnessGoal: { fitnessGaol: UserFitnessGoal[] } }>();
+  } = useFormContext<{ userFitnessGoal: UserFitnessGoal }>();
 
   const handleCheckboxChange = (
     goal: string,
@@ -49,7 +49,7 @@ const Step3 = ({ fitnessGaol, setFitnessGoal }: Step3Props) => {
 
         <Controller
           control={control}
-          name="userFitnessGoal.fitnessGaol"
+          name="userFitnessGoal"
           render={({ field: { value = [], onChange } }) => (
             <YStack>
               {[
@@ -77,13 +77,13 @@ const Step3 = ({ fitnessGaol, setFitnessGoal }: Step3Props) => {
 
         {errors?.userFitnessGoal && (
           <Paragraph color={"red"}>
-            {errors.userFitnessGoal.fitnessGaol.message as string}
+            {errors.userFitnessGoal.message as string}
           </Paragraph>
         )}
 
         <Text>
-          fitnessGoal: {JSON.stringify(watch("userFitnessGoal.fitnessGaol"))} |
-          isValid: {isValid ? "✅" : "❌"}
+          fitnessGoal: {JSON.stringify(watch("userFitnessGoal"))} | isValid:{" "}
+          {isValid ? "✅" : "❌"}
         </Text>
       </YStack>
     </Pressable>
