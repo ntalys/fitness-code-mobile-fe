@@ -49,20 +49,18 @@ export const userPhysicalMeasurements = z.object({
 
 export type UserPhysicalMeasurements = z.infer<typeof userPhysicalMeasurements>;
 
-export const userFitnessGoal = z.object({
-  fitnessGaol: z
-    .array(
-      z.enum([
-        "Weight Loss",
-        "Muscle Gain",
-        "Increase Strength",
-        "Improve Endurance",
-        "Improve Flexibility",
-        "General Health",
-      ])
-    )
-    .min(1, { message: "At least one goal must be selected" }),
-});
+export const userFitnessGoal = z
+  .array(
+    z.enum([
+      "Weight Loss",
+      "Muscle Gain",
+      "Increase Strength",
+      "Improve Endurance",
+      "Improve Flexibility",
+      "General Health",
+    ])
+  )
+  .min(1, { message: "At least one goal must be selected" });
 
 export type UserFitnessGoal = z.infer<typeof userFitnessGoal>;
 
