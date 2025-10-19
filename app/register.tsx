@@ -27,6 +27,11 @@ export default function Page() {
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
 
+  const [isStep1Valid, setIsStep1Valid] = useState(false);
+  const [isStep2Valid, setIsStep2Valid] = useState(false);
+  const [isStep3Valid, setIsStep3Valid] = useState(false);
+  const [isStep4Valid, setIsStep4Valid] = useState(false);
+
   const currStepComponent = {
     1: Step1,
     2: Step2,
@@ -119,6 +124,7 @@ export default function Page() {
             </YStack>
 
             {/* Scrollable step content */}
+            {/* <FormProvider {...methods}> */}
             <ScrollView
               contentContainerStyle={{
                 flexGrow: 1,
@@ -131,7 +137,6 @@ export default function Page() {
                   <YStack
                     key={key}
                     display={step === Number(key) ? "flex" : "none"}>
-                    <FormProvider {...methods}>
                       <Comp
                         personalInfo={personalInfo}
                         setPersonalInfo={setPersonalInfo}
@@ -143,12 +148,16 @@ export default function Page() {
                         setFitnessExp={setFitnessExp}
                         acceptConditionsValue={acceptConditions}
                         setAcceptConditions={setAcceptConditions}
+                      isStep1Valid={setIsStep1Valid}
+                      isStep2Valid={setIsStep2Valid}
+                      isStep3Valid={setIsStep3Valid}
+                      isStep4Valid={setIsStep4Valid}
                       />
-                    </FormProvider>
                   </YStack>
                 ))}
               </YStack>
             </ScrollView>
+            {/* </FormProvider> */}
 
             <YStack p={25} mb={40}>
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
@@ -184,6 +193,11 @@ export default function Page() {
                   )}
                 </Pressable>
               </XStack>
+
+              <Text>isStep1Valid: {JSON.stringify(isStep1Valid)}</Text>
+              <Text>isStep2Valid: {JSON.stringify(isStep2Valid)}</Text>
+              <Text>isStep3Valid: {JSON.stringify(isStep3Valid)}</Text>
+              <Text>isStep4Valid: {JSON.stringify(isStep4Valid)}</Text>
             </YStack>
           </KeyboardAvoidingView>
         </KeyboardProvider>
