@@ -1,49 +1,36 @@
 import { Pressable, Keyboard } from "react-native";
-import React from "react";
-import { H6, Paragraph, Text, XStack, YStack } from "tamagui";
+import React, { useEffect } from "react";
+import { H6, Paragraph, Text, YStack } from "tamagui";
 import { CustomCheckbox } from "../custom/CustomCheckbox";
-import { useFormContext, Controller } from "react-hook-form";
-import { UserFitnessGoal } from "../../@types/user";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userFitnessGoal, UserFitnessGoal } from "../../@types/user";
 
 type Step3Props = {
-  fitnessGaol: UserFitnessGoal;
-  setFitnessGoal: React.Dispatch<React.SetStateAction<UserFitnessGoal>>;
+  fitnessGaol: string[];
+  setFitnessGoal: React.Dispatch<React.SetStateAction<string[]>>;
+  isStep3Valid: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Step3 = ({ fitnessGaol, setFitnessGoal }: Step3Props) => {
+const Step3 = ({ fitnessGaol, setFitnessGoal, isStep3Valid }: Step3Props) => {
   const {
     control,
-    formState: { errors, isValid },
     watch,
-  } = useFormContext<{ userFitnessGoal: UserFitnessGoal }>();
+    formState: { errors, isValid },
+  } = useForm<UserFitnessGoal>({
+    resolver: zodResolver(userFitnessGoal),
+    mode: "onChange",
+    defaultValues: {
+      userFitnessGoal: fitnessGaol || [],
+    },
+  });
 
-  const handleCheckboxChange = (
-    goal: string,
-    checked: boolean,
-    formValue: string[],
-    onChange: (value: string[]) => void
-  ) => {
-    let updatedGoals: string[];
-
-    if (checked) {
-      // Add if not already present
-      updatedGoals = formValue.includes(goal)
-        ? formValue
-        : [...formValue, goal];
-    } else {
-      // Remove if unchecked
-      updatedGoals = formValue.filter((item) => item !== goal);
-    }
-
-    onChange(updatedGoals); // ✅ update RHF
-    setFitnessGoal(updatedGoals); // ✅ sync local state
-  };
+  useEffect(() => {
+    isStep3Valid(isValid);
+  }, [isValid]);
 
   return (
-    <Pressable
-      onPress={() => Keyboard.dismiss()}
-      style={{ width: "100%" }}
-      android_disableSound={false}>
+    <Pressable onPress={() => Keyboard.dismiss()} style={{ width: "100%" }}>
       <YStack width="100%" gap="$4" py="$3">
         <H6 fontWeight={400}>Fitness Goals</H6>
 
@@ -66,18 +53,25 @@ const Step3 = ({ fitnessGaol, setFitnessGoal }: Step3Props) => {
                   label={goal}
                   value={goal}
                   checked={value.includes(goal)}
-                  onCheckedChange={(checked) =>
-                    handleCheckboxChange(goal, checked, value, onChange)
-                  }
+                  onCheckedChange={(checked) => {
+                    let updatedGoals: string[];
+                    if (checked) {
+                      updatedGoals = [...value, goal];
+                    } else {
+                      updatedGoals = value.filter((g) => g !== goal);
+                    }
+                    onChange(updatedGoals);
+                    setFitnessGoal(updatedGoals);
+                  }}
                 />
               ))}
             </YStack>
           )}
         />
 
-        {errors?.userFitnessGoal && (
-          <Paragraph color={"red"}>
-            {errors.userFitnessGoal.message as string}
+        {errors.userFitnessGoal && (
+          <Paragraph color="red">
+            {(errors.userFitnessGoal as any).message}
           </Paragraph>
         )}
 

@@ -6,38 +6,44 @@ import {
   Control,
   Controller,
   FieldErrorsImpl,
+  useForm,
   useFormContext,
   UseFormWatch,
 } from "react-hook-form";
-import { UserPhysicalMeasurements } from "../../@types/user";
+import {
+  userPhysicalMeasurements,
+  UserPhysicalMeasurements,
+} from "../../@types/user";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Step2Props = {
   physicalMeasurements: UserPhysicalMeasurements;
   setPhysicalMeasurements: React.Dispatch<
     React.SetStateAction<UserPhysicalMeasurements>
   >;
+  isStep2Valid: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Step2 = ({
   physicalMeasurements,
   setPhysicalMeasurements,
+  isStep2Valid,
 }: Step2Props) => {
   const { weight, height } = physicalMeasurements;
 
   const {
     control,
-    formState: { errors, isValid },
+    trigger,
     watch,
-  }: {
-    control: Control<{ userPhysicalMeasurements: UserPhysicalMeasurements }>;
-    formState: {
-      errors: FieldErrorsImpl<{
-        userPhysicalMeasurements: UserPhysicalMeasurements;
-      }>;
-      isValid: boolean;
-    };
-    watch: UseFormWatch<{ userPhysicalMeasurements: UserPhysicalMeasurements }>;
-  } = useFormContext<{ userPhysicalMeasurements: UserPhysicalMeasurements }>();
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: zodResolver(userPhysicalMeasurements),
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    isStep2Valid(isValid);
+  }, [isValid]);
 
   const onChangeHeightValue = (val: string) =>
     setPhysicalMeasurements((prev) => ({
@@ -89,7 +95,7 @@ const Step2 = ({
             </Label>
             <Controller
               control={control}
-              name="userPhysicalMeasurements.height.value"
+              name="height.value"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   id="height"
@@ -107,9 +113,9 @@ const Step2 = ({
                 />
               )}
             />
-            {errors.userPhysicalMeasurements && (
+            {errors && (
               <Paragraph color={"red"}>
-                {errors.userPhysicalMeasurements.height?.value?.message}
+                {errors.height?.value?.message}
               </Paragraph>
             )}
           </YStack>
@@ -120,7 +126,7 @@ const Step2 = ({
             </Label>
             <Controller
               control={control}
-              name="userPhysicalMeasurements.height.unit"
+              name="height.unit"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Units"
@@ -136,9 +142,9 @@ const Step2 = ({
                 />
               )}
             />
-            {errors.userPhysicalMeasurements && (
+            {errors && (
               <Paragraph color={"red"}>
-                {errors.userPhysicalMeasurements.height?.unit?.message}
+                {errors.height?.unit?.message}
               </Paragraph>
             )}
           </YStack>
@@ -152,7 +158,7 @@ const Step2 = ({
             </Label>
             <Controller
               control={control}
-              name="userPhysicalMeasurements.weight.value"
+              name="weight.value"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   id="weight"
@@ -169,9 +175,9 @@ const Step2 = ({
                 />
               )}
             />
-            {errors.userPhysicalMeasurements && (
+            {errors && (
               <Paragraph color={"red"}>
-                {errors.userPhysicalMeasurements.weight?.value?.message}
+                {errors.weight?.value?.message}
               </Paragraph>
             )}
           </YStack>
@@ -182,7 +188,7 @@ const Step2 = ({
             </Label>
             <Controller
               control={control}
-              name="userPhysicalMeasurements.weight.unit"
+              name="weight.unit"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Units"
@@ -198,19 +204,17 @@ const Step2 = ({
                 />
               )}
             />
-            {errors.userPhysicalMeasurements && (
+            {errors && (
               <Paragraph color={"red"}>
-                {errors.userPhysicalMeasurements.weight?.unit?.message}
+                {errors.weight?.unit?.message}
               </Paragraph>
             )}
           </YStack>
         </XStack>
         <Text>
-          height.value: {watch("userPhysicalMeasurements.height.value")} |
-          height.unit: {watch("userPhysicalMeasurements.height.unit")} |
-          weight.value: {watch("userPhysicalMeasurements.weight.value")} |
-          weight.unit: {watch("userPhysicalMeasurements.weight.unit")} |
-          isValid: {isValid ? "✅" : "❌"}
+          height.value: {watch("height.value")} | height.unit:{" "}
+          {watch("height.unit")} | weight.value: {watch("weight.value")} |
+          weight.unit: {watch("weight.unit")} | isValid: {isValid ? "✅" : "❌"}
         </Text>
       </YStack>
     </Pressable>

@@ -10,25 +10,34 @@ import {
   useFormContext,
   UseFormWatch,
 } from "react-hook-form";
-import { UserFitnessExp } from "../../@types/user";
+import { userFitnessExp, UserFitnessExp } from "../../@types/user";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const Step4 = ({ fitnessExp, setFitnessExp }) => {
+type Step3Props = {
+  fitnessGaol: string[];
+  setFitnessGoal: React.Dispatch<React.SetStateAction<string[]>>;
+  isStep4Valid: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Step4 = ({ fitnessExp, setFitnessExp, isStep4Valid }) => {
   const { fitnessLevel, workoutFrequency } = fitnessExp;
 
   const {
     control,
-    formState: { errors, isValid },
     watch,
-  }: {
-    control: Control<{ userFitnessExp: UserFitnessExp }>;
-    formState: {
-      errors: FieldErrorsImpl<{ userFitnessExp: UserFitnessExp }>;
-      isValid: boolean;
-    };
-    watch: UseFormWatch<{ userFitnessExp: UserFitnessExp }>;
-  } = useFormContext<{ userFitnessExp: UserFitnessExp }>();
+    formState: { errors, isValid },
+  } = useForm<UserFitnessExp>({
+    resolver: zodResolver(userFitnessExp),
+    mode: "onChange",
+    defaultValues: {
+      fitnessLevel: fitnessLevel || "",
+      workoutFrequency: workoutFrequency || "",
+    },
+  });
 
-  // console.log("fitnessExp: ", fitnessExp);
+  useEffect(() => {
+    isStep4Valid(isValid);
+  }, [isValid]);
 
   const onValueChangeFitnessLevel = (text: string) =>
     setFitnessExp((prev) => ({ ...prev, fitnessLevel: text }));
@@ -63,7 +72,7 @@ const Step4 = ({ fitnessExp, setFitnessExp }) => {
             </Label>
             <Controller
               control={control}
-              name="userFitnessExp.fitnessLevel"
+              name="fitnessLevel"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Fitness Level"
@@ -80,9 +89,9 @@ const Step4 = ({ fitnessExp, setFitnessExp }) => {
                 />
               )}
             />
-            {errors.userFitnessExp && (
+            {errors && (
               <Paragraph color={"red"}>
-                {errors.userFitnessExp.fitnessLevel.message}
+                {errors.fitnessLevel?.message}
               </Paragraph>
             )}
           </YStack>
@@ -93,7 +102,7 @@ const Step4 = ({ fitnessExp, setFitnessExp }) => {
             </Label>
             <Controller
               control={control}
-              name="userFitnessExp.workoutFrequency"
+              name="workoutFrequency"
               render={({ field: { onChange, onBlur, value } }) => (
                 <CustomSelectOpt
                   labelTitle="Workout Frequency"
@@ -110,18 +119,16 @@ const Step4 = ({ fitnessExp, setFitnessExp }) => {
                 />
               )}
             />
-            {errors.userFitnessExp && (
+            {errors && (
               <Paragraph color={"red"}>
-                {errors.userFitnessExp.workoutFrequency.message}
+                {errors.workoutFrequency?.message}
               </Paragraph>
             )}
           </YStack>
         </YStack>
         <Text>
-          fitnessLevel: {watch("userFitnessExp.fitnessLevel")} |
-          workoutFrequency:
-          {watch("userFitnessExp.workoutFrequency")} | isValid:{" "}
-          {isValid ? "✅" : "❌"}
+          fitnessLevel: {watch("fitnessLevel")} | workoutFrequency:
+          {watch("workoutFrequency")} | isValid: {isValid ? "✅" : "❌"}
         </Text>
       </YStack>
     </Pressable>
