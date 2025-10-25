@@ -20,19 +20,25 @@ import {
   Control,
   Controller,
   FieldErrorsImpl,
+  useForm,
   useFormContext,
   UseFormWatch,
 } from "react-hook-form";
-import { UserPersonalInformation } from "../../@types/user";
+import {
+  userPersonalInformation,
+  UserPersonalInformation,
+} from "../../@types/user";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Step1Props = {
   personalInfo: UserPersonalInformation;
   setPersonalInfo: React.Dispatch<
     React.SetStateAction<UserPersonalInformation>
   >;
+  isStep1Valid: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
+const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
   const {
     fname,
     lname,
@@ -44,18 +50,17 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
 
   const {
     control,
-    formState: { errors, isValid },
+    trigger,
     watch,
-  }: {
-    control: Control<{ userPersonalInformation: UserPersonalInformation }>;
-    formState: {
-      errors: FieldErrorsImpl<{
-        userPersonalInformation: UserPersonalInformation;
-      }>;
-      isValid: boolean;
-    };
-    watch: UseFormWatch<{ userPersonalInformation: UserPersonalInformation }>;
-  } = useFormContext<{ userPersonalInformation: UserPersonalInformation }>();
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: zodResolver(userPersonalInformation),
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    isStep1Valid(isValid);
+  }, [isValid]);
 
   const items = useMemo(
     () => [
@@ -71,8 +76,8 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
   const onChangeLName = (text: string) =>
     setPersonalInfo((prev) => ({ ...prev, lname: text }));
 
-  const onChangeGender = (text: string) =>
-    setPersonalInfo((prev) => ({ ...prev, gender: text as "male" | "female" }));
+  const onChangeGender = (text: "male" | "female") =>
+    setPersonalInfo((prev) => ({ ...prev, gender: text }));
 
   const onChangeBirthday = (text: Date) =>
     setPersonalInfo((prev) => ({ ...prev, birthday: text }));
@@ -108,7 +113,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
               </Label>
               <Controller
                 control={control}
-                name="userPersonalInformation.fname"
+                name="fname"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     id="fname"
@@ -124,9 +129,9 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                     placeholder="First name"></Input>
                 )}
               />
-              {errors.userPersonalInformation && (
+              {errors && (
                 <Paragraph position="absolute" t={"$12"} color={"red"}>
-                  {errors.userPersonalInformation.fname?.message}
+                  {errors.fname?.message}
                 </Paragraph>
               )}
             </YStack>
@@ -136,7 +141,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
               </Label>
               <Controller
                 control={control}
-                name="userPersonalInformation.lname"
+                name="lname"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     id="lname"
@@ -153,9 +158,9 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                   />
                 )}
               />
-              {errors.userPersonalInformation && (
+              {errors && (
                 <Paragraph position="absolute" t={"$12"} color={"red"}>
-                  {errors.userPersonalInformation.lname?.message}
+                  {errors.lname?.message}
                 </Paragraph>
               )}
             </YStack>
@@ -168,11 +173,11 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
               </Label>
               <Controller
                 control={control}
-                name="userPersonalInformation.gender"
+                name="gender"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <CustomSelectOpt
                     value={value}
-                    onValueChange={(text) => {
+                    onValueChange={(text: "male" | "female") => {
                       onChange(text); // update react-hook-form
                       onChangeGender(text); // sync with your state
                     }}
@@ -185,10 +190,8 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                   />
                 )}
               />
-              {errors.userPersonalInformation && (
-                <Paragraph color={"red"}>
-                  {errors.userPersonalInformation.gender?.message}
-                </Paragraph>
+              {errors && (
+                <Paragraph color={"red"}>{errors.gender?.message}</Paragraph>
               )}
             </YStack>
             <YStack flex={1}>
@@ -196,30 +199,46 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                 Date of Birth*
               </Label>
               {Platform.OS === "ios" ? (
-                <PopoverCalendarIOS
-                  setDate={onChangeBirthday}
-                  date={birthday}
-                  labelTitle={birthday.toLocaleDateString()}
-                  onOpenChange={() => Keyboard.dismiss()}
+                <Controller
+                  control={control}
+                  name="dateOfBirth"
+                  render={({ field: { onChange, onBlur, value } }) => {
+                    return (
+                      <PopoverCalendarIOS
+                        setDate={(text: Date) => {
+                          onChange(text); // update react-hook-form
+                          onChangeBirthday(text); // sync with your state
+                        }}
+                        date={value}
+                        onOpenChange={() => Keyboard.dismiss()}
+                      />
+                    );
+                  }}
                 />
               ) : (
-                <PopoverCalendarAndroid
-                  date={birthday}
-                  show={show}
-                  setDate={onChangeBirthday}
-                  setShow={setShow}
+                <Controller
+                  control={control}
+                  name="dateOfBirth"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <PopoverCalendarAndroid
+                      date={value}
+                      show={show}
+                      setDate={onChangeBirthday}
+                      setShow={setShow}
+                    />
+                  )}
                 />
               )}
             </YStack>
           </XStack>
 
-          <YStack flex={1}>
+          <YStack flex={1} mt={0}>
             <Label width={90} htmlFor="email">
               Email*
             </Label>
             <Controller
               control={control}
-              name="userPersonalInformation.email"
+              name="email"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   id="email"
@@ -236,9 +255,9 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                 />
               )}
             />
-            {errors.userPersonalInformation && (
+            {errors && (
               <Paragraph position="absolute" t={"$12"} color={"red"}>
-                {errors.userPersonalInformation.email?.message}
+                {errors.email?.message}
               </Paragraph>
             )}
           </YStack>
@@ -250,7 +269,7 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
             <YStack width="100%" position="relative">
               <Controller
                 control={control}
-                name="userPersonalInformation.password"
+                name="password"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     id="password"
@@ -279,20 +298,18 @@ const Step1 = ({ personalInfo, setPersonalInfo }: Step1Props) => {
                 {showPassword ? <Eye /> : <EyeOff />}
               </Button>
             </YStack>
-            {errors.userPersonalInformation && (
+            {errors && (
               <Paragraph position="absolute" t={"$12"} color={"red"}>
-                {errors.userPersonalInformation.password?.message}
+                {errors.password?.message}
               </Paragraph>
             )}
           </YStack>
         </YStack>
       </YStack>
       <Text>
-        fname: {watch("userPersonalInformation.fname")} | lname:{" "}
-        {watch("userPersonalInformation.lname")} | gender:{" "}
-        {watch("userPersonalInformation.gender")} | email:{" "}
-        {watch("userPersonalInformation.email")} | password:{" "}
-        {watch("userPersonalInformation.password")} | isValid:{" "}
+        fname: {watch("fname")} | lname: {watch("lname")} | gender:{" "}
+        {watch("gender")}| dateOfBirth: {JSON.stringify(watch("dateOfBirth"))} |
+        email: {watch("email")} | password: {watch("password")} | isValid:{" "}
         {isValid ? "✅" : "❌"}
       </Text>
     </Pressable>
