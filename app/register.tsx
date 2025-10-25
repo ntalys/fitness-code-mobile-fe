@@ -18,7 +18,7 @@ import {
 } from "react-native-keyboard-controller";
 import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { user, User } from "../@types/user";
 
@@ -72,7 +72,7 @@ export default function Page() {
         fname: "",
         lname: "",
         gender: "",
-        // dateOfBirth: new Date(),
+        dateOfBirth: undefined,
         email: "",
         password: "",
       },
@@ -185,22 +185,22 @@ export default function Page() {
                   <YStack
                     key={key}
                     display={step === Number(key) ? "flex" : "none"}>
-                      <Comp
-                        personalInfo={personalInfo}
-                        setPersonalInfo={setPersonalInfo}
-                        physicalMeasurements={physicalMeasurements}
-                        setPhysicalMeasurements={setPhysicalMeasurements}
-                        fitnessGaol={fitnessGaol}
-                        setFitnessGoal={setFitnessGoal}
-                        fitnessExp={fitnessExp}
-                        setFitnessExp={setFitnessExp}
-                        acceptConditionsValue={acceptConditions}
-                        setAcceptConditions={setAcceptConditions}
+                    <Comp
+                      personalInfo={personalInfo}
+                      setPersonalInfo={setPersonalInfo}
+                      physicalMeasurements={physicalMeasurements}
+                      setPhysicalMeasurements={setPhysicalMeasurements}
+                      fitnessGaol={fitnessGaol}
+                      setFitnessGoal={setFitnessGoal}
+                      fitnessExp={fitnessExp}
+                      setFitnessExp={setFitnessExp}
+                      acceptConditionsValue={acceptConditions}
+                      setAcceptConditions={setAcceptConditions}
                       isStep1Valid={setIsStep1Valid}
                       isStep2Valid={setIsStep2Valid}
                       isStep3Valid={setIsStep3Valid}
                       isStep4Valid={setIsStep4Valid}
-                      />
+                    />
                   </YStack>
                 ))}
               </YStack>
