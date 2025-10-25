@@ -106,7 +106,7 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
           <YStack mb={15}>
             <H6 fontWeight={400}>Personal Information</H6>
           </YStack>
-          <XStack justify="space-between" gap={10}>
+          <XStack justify="space-between" gap={10} mb={20}>
             <YStack flex={1}>
               <Label width={90} htmlFor="fname">
                 First Name*
@@ -232,7 +232,7 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
             </YStack>
           </XStack>
 
-          <YStack flex={1} mt={0}>
+          <YStack flex={1} mt={-20}>
             <Label width={90} htmlFor="email">
               Email*
             </Label>
@@ -266,7 +266,7 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
             <Label width={90} htmlFor="password">
               Password*
             </Label>
-            <YStack width="100%" position="relative">
+            <YStack width="100%" position="relative" mb={30}>
               <Controller
                 control={control}
                 name="password"
