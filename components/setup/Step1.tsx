@@ -56,6 +56,14 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
   } = useForm({
     resolver: zodResolver(userPersonalInformation),
     mode: "onChange",
+    defaultValues: {
+      fname,
+      lname,
+      gender,
+      dateOfBirth,
+      email,
+      password,
+    },
   });
 
   useEffect(() => {
