@@ -71,25 +71,25 @@ export default function Page() {
       userPersonalInformation: {
         fname: "",
         lname: "",
-        gender: "",
+        gender: undefined,
         dateOfBirth: undefined,
         email: "",
         password: "",
       },
       userPhysicalMeasurements: {
         height: {
-          unit: "cm",
-          value: "34",
+          unit: undefined,
+          value: undefined,
         },
         weight: {
-          unit: "kg",
-          value: "12",
+          unit: undefined,
+          value: undefined,
         },
       },
-      userFitnessGoal: ["Weight Loss", "Muscle Gain"],
+      userFitnessGoal: undefined,
       userFitnessExp: {
-        fitnessLevel: "beginner",
-        workoutFrequency: "1-2 time per week",
+        fitnessLevel: undefined,
+        workoutFrequency: undefined,
       },
     },
   });
