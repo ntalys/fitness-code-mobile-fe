@@ -9,7 +9,7 @@ import {
   YStack,
 } from "tamagui";
 import config from "../tamagui.config";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
 import {
@@ -118,6 +118,19 @@ export default function Page() {
     setStep(step - 1);
   }
 
+  const disableContinueBtn = useMemo(() => {
+    switch (step) {
+      case 1:
+        return isStep1Valid;
+      case 2:
+        return isStep2Valid;
+      case 3:
+        return isStep3Valid;
+      case 4:
+        return isStep4Valid;
+    }
+  }, [isStep1Valid, isStep2Valid, isStep3Valid, isStep4Valid, step]);
+
   return (
     <SafeAreaProvider>
       <TamaguiProvider config={config} defaultTheme="light">
@@ -217,7 +230,7 @@ export default function Page() {
                     </Button>
                   ) : (
                     <Button
-                      // disabled={stepValid[step]}
+                      disabled={!disableContinueBtn}
                       disabledStyle={{ opacity: 0.5 }}
                       size="$5"
                       iconAfter={ArrowRight}
@@ -233,6 +246,10 @@ export default function Page() {
               <Text>isStep2Valid: {JSON.stringify(isStep2Valid)}</Text>
               <Text>isStep3Valid: {JSON.stringify(isStep3Valid)}</Text>
               <Text>isStep4Valid: {JSON.stringify(isStep4Valid)}</Text>
+
+              <Text>
+                disableContinueBtn: {JSON.stringify(disableContinueBtn)}
+              </Text>
             </YStack>
           </KeyboardAvoidingView>
         </KeyboardProvider>
