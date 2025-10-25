@@ -46,7 +46,7 @@ const Step5 = ({
             <XStack flex={1} gap={3}>
               <Text>Birthday:</Text>
               <Text color={"$color10"}>
-                {format(personalInfo.birthday, "dd MMM, yyyy")}
+                {format(personalInfo.dateOfBirth, "dd MMM, yyyy")}
               </Text>
             </XStack>
             <XStack flex={1} gap={3}>
