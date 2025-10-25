@@ -85,7 +85,7 @@ const Step2 = ({
       style={{ width: "100%" }}
       android_disableSound={false} // optional for Android
     >
-      <YStack width="100%" gap="$4" py="$3">
+      <YStack width="100%">
         <H6 fontWeight={400}>Physical Measurements</H6>
 
         <XStack width="100%" justify="flex-start" gap={12}>
