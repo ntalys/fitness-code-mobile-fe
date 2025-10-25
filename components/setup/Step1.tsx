@@ -39,14 +39,7 @@ type Step1Props = {
 };
 
 const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
-  const {
-    fname,
-    lname,
-    gender,
-    birthday = new Date(),
-    email,
-    password,
-  } = personalInfo;
+  const { fname, lname, gender, dateOfBirth, email, password } = personalInfo;
 
   const {
     control,
