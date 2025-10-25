@@ -104,6 +104,7 @@ export default function Page() {
   };
   async function onProgressStepIncrease() {
     if (step === 5) {
+      onSubmit();
       router.replace("/home");
       return;
     }
