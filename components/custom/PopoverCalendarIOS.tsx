@@ -65,7 +65,7 @@ const PopoverCalendarIOS = (
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
-              backgroundColor="rgba(0,0,0,0.5)"
+              bg="rgba(0,0,0,0.5)"
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
@@ -75,12 +75,11 @@ const PopoverCalendarIOS = (
 
         <Select.Content zIndex={200000}>
           <Select.ScrollUpButton
-            alignItems="center"
-            justifyContent="center"
+            justify="center"
             position="relative"
             width="100%"
             height="$3">
-            <YStack zIndex={10}>
+            <YStack z={10}>
               <ChevronUp size={20} />
             </YStack>
             <linearGradient
@@ -101,7 +100,7 @@ const PopoverCalendarIOS = (
                   alignItems: "center",
                 }}>
                 <DateTimePicker
-                  value={props.date}
+                  value={props.date ?? new Date()}
                   mode="date"
                   display="inline"
                   onChange={onChange}
@@ -129,12 +128,11 @@ const PopoverCalendarIOS = (
           </Select.Viewport>
 
           <Select.ScrollDownButton
-            alignItems="center"
-            justifyContent="center"
+            justify="center"
             position="relative"
             width="100%"
             height="$3">
-            <YStack zIndex={10}>
+            <YStack z={10}>
               <ChevronDown size={20} />
             </YStack>
           </Select.ScrollDownButton>
