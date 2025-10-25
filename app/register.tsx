@@ -65,9 +65,43 @@ export default function Page() {
 
   const methods = useForm<User>({
     resolver: zodResolver(user),
-    mode: "onChange", // validates automatically as the user types
+    mode: "all", // validates automatically as the user types
+    reValidateMode: "onChange", // optional but recommended
+    defaultValues: {
+      userPersonalInformation: {
+        fname: "",
+        lname: "",
+        gender: "",
+        // dateOfBirth: new Date(),
+        email: "",
+        password: "",
+      },
+      userPhysicalMeasurements: {
+        height: {
+          unit: "cm",
+          value: "34",
+        },
+        weight: {
+          unit: "kg",
+          value: "12",
+        },
+      },
+      userFitnessGoal: ["Weight Loss", "Muscle Gain"],
+      userFitnessExp: {
+        fitnessLevel: "beginner",
+        workoutFrequency: "1-2 time per week",
+      },
+    },
   });
 
+  const onSubmit = () => {
+    console.log("data: ", {
+      personalInfo,
+      physicalMeasurements,
+      fitnessGaol,
+      fitnessExp,
+    });
+  };
   async function onProgressStepIncrease() {
     if (step === 5) {
       router.replace("/home");
