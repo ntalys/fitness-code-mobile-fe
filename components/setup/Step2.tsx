@@ -39,6 +39,10 @@ const Step2 = ({
   } = useForm({
     resolver: zodResolver(userPhysicalMeasurements),
     mode: "onChange",
+    defaultValues: {
+      height,
+      weight,
+    },
   });
 
   useEffect(() => {
