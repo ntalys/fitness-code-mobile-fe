@@ -241,15 +241,6 @@ export default function Page() {
                   )}
                 </Pressable>
               </XStack>
-
-              <Text>isStep1Valid: {JSON.stringify(isStep1Valid)}</Text>
-              <Text>isStep2Valid: {JSON.stringify(isStep2Valid)}</Text>
-              <Text>isStep3Valid: {JSON.stringify(isStep3Valid)}</Text>
-              <Text>isStep4Valid: {JSON.stringify(isStep4Valid)}</Text>
-
-              <Text>
-                disableContinueBtn: {JSON.stringify(disableContinueBtn)}
-              </Text>
             </YStack>
           </KeyboardAvoidingView>
         </KeyboardProvider>

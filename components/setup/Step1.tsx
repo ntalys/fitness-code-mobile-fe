@@ -307,12 +307,6 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
           </YStack>
         </YStack>
       </YStack>
-      <Text>
-        fname: {watch("fname")} | lname: {watch("lname")} | gender:{" "}
-        {watch("gender")}| dateOfBirth: {JSON.stringify(watch("dateOfBirth"))} |
-        email: {watch("email")} | password: {watch("password")} | isValid:{" "}
-        {isValid ? "✅" : "❌"}
-      </Text>
     </Pressable>
   );
 };

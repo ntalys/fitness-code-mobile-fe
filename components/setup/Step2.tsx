@@ -215,11 +215,6 @@ const Step2 = ({
             )}
           </YStack>
         </XStack>
-        <Text>
-          height.value: {watch("height.value")} | height.unit:{" "}
-          {watch("height.unit")} | weight.value: {watch("weight.value")} |
-          weight.unit: {watch("weight.unit")} | isValid: {isValid ? "✅" : "❌"}
-        </Text>
       </YStack>
     </Pressable>
   );
