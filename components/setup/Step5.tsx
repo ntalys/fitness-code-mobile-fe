@@ -7,7 +7,7 @@ import { Checkbox, H6, Label, Text, XStack, YStack } from "tamagui";
 const Step5 = ({
   personalInfo,
   physicalMeasurements,
-  fitnessGaol,
+  fitnessGoal,
   fitnessExp,
   acceptConditionsValue,
   setAcceptConditions,
@@ -46,7 +46,9 @@ const Step5 = ({
             <XStack flex={1} gap={3}>
               <Text>Birthday:</Text>
               <Text color={"$color10"}>
-                {format(personalInfo.dateOfBirth, "dd MMM, yyyy")}
+                {personalInfo.dateOfBirth
+                  ? format(personalInfo.dateOfBirth, "dd MMM, yyyy")
+                  : null}
               </Text>
             </XStack>
             <XStack flex={1} gap={3}>
@@ -106,7 +108,7 @@ const Step5 = ({
             <XStack flex={1}>
               <XStack gap={3} flexWrap="wrap" alignItems="center">
                 <Text>Fitness Goals:</Text>
-                {fitnessGaol.map((goal, idx) => (
+                {fitnessGoal.map((goal, idx) => (
                   <XStack
                     key={idx}
                     borderTopRightRadius={"$4"}
