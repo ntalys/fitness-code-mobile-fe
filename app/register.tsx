@@ -44,7 +44,7 @@ export default function Page() {
     fname: "",
     lname: "",
     gender: "",
-    birthday: new Date(),
+    dateOfBirth: null,
     email: "",
     password: "",
   });
