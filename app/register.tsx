@@ -94,18 +94,45 @@ export default function Page() {
     },
   });
 
-  const onSubmit = () => {
-    console.log("data: ", {
+  const onSubmit = async () => {
+    const payload = {
       personalInfo,
       physicalMeasurements,
-      fitnessGaol,
+      fitnessGoal,
       fitnessExp,
-    });
+    };
+
+    console.log("payload: ", payload);
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/auth/sign-up",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // 🧠 important so Express can parse JSON
+          },
+          body: JSON.stringify({ id: "testid", ...payload }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log("Server response:", result);
+      router.replace("/home");
+      return result;
+    } catch (error) {
+      console.log("Error submitting form:", error);
+    }
   };
+
   async function onProgressStepIncrease() {
     if (step === 5) {
-      onSubmit();
-      router.replace("/home");
+      await onSubmit();
       return;
     }
     setProgress(progress + 20);
