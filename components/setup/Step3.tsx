@@ -7,12 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userFitnessGoal, UserFitnessGoal } from "../../@types/user";
 
 type Step3Props = {
-  fitnessGaol: string[];
+  fitnessGoal: string[];
   setFitnessGoal: React.Dispatch<React.SetStateAction<string[]>>;
   isStep3Valid: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Step3 = ({ fitnessGaol, setFitnessGoal, isStep3Valid }: Step3Props) => {
+const Step3 = ({ fitnessGoal, setFitnessGoal, isStep3Valid }: Step3Props) => {
   const {
     control,
     watch,
@@ -21,7 +21,7 @@ const Step3 = ({ fitnessGaol, setFitnessGoal, isStep3Valid }: Step3Props) => {
     resolver: zodResolver(userFitnessGoal),
     mode: "onChange",
     defaultValues: {
-      userFitnessGoal: fitnessGaol || [],
+      userFitnessGoal: fitnessGoal || [],
     },
   });
 

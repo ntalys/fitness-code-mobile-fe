@@ -54,7 +54,7 @@ export default function Page() {
     height: { value: 0, unit: "" as "kg" | "lbs" },
   });
 
-  const [fitnessGaol, setFitnessGoal] = useState([]);
+  const [fitnessGoal, setFitnessGoal] = useState([]);
 
   const [fitnessExp, setFitnessExp] = useState({
     fitnessLevel: "",
@@ -190,7 +190,7 @@ export default function Page() {
                       setPersonalInfo={setPersonalInfo}
                       physicalMeasurements={physicalMeasurements}
                       setPhysicalMeasurements={setPhysicalMeasurements}
-                      fitnessGaol={fitnessGaol}
+                      fitnessGoal={fitnessGoal}
                       setFitnessGoal={setFitnessGoal}
                       fitnessExp={fitnessExp}
                       setFitnessExp={setFitnessExp}

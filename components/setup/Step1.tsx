@@ -81,7 +81,7 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
     setPersonalInfo((prev) => ({ ...prev, gender: text }));
 
   const onChangeBirthday = (text: Date) =>
-    setPersonalInfo((prev) => ({ ...prev, birthday: text }));
+    setPersonalInfo((prev) => ({ ...prev, dateOfBirth: text }));
 
   const onChangeEmail = (text: string) =>
     setPersonalInfo((prev) => ({ ...prev, email: text }));

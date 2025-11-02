@@ -14,7 +14,7 @@ import { userFitnessExp, UserFitnessExp } from "../../@types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type Step3Props = {
-  fitnessGaol: string[];
+  fitnessGoal: string[];
   setFitnessGoal: React.Dispatch<React.SetStateAction<string[]>>;
   isStep4Valid: React.Dispatch<React.SetStateAction<boolean>>;
 };
