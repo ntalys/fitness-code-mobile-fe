@@ -1,12 +1,43 @@
 import { Pressable, Keyboard } from "react-native";
-import React, { useState } from "react";
-import { H6, Label, YStack } from "tamagui";
+import React, { useEffect } from "react";
+import { H6, Label, Paragraph, Text, YStack } from "tamagui";
 import CustomSelectOpt from "../custom/CustomSelectOpt";
+import {
+  Control,
+  Controller,
+  FieldErrorsImpl,
+  useForm,
+  useFormContext,
+  UseFormWatch,
+} from "react-hook-form";
+import { userFitnessExp, UserFitnessExp } from "../../@types/user";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const Step4 = ({ fitnessExp, setFitnessExp }) => {
+type Step3Props = {
+  fitnessGoal: string[];
+  setFitnessGoal: React.Dispatch<React.SetStateAction<string[]>>;
+  isStep4Valid: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Step4 = ({ fitnessExp, setFitnessExp, isStep4Valid }) => {
   const { fitnessLevel, workoutFrequency } = fitnessExp;
 
-  console.log("fitnessExp: ", fitnessExp);
+  const {
+    control,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<UserFitnessExp>({
+    resolver: zodResolver(userFitnessExp),
+    mode: "onChange",
+    defaultValues: {
+      fitnessLevel: fitnessLevel || "",
+      workoutFrequency: workoutFrequency || "",
+    },
+  });
+
+  useEffect(() => {
+    isStep4Valid(isValid);
+  }, [isValid]);
 
   const onValueChangeFitnessLevel = (text: string) =>
     setFitnessExp((prev) => ({ ...prev, fitnessLevel: text }));
@@ -39,34 +70,66 @@ const Step4 = ({ fitnessExp, setFitnessExp }) => {
             <Label width={420} htmlFor="fitnessLevel">
               Fitness Level*
             </Label>
-            <CustomSelectOpt
-              labelTitle="Fitness Level"
-              snapPoints={[35]}
-              items={fitnessLevelOpt}
-              maxWidth={420}
-              value={fitnessLevel}
-              onValueChange={onValueChangeFitnessLevel}
-              onOpenChange={() => Keyboard.dismiss()}
-              placeholder="Enter your Fitness Level"
+            <Controller
+              control={control}
+              name="fitnessLevel"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CustomSelectOpt
+                  labelTitle="Fitness Level"
+                  snapPoints={[35]}
+                  items={fitnessLevelOpt}
+                  maxWidth={420}
+                  value={value}
+                  onValueChange={(text) => {
+                    onChange(text); // update react-hook-form
+                    onValueChangeFitnessLevel(text);
+                  }}
+                  onOpenChange={() => Keyboard.dismiss()}
+                  placeholder="Enter your Fitness Level"
+                />
+              )}
             />
+            {errors && (
+              <Paragraph color={"red"}>
+                {errors.fitnessLevel?.message}
+              </Paragraph>
+            )}
           </YStack>
 
           <YStack flex={1} style={{ minWidth: 0 }}>
             <Label width={420} htmlFor="workoutFrequency">
               Workout Frequency*
             </Label>
-            <CustomSelectOpt
-              labelTitle="Workout Frequency"
-              snapPoints={[35]}
-              items={workoutFrequencyOpt}
-              maxWidth={420}
-              value={workoutFrequency}
-              onValueChange={onValueChangeWorkoutFrequency}
-              onOpenChange={() => Keyboard.dismiss()}
-              placeholder="Enter your Workout Frequency"
+            <Controller
+              control={control}
+              name="workoutFrequency"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CustomSelectOpt
+                  labelTitle="Workout Frequency"
+                  snapPoints={[35]}
+                  items={workoutFrequencyOpt}
+                  maxWidth={420}
+                  value={value}
+                  onValueChange={(text) => {
+                    onChange(text); // update react-hook-form
+                    onValueChangeWorkoutFrequency(text);
+                  }}
+                  onOpenChange={() => Keyboard.dismiss()}
+                  placeholder="Enter your Workout Frequency"
+                />
+              )}
             />
+            {errors && (
+              <Paragraph color={"red"}>
+                {errors.workoutFrequency?.message}
+              </Paragraph>
+            )}
           </YStack>
         </YStack>
+        <Text>
+          fitnessLevel: {watch("fitnessLevel")} | workoutFrequency:
+          {watch("workoutFrequency")} | isValid: {isValid ? "✅" : "❌"}
+        </Text>
       </YStack>
     </Pressable>
   );

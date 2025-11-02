@@ -9,7 +9,7 @@ import {
   YStack,
 } from "tamagui";
 import config from "../tamagui.config";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
 import {
@@ -18,11 +18,19 @@ import {
 } from "react-native-keyboard-controller";
 import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { user, User } from "../@types/user";
 
 export default function Page() {
   const router = useRouter();
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
+
+  const [isStep1Valid, setIsStep1Valid] = useState(false);
+  const [isStep2Valid, setIsStep2Valid] = useState(false);
+  const [isStep3Valid, setIsStep3Valid] = useState(false);
+  const [isStep4Valid, setIsStep4Valid] = useState(false);
 
   const currStepComponent = {
     1: Step1,
@@ -36,17 +44,17 @@ export default function Page() {
     fname: "",
     lname: "",
     gender: "",
-    birthday: new Date(),
+    dateOfBirth: null,
     email: "",
     password: "",
   });
 
   const [physicalMeasurements, setPhysicalMeasurements] = useState({
-    weight: { value: 0, unit: "" },
-    height: { value: 0, unit: "" },
+    weight: { value: 0, unit: "" as "cm" | "ft" },
+    height: { value: 0, unit: "" as "kg" | "lbs" },
   });
 
-  const [fitnessGaol, setFitnessGoal] = useState([]);
+  const [fitnessGoal, setFitnessGoal] = useState([]);
 
   const [fitnessExp, setFitnessExp] = useState({
     fitnessLevel: "",
@@ -55,8 +63,48 @@ export default function Page() {
 
   const [acceptConditions, setAcceptConditions] = useState(false);
 
-  function onProgressStepIncrease() {
+  const methods = useForm<User>({
+    resolver: zodResolver(user),
+    mode: "all", // validates automatically as the user types
+    reValidateMode: "onChange", // optional but recommended
+    defaultValues: {
+      userPersonalInformation: {
+        fname: "",
+        lname: "",
+        gender: undefined,
+        dateOfBirth: undefined,
+        email: "",
+        password: "",
+      },
+      userPhysicalMeasurements: {
+        height: {
+          unit: undefined,
+          value: undefined,
+        },
+        weight: {
+          unit: undefined,
+          value: undefined,
+        },
+      },
+      userFitnessGoal: undefined,
+      userFitnessExp: {
+        fitnessLevel: undefined,
+        workoutFrequency: undefined,
+      },
+    },
+  });
+
+  const onSubmit = () => {
+    console.log("data: ", {
+      personalInfo,
+      physicalMeasurements,
+      fitnessGaol,
+      fitnessExp,
+    });
+  };
+  async function onProgressStepIncrease() {
     if (step === 5) {
+      onSubmit();
       router.replace("/home");
       return;
     }
@@ -70,6 +118,19 @@ export default function Page() {
     setStep(step - 1);
   }
 
+  const disableContinueBtn = useMemo(() => {
+    switch (step) {
+      case 1:
+        return isStep1Valid;
+      case 2:
+        return isStep2Valid;
+      case 3:
+        return isStep3Valid;
+      case 4:
+        return isStep4Valid;
+    }
+  }, [isStep1Valid, isStep2Valid, isStep3Valid, isStep4Valid, step]);
+
   return (
     <SafeAreaProvider>
       <TamaguiProvider config={config} defaultTheme="light">
@@ -78,7 +139,7 @@ export default function Page() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}>
             {/* Header */}
-            <XStack alignItems="center" justifyContent="center" px="$4" pt="$4">
+            <XStack justify="center" px="$4" pt="$4">
               <H3>Setup Your Profile</H3>
 
               {step > 1 && (
@@ -100,7 +161,7 @@ export default function Page() {
 
             {/* Progress bar */}
             <YStack px={25} pt={20} pb={10} gap={18}>
-              <XStack justifyContent="space-between">
+              <XStack justify="space-between">
                 <Text>{step}/5</Text>
                 <Text>{progress}%</Text>
               </XStack>
@@ -111,6 +172,7 @@ export default function Page() {
             </YStack>
 
             {/* Scrollable step content */}
+            {/* <FormProvider {...methods}> */}
             <ScrollView
               contentContainerStyle={{
                 flexGrow: 1,
@@ -118,7 +180,7 @@ export default function Page() {
                 paddingBottom: 20,
               }}
               keyboardShouldPersistTaps="handled">
-              <YStack backgroundColor="white" rounded="$6" p="$4">
+              <YStack bg="white" rounded="$6" p="$4">
                 {Object.entries(currStepComponent).map(([key, Comp]) => (
                   <YStack
                     key={key}
@@ -128,21 +190,25 @@ export default function Page() {
                       setPersonalInfo={setPersonalInfo}
                       physicalMeasurements={physicalMeasurements}
                       setPhysicalMeasurements={setPhysicalMeasurements}
-                      fitnessGaol={fitnessGaol}
+                      fitnessGoal={fitnessGoal}
                       setFitnessGoal={setFitnessGoal}
                       fitnessExp={fitnessExp}
                       setFitnessExp={setFitnessExp}
                       acceptConditionsValue={acceptConditions}
                       setAcceptConditions={setAcceptConditions}
+                      isStep1Valid={setIsStep1Valid}
+                      isStep2Valid={setIsStep2Valid}
+                      isStep3Valid={setIsStep3Valid}
+                      isStep4Valid={setIsStep4Valid}
                     />
                   </YStack>
                 ))}
               </YStack>
             </ScrollView>
+            {/* </FormProvider> */}
 
-            {/* Step button (fixed at bottom) */}
             <YStack p={25} mb={40}>
-              <XStack width="$100" justify={step < 5 ? "start" : "center"}>
+              <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
                 <Pressable
                   onPress={() => {
                     if (step == 5 && !acceptConditions) {
@@ -152,15 +218,27 @@ export default function Page() {
                       );
                     }
                   }}>
-                  <Button
-                    disabled={step === 5 && !acceptConditions}
-                    disabledStyle={{ opacity: 0.5 }}
-                    size="$5"
-                    iconAfter={step < 5 ? ArrowRight : Check}
-                    onPress={onProgressStepIncrease}
-                    theme="accent">
-                    {step < 5 ? "Continue" : "Complete Setup"}
-                  </Button>
+                  {step === 5 ? (
+                    <Button
+                      disabled={!acceptConditions}
+                      disabledStyle={{ opacity: 0.5 }}
+                      size="$5"
+                      iconAfter={Check}
+                      onPress={onProgressStepIncrease}
+                      theme="accent">
+                      {"Complete Setup"}
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={!disableContinueBtn}
+                      disabledStyle={{ opacity: 0.5 }}
+                      size="$5"
+                      iconAfter={ArrowRight}
+                      onPress={onProgressStepIncrease}
+                      theme="accent">
+                      {"Continue"}
+                    </Button>
+                  )}
                 </Pressable>
               </XStack>
             </YStack>

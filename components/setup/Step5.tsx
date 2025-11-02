@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useRouter } from "expo-router";
 import { Check } from "lucide-react-native";
 import React from "react";
 import { Checkbox, H6, Label, Text, XStack, YStack } from "tamagui";
@@ -6,11 +7,12 @@ import { Checkbox, H6, Label, Text, XStack, YStack } from "tamagui";
 const Step5 = ({
   personalInfo,
   physicalMeasurements,
-  fitnessGaol,
+  fitnessGoal,
   fitnessExp,
   acceptConditionsValue,
   setAcceptConditions,
 }) => {
+  const router = useRouter();
   return (
     <YStack>
       <YStack alignItems="start" gap="$3">
@@ -44,7 +46,9 @@ const Step5 = ({
             <XStack flex={1} gap={3}>
               <Text>Birthday:</Text>
               <Text color={"$color10"}>
-                {format(personalInfo.birthday, "dd MMM, yyyy")}
+                {personalInfo.dateOfBirth
+                  ? format(personalInfo.dateOfBirth, "dd MMM, yyyy")
+                  : null}
               </Text>
             </XStack>
             <XStack flex={1} gap={3}>
@@ -104,7 +108,7 @@ const Step5 = ({
             <XStack flex={1}>
               <XStack gap={3} flexWrap="wrap" alignItems="center">
                 <Text>Fitness Goals:</Text>
-                {fitnessGaol.map((goal, idx) => (
+                {fitnessGoal.map((goal, idx) => (
                   <XStack
                     key={idx}
                     borderTopRightRadius={"$4"}
@@ -150,21 +154,28 @@ const Step5 = ({
           </YStack>
         </YStack>
 
-        <XStack px={6} alignItems="center" gap="$2">
-          <Checkbox
-            size={"$4"}
-            value={acceptConditionsValue}
-            onCheckedChange={setAcceptConditions}>
-            <Checkbox.Indicator>
-              <Check />
-            </Checkbox.Indicator>
-          </Checkbox>
+        <YStack py={12}>
+          <XStack px={6} alignItems="center" gap="$2">
+            <Checkbox
+              size={"$4"}
+              value={acceptConditionsValue}
+              onCheckedChange={setAcceptConditions}>
+              <Checkbox.Indicator>
+                <Check />
+              </Checkbox.Indicator>
+            </Checkbox>
 
-          <Text p={6}>
-            I accept and agree to comply with{" "}
-            <Text color={"$accent1"}>Fitness Code's</Text> Term and Conditions
-          </Text>
-        </XStack>
+            <Text px={12}>
+              I accept and agree to comply with{" "}
+              <Text
+                textDecorationLine="underline"
+                onPress={() => router.push("/policies")}
+                color={"$color10"}>
+                Fitness Code's Term and Conditions
+              </Text>
+            </Text>
+          </XStack>
+        </YStack>
       </YStack>
     </YStack>
   );
