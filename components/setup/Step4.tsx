@@ -1,7 +1,7 @@
 import { Pressable, Keyboard } from "react-native";
 import React, { useEffect } from "react";
 import { H6, Label, Paragraph, Text, YStack } from "tamagui";
-import CustomSelectOpt from "../custom/CustomSelectOpt";
+import { CustomSelectOpt } from "../custom/CustomSelectOpt";
 import {
   Control,
   Controller,
