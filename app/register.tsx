@@ -116,12 +116,14 @@ export default function Page() {
             Accept: "application/json",
             "Content-Type": "application/json", // 🧠 important so Express can parse JSON
           },
-          body: JSON.stringify({ id: "testid", ...payload }),
+          body: JSON.stringify(payload),
         }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
+        throw new Error(data.message || "Unknown server error");
       }
 
       const result = await response.json();
