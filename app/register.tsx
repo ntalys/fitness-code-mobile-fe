@@ -105,8 +105,6 @@ export default function Page() {
       fitnessExp,
     };
 
-    console.log("payload: ", payload);
-
     try {
       const response = await fetch(
         "http://localhost:3000/api/v1/auth/sign-up",
@@ -125,11 +123,6 @@ export default function Page() {
       if (!response.ok) {
         throw new Error(data.message || "Unknown server error");
       }
-
-      const result = await response.json();
-      console.log("Server response:", result);
-      router.replace("/home");
-      return result;
     } catch (error) {
       setRegisterResponseError(() => error.message);
     }
