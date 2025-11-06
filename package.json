@@ -24,7 +24,7 @@
     "@tamagui/stacks": "^1.132.23",
     "@tamagui/text": "^1.132.23",
     "@tamagui/themes": "^1.132.23",
-    "@tamagui/toast": "^1.132.23",
+    "@tamagui/toast": "^1.136.1",
     "burnt": "^0.13.0",
     "date-fns": "^4.1.0",
     "expo": "^54.0.1",
