@@ -27,6 +27,8 @@ export default function Page() {
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
 
+  const [registerResponseError, setRegisterResponseError] = useState(null);
+
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
   const [isStep3Valid, setIsStep3Valid] = useState(false);
@@ -95,6 +97,7 @@ export default function Page() {
   });
 
   const onSubmit = async () => {
+    setRegisterResponseError(() => null);
     const payload = {
       personalInfo,
       physicalMeasurements,
@@ -126,7 +129,7 @@ export default function Page() {
       router.replace("/home");
       return result;
     } catch (error) {
-      console.log("Error submitting form:", error);
+      setRegisterResponseError(() => error.message);
     }
   };
 
@@ -198,8 +201,6 @@ export default function Page() {
               </Progress>
             </YStack>
 
-            {/* Scrollable step content */}
-            {/* <FormProvider {...methods}> */}
             <ScrollView
               contentContainerStyle={{
                 flexGrow: 1,
@@ -232,7 +233,8 @@ export default function Page() {
                 ))}
               </YStack>
             </ScrollView>
-            {/* </FormProvider> */}
+
+            {<Text color={"$red10"}>here: {registerResponseError}</Text>}
 
             <YStack p={25} mb={40}>
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
