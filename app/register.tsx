@@ -18,9 +18,7 @@ import {
 } from "react-native-keyboard-controller";
 import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { user, User } from "../@types/user";
+import Toast from "react-native-toast-message";
 
 export default function Page() {
   const router = useRouter();
@@ -123,8 +121,16 @@ export default function Page() {
       if (!response.ok) {
         throw new Error(data.message || "Unknown server error");
       }
+      Toast.show({
+        type: "success",
+        text1: data.message,
+      });
     } catch (error) {
       setRegisterResponseError(() => error.message);
+      Toast.show({
+        type: "error",
+        text1: error.message,
+      });
     }
   };
 
@@ -164,6 +170,9 @@ export default function Page() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}>
             {/* Header */}
+            <XStack z="$5">
+              <Toast />
+            </XStack>
             <XStack justify="center" px="$4" pt="$4">
               <H3>Setup Your Profile</H3>
 
@@ -228,8 +237,6 @@ export default function Page() {
                 ))}
               </YStack>
             </ScrollView>
-
-            {<Text color={"$red10"}>here: {registerResponseError}</Text>}
 
             <YStack p={25} mb={40}>
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
