@@ -25,8 +25,6 @@ export default function Page() {
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
 
-  const [registerResponseError, setRegisterResponseError] = useState(null);
-
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
   const [isStep3Valid, setIsStep3Valid] = useState(false);
@@ -64,7 +62,6 @@ export default function Page() {
   const [acceptConditions, setAcceptConditions] = useState(false);
 
   const onSubmit = async () => {
-    setRegisterResponseError(() => null);
     const payload = {
       personalInfo,
       physicalMeasurements,
@@ -95,7 +92,6 @@ export default function Page() {
         text1: data.message,
       });
     } catch (error) {
-      setRegisterResponseError(() => error.message);
       Toast.show({
         type: "error",
         text1: error.message,
