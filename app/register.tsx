@@ -220,7 +220,7 @@ export default function Page() {
                   }}>
                   {step === 5 ? (
                     <Button
-                      disabled={!acceptConditions}
+                      // disabled={!acceptConditions}
                       disabledStyle={{ opacity: 0.5 }}
                       size="$5"
                       iconAfter={Check}
