@@ -92,6 +92,8 @@ export default function Page() {
         type: "success",
         text1: data.message,
       });
+
+      // router.replace("/");
     } catch (error) {
       Toast.show({
         type: "error",
