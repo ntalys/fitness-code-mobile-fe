@@ -224,7 +224,10 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
                     <PopoverCalendarAndroid
                       date={value}
                       show={show}
-                      setDate={onChangeBirthday}
+                      setDate={(text: Date) => {
+                        onChange(text); // update react-hook-form
+                        onChangeBirthday(text); // sync with your state
+                      }}
                       setShow={setShow}
                     />
                   )}

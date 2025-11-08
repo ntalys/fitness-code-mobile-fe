@@ -7,7 +7,7 @@ import CustomIcon from "./CustomIcon";
 
 const PopoverCalendarAndroid = (
   props: SelectProps & {
-    date: Date;
+    date: Date | null;
     show: boolean;
     setDate: React.Dispatch<React.SetStateAction<Date>>;
     setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,18 +22,23 @@ const PopoverCalendarAndroid = (
     props.setShow(false);
   };
 
-  const formattedDate = useMemo(() => {
-    if (props.date) {
-      const day = props.date.getDate();
-      const month = props.date.getMonth();
-      const year = props.date.getFullYear();
+  // const formattedDate = useMemo(() => {
+  //   if (props.date) {
+  //     const day = props.date.getDate();
+  //     const month = props.date.getMonth();
+  //     const year = props.date.getFullYear();
 
-      const formattedDay = day <= 9 ? `0${day}` : day;
-      const formattedMonth = month <= 9 ? `0${month}` : month;
+  //     const formattedDay = day <= 9 ? `0${day}` : day;
+  //     const formattedMonth = month <= 9 ? `0${month}` : month;
 
-      return `${formattedDay}/${formattedMonth}/${year}`;
-    }
-  }, [props.date]);
+  //     return `${formattedDay}/${formattedMonth}/${year}`;
+  //   }
+  // }, [props.date]);
+
+  const formattedDate = useMemo(
+    () => (props.date ? props.date.toLocaleDateString() : ""),
+    [props.date]
+  );
 
   return (
     <>
@@ -41,7 +46,7 @@ const PopoverCalendarAndroid = (
         <CustomCalendarInput date={formattedDate}>
           {props.show && (
             <DateTimePicker
-              value={props.date}
+              value={props.date ?? new Date()}
               mode="date"
               display="inline"
               onChange={onChange}
