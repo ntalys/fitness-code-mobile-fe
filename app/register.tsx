@@ -63,37 +63,6 @@ export default function Page() {
 
   const [acceptConditions, setAcceptConditions] = useState(false);
 
-  const methods = useForm<User>({
-    resolver: zodResolver(user),
-    mode: "all", // validates automatically as the user types
-    reValidateMode: "onChange", // optional but recommended
-    defaultValues: {
-      userPersonalInformation: {
-        fname: "",
-        lname: "",
-        gender: undefined,
-        dateOfBirth: undefined,
-        email: "",
-        password: "",
-      },
-      userPhysicalMeasurements: {
-        height: {
-          unit: undefined,
-          value: undefined,
-        },
-        weight: {
-          unit: undefined,
-          value: undefined,
-        },
-      },
-      userFitnessGoal: undefined,
-      userFitnessExp: {
-        fitnessLevel: undefined,
-        workoutFrequency: undefined,
-      },
-    },
-  });
-
   const onSubmit = async () => {
     setRegisterResponseError(() => null);
     const payload = {
