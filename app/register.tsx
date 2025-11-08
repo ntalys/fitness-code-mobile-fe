@@ -67,6 +67,7 @@ export default function Page() {
       physicalMeasurements,
       fitnessGoal,
       fitnessExp,
+      acceptConditions,
     };
 
     try {
