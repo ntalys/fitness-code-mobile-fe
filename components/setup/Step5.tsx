@@ -9,7 +9,7 @@ const Step5 = ({
   physicalMeasurements,
   fitnessGoal,
   fitnessExp,
-  acceptConditionsValue,
+  acceptConditionsValue = false,
   setAcceptConditions,
 }) => {
   const router = useRouter();
@@ -157,6 +157,7 @@ const Step5 = ({
         <YStack py={12}>
           <XStack px={6} alignItems="center" gap="$2">
             <Checkbox
+              name="userAcceptTermsAndConditions"
               size={"$4"}
               value={acceptConditionsValue}
               onCheckedChange={setAcceptConditions}>
