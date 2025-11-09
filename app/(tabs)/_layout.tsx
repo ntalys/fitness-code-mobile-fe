@@ -2,12 +2,17 @@ import { View, Text, Platform } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import CustomIcon from "../../components/custom/CustomIcon";
+import { StatusBar } from "expo-status-bar";
 
 const TabLayout = () => {
+  const colorScheme = useColorScheme();
   return (
+    <>
+      <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
     <Tabs
       screenOptions={{
-        headerShown: false,
+          headerShown: true,
+          title: "",
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect
@@ -29,7 +34,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="calendar"
         options={{
-          title: "Calendar",
+            // title: "Calendar",
           tabBarIcon: ({ color }) => (
             <CustomIcon name="Calendar" color={color} size={28} />
           ),
@@ -38,7 +43,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="workouts"
         options={{
-          title: "Workouts",
+            // title: "Workouts",
           tabBarIcon: ({ color }) => (
             <CustomIcon name="Dumbbell" color={color} size={28} />
           ),
@@ -47,7 +52,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="search"
         options={{
-          title: "Search",
+            // title: "Search",
           tabBarIcon: ({ color }) => (
             <CustomIcon name="Search" color={color} size={28} />
           ),
@@ -56,13 +61,14 @@ const TabLayout = () => {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+            // title: "Profile",
           tabBarIcon: ({ color }) => (
             <CustomIcon name="User" color={color} size={28} />
           ),
         }}
       />
     </Tabs>
+    </>
   );
 };
 
