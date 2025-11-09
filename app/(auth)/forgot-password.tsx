@@ -32,7 +32,7 @@ const forgotPassword = () => {
             <Image
               width={300}
               height={250}
-              source={require("../assets/forgot-password.png")}
+              source={require("../../assets/forgot-password.png")}
             />
           </XStack>
 

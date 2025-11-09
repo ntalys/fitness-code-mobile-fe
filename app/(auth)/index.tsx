@@ -22,7 +22,7 @@ import {
   KeyboardProvider,
 } from "react-native-keyboard-controller";
 
-import config from "../tamagui.config";
+import config from "../../tamagui.config";
 import { Dumbbell, Eye, EyeOff, LogIn } from "lucide-react-native";
 import { useState } from "react";
 
@@ -48,7 +48,7 @@ export default function index() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}>
             <ImageBackground
-              source={require("../assets/bg-gym.jpg")}
+              source={require("../../assets/bg-gym.jpg")}
               style={styles.background}
               resizeMode="cover"
               blurRadius={6} // 👈 adds blur to the image

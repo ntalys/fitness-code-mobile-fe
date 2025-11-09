@@ -8,10 +8,10 @@ import {
   XStack,
   YStack,
 } from "tamagui";
-import config from "../tamagui.config";
+import config from "../../tamagui.config";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
-import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
+import { Step1, Step2, Step3, Step4, Step5 } from "../../components/setup";
 import {
   KeyboardAvoidingView,
   KeyboardProvider,
