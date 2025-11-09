@@ -21,7 +21,6 @@ const _layout = () => {
               <Stack.Screen name="+not-found" />
             </SafeAreaProvider>
           </Stack>
-          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         </Theme>
       </TamaguiProvider>
     </>
