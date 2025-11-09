@@ -14,7 +14,7 @@ const _layout = () => {
     <>
       <TamaguiProvider config={config}>
         <Theme name={colorScheme === "dark" ? "dark" : "light"}>
-          <Stack screenOptions={{ headerShown: true, title: "" }}>
+          <Stack screenOptions={{ headerShown: false }}>
             <SafeAreaProvider>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
