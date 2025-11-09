@@ -129,14 +129,15 @@ export default function index() {
                               <Button
                                 width={"90%"}
                                 iconAfter={<LogIn />}
-                                onPress={() =>
+                                onPress={() => {
                                   console.log(
                                     "email: ",
                                     email,
                                     "password: ",
                                     password
-                                  )
-                                }>
+                                  );
+                                  router.replace("/home");
+                                }}>
                                 Sign In
                               </Button>
                             </XStack>
