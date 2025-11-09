@@ -16,7 +16,8 @@ const _layout = () => {
         <Theme name={colorScheme === "dark" ? "dark" : "light"}>
           <Stack screenOptions={{ headerShown: false }}>
             <SafeAreaProvider>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="(auth)" />
+              <Stack.Screen name="(tabs)" />
               <Stack.Screen name="+not-found" />
             </SafeAreaProvider>
           </Stack>
