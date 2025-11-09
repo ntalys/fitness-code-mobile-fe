@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import React, { useState } from "react";
+import React from "react";
 import { TamaguiProvider, Theme } from "tamagui";
 
 import config from "../tamagui.config";
