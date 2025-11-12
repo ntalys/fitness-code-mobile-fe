@@ -25,6 +25,12 @@ export default function Page() {
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [
+    disabledRegisterButtonAfterSubmit,
+    setDisabledRegisterButtonAfterSubmit,
+  ] = useState(false);
+
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
   const [isStep3Valid, setIsStep3Valid] = useState(false);
@@ -69,7 +75,7 @@ export default function Page() {
       fitnessExp,
       acceptConditions,
     };
-
+    setIsLoading(() => true);
     try {
       const response = await fetch(
         "http://localhost:3000/api/v1/auth/sign-up",
@@ -88,17 +94,23 @@ export default function Page() {
       if (!response.ok) {
         throw new Error(data.message || "Unknown server error");
       }
+
+      setDisabledRegisterButtonAfterSubmit(() => true);
+
       Toast.show({
         type: "success",
         text1: data.message,
       });
-
-      // router.replace("/");
+      setTimeout(() => {
+        // router.replace("/");
+      }, 2000);
     } catch (error) {
       Toast.show({
         type: "error",
         text1: error.message,
       });
+    } finally {
+      setIsLoading(() => false);
     }
   };
 
@@ -206,6 +218,8 @@ export default function Page() {
               </YStack>
             </ScrollView>
 
+            <Text>isLoading: {JSON.stringify(isLoading)}</Text>
+
             <YStack p={25} mb={40}>
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
                 <Pressable
@@ -219,7 +233,7 @@ export default function Page() {
                   }}>
                   {step === 5 ? (
                     <Button
-                      // disabled={!acceptConditions}
+                      disabled={disabledRegisterButtonAfterSubmit}
                       disabledStyle={{ opacity: 0.5 }}
                       size="$5"
                       iconAfter={Check}
