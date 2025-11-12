@@ -245,7 +245,6 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
               name="email"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
-                  id="email"
                   value={value}
                   onChangeText={(text) => {
                     onChange(text); // update react-hook-form
@@ -276,7 +275,6 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
                 name="password"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    id="password"
                     value={value}
                     onChangeText={(text) => {
                       onChange(text); // update react-hook-form
