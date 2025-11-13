@@ -27,10 +27,6 @@ export default function Page() {
   const [step, setStep] = useState(1);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [
-    disabledRegisterButtonAfterSubmit,
-    setDisabledRegisterButtonAfterSubmit,
-  ] = useState(false);
 
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
@@ -95,8 +91,6 @@ export default function Page() {
       if (!response.ok) {
         throw new Error(data.message || "Unknown server error");
       }
-
-      setDisabledRegisterButtonAfterSubmit(() => true);
 
       Toast.show({
         type: "success",
@@ -218,24 +212,10 @@ export default function Page() {
                 ))}
               </YStack>
             </ScrollView>
-
-            <Text>isLoading: {JSON.stringify(isLoading)}</Text>
-
             <YStack p={25} mb={40}>
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
-                <Pressable
-                  onPress={() => {
-                    if (step == 5 && !acceptConditions) {
-                      Alert.alert(
-                        "Alert",
-                        "Please accept terms and conditions"
-                      );
-                    }
-                  }}>
-                  {step === 5 ? (
-                    <Button
-                      disabled={disabledRegisterButtonAfterSubmit}
-                      disabledStyle={{ opacity: 0.5 }}
+                {step === 5 ? (
+                  <Button
                       size="$5"
                       iconAfter={Check}
                       onPress={onProgressStepIncrease}
@@ -253,7 +233,6 @@ export default function Page() {
                       {"Continue"}
                     </Button>
                   )}
-                </Pressable>
               </XStack>
             </YStack>
             {isLoading && <LoadingSpinner />}
