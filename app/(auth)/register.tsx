@@ -19,6 +19,7 @@ import {
 import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
+import { LoadingSpinner } from "../../components/custom/LoadingSpinner";
 
 export default function Page() {
   const router = useRouter();
@@ -255,6 +256,7 @@ export default function Page() {
                 </Pressable>
               </XStack>
             </YStack>
+            {isLoading && <LoadingSpinner />}
           </KeyboardAvoidingView>
         </KeyboardProvider>
       </TamaguiProvider>
