@@ -42,7 +42,7 @@ export default function index() {
 
   return (
     <SafeAreaProvider>
-      <TamaguiProvider config={config} defaultTheme="light">
+      <TamaguiProvider config={config}>
         <KeyboardProvider>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
