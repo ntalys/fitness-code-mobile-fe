@@ -26,7 +26,7 @@ const _layout = () => {
       />
       <Stack.Screen
         name="forgot-password"
-        options={{ headerShown: true, title: "" }}
+        options={{ headerShown: false, title: "" }}
       />
     </Stack>
   );
