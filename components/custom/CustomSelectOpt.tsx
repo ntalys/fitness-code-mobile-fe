@@ -134,5 +134,3 @@ export const CustomSelectOpt = ({
     </Select>
   );
 };
-
-export default CustomSelectOpt;

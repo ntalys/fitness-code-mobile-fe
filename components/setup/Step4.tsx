@@ -1,7 +1,7 @@
 import { Pressable, Keyboard } from "react-native";
 import React, { useEffect } from "react";
 import { H6, Label, Paragraph, Text, YStack } from "tamagui";
-import CustomSelectOpt from "../custom/CustomSelectOpt";
+import { CustomSelectOpt } from "../custom/CustomSelectOpt";
 import {
   Control,
   Controller,
@@ -14,12 +14,12 @@ import { userFitnessExp, UserFitnessExp } from "../../@types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type Step3Props = {
-  fitnessGoal: string[];
-  setFitnessGoal: React.Dispatch<React.SetStateAction<string[]>>;
+  fitnessExp: UserFitnessExp;
+  setFitnessExp: React.Dispatch<React.SetStateAction<string[]>>;
   isStep4Valid: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Step4 = ({ fitnessExp, setFitnessExp, isStep4Valid }) => {
+const Step4 = ({ fitnessExp, setFitnessExp, isStep4Valid }: Step3Props) => {
   const { fitnessLevel, workoutFrequency } = fitnessExp;
 
   const {
@@ -30,8 +30,8 @@ const Step4 = ({ fitnessExp, setFitnessExp, isStep4Valid }) => {
     resolver: zodResolver(userFitnessExp),
     mode: "onChange",
     defaultValues: {
-      fitnessLevel: fitnessLevel || "",
-      workoutFrequency: workoutFrequency || "",
+      fitnessLevel: fitnessLevel,
+      workoutFrequency: workoutFrequency,
     },
   });
 

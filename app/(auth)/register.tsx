@@ -8,24 +8,25 @@ import {
   XStack,
   YStack,
 } from "tamagui";
-import config from "../tamagui.config";
+import config from "../../tamagui.config";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
-import { Step1, Step2, Step3, Step4, Step5 } from "../components/setup";
+import { Step1, Step2, Step3, Step4, Step5 } from "../../components/setup";
 import {
   KeyboardAvoidingView,
   KeyboardProvider,
 } from "react-native-keyboard-controller";
 import { Alert, Platform, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { user, User } from "../@types/user";
+import Toast from "react-native-toast-message";
+import { LoadingSpinner } from "../../components/custom/LoadingSpinner";
 
 export default function Page() {
   const router = useRouter();
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
@@ -63,49 +64,54 @@ export default function Page() {
 
   const [acceptConditions, setAcceptConditions] = useState(false);
 
-  const methods = useForm<User>({
-    resolver: zodResolver(user),
-    mode: "all", // validates automatically as the user types
-    reValidateMode: "onChange", // optional but recommended
-    defaultValues: {
-      userPersonalInformation: {
-        fname: "",
-        lname: "",
-        gender: undefined,
-        dateOfBirth: undefined,
-        email: "",
-        password: "",
-      },
-      userPhysicalMeasurements: {
-        height: {
-          unit: undefined,
-          value: undefined,
-        },
-        weight: {
-          unit: undefined,
-          value: undefined,
-        },
-      },
-      userFitnessGoal: undefined,
-      userFitnessExp: {
-        fitnessLevel: undefined,
-        workoutFrequency: undefined,
-      },
-    },
-  });
-
-  const onSubmit = () => {
-    console.log("data: ", {
+  const onSubmit = async () => {
+    const payload = {
       personalInfo,
       physicalMeasurements,
-      fitnessGaol,
+      fitnessGoal,
       fitnessExp,
-    });
+      acceptConditions,
+    };
+    setIsLoading(() => true);
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/auth/sign-up",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // 🧠 important so Express can parse JSON
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unknown server error");
+      }
+
+      Toast.show({
+        type: "success",
+        text1: data.message,
+      });
+      setTimeout(() => {
+        router.replace("/");
+      }, 800);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: error.message,
+      });
+    } finally {
+      setIsLoading(() => false);
+    }
   };
+
   async function onProgressStepIncrease() {
     if (step === 5) {
-      onSubmit();
-      router.replace("/home");
+      await onSubmit();
       return;
     }
     setProgress(progress + 20);
@@ -139,6 +145,9 @@ export default function Page() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}>
             {/* Header */}
+            <XStack z="$5">
+              <Toast />
+            </XStack>
             <XStack justify="center" px="$4" pt="$4">
               <H3>Setup Your Profile</H3>
 
@@ -171,8 +180,6 @@ export default function Page() {
               </Progress>
             </YStack>
 
-            {/* Scrollable step content */}
-            {/* <FormProvider {...methods}> */}
             <ScrollView
               contentContainerStyle={{
                 flexGrow: 1,
@@ -205,43 +212,30 @@ export default function Page() {
                 ))}
               </YStack>
             </ScrollView>
-            {/* </FormProvider> */}
-
             <YStack p={25} mb={40}>
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
-                <Pressable
-                  onPress={() => {
-                    if (step == 5 && !acceptConditions) {
-                      Alert.alert(
-                        "Alert",
-                        "Please accept terms and conditions"
-                      );
-                    }
-                  }}>
-                  {step === 5 ? (
-                    <Button
-                      disabled={!acceptConditions}
-                      disabledStyle={{ opacity: 0.5 }}
-                      size="$5"
-                      iconAfter={Check}
-                      onPress={onProgressStepIncrease}
-                      theme="accent">
-                      {"Complete Setup"}
-                    </Button>
-                  ) : (
-                    <Button
-                      disabled={!disableContinueBtn}
-                      disabledStyle={{ opacity: 0.5 }}
-                      size="$5"
-                      iconAfter={ArrowRight}
-                      onPress={onProgressStepIncrease}
-                      theme="accent">
-                      {"Continue"}
-                    </Button>
-                  )}
-                </Pressable>
+                {step === 5 ? (
+                  <Button
+                    size="$5"
+                    iconAfter={Check}
+                    onPress={onProgressStepIncrease}
+                    theme="accent">
+                    {"Complete Setup"}
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={!disableContinueBtn}
+                    disabledStyle={{ opacity: 0.5 }}
+                    size="$5"
+                    iconAfter={ArrowRight}
+                    onPress={onProgressStepIncrease}
+                    theme="accent">
+                    {"Continue"}
+                  </Button>
+                )}
               </XStack>
             </YStack>
+            {isLoading && <LoadingSpinner />}
           </KeyboardAvoidingView>
         </KeyboardProvider>
       </TamaguiProvider>
