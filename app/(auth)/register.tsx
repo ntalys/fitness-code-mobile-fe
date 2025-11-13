@@ -97,8 +97,8 @@ export default function Page() {
         text1: data.message,
       });
       setTimeout(() => {
-        // router.replace("/");
-      }, 2000);
+        router.replace("/");
+      }, 800);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -216,23 +216,23 @@ export default function Page() {
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
                 {step === 5 ? (
                   <Button
-                      size="$5"
-                      iconAfter={Check}
-                      onPress={onProgressStepIncrease}
-                      theme="accent">
-                      {"Complete Setup"}
-                    </Button>
-                  ) : (
-                    <Button
-                      disabled={!disableContinueBtn}
-                      disabledStyle={{ opacity: 0.5 }}
-                      size="$5"
-                      iconAfter={ArrowRight}
-                      onPress={onProgressStepIncrease}
-                      theme="accent">
-                      {"Continue"}
-                    </Button>
-                  )}
+                    size="$5"
+                    iconAfter={Check}
+                    onPress={onProgressStepIncrease}
+                    theme="accent">
+                    {"Complete Setup"}
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={!disableContinueBtn}
+                    disabledStyle={{ opacity: 0.5 }}
+                    size="$5"
+                    iconAfter={ArrowRight}
+                    onPress={onProgressStepIncrease}
+                    theme="accent">
+                    {"Continue"}
+                  </Button>
+                )}
               </XStack>
             </YStack>
             {isLoading && <LoadingSpinner />}
