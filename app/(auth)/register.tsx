@@ -212,7 +212,11 @@ export default function Page() {
                 {step === 5 ? (
                   <Button
                     size="$5"
-                    iconAfter={Check}
+                    iconAfter={
+                      <Check
+                        color={colorScheme === "dark" ? "white" : "black"}
+                      />
+                    }
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Complete Setup"}
