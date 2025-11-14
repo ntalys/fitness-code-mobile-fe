@@ -7,27 +7,19 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {
-  Button,
-  H4,
-  Input,
-  ScrollView,
-  TamaguiProvider,
-  Text,
-  XStack,
-  YStack,
-} from "tamagui";
+import { Button, H4, Input, ScrollView, Text, XStack, YStack } from "tamagui";
 import {
   KeyboardAvoidingView,
   KeyboardProvider,
 } from "react-native-keyboard-controller";
 
-import config from "../../tamagui.config";
 import { Dumbbell, Eye, EyeOff, LogIn } from "lucide-react-native";
 import { useState } from "react";
+import { useColorScheme } from "react-native";
 
 export default function index() {
   const router = useRouter();
+  const colorScheme = useColorScheme();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,127 +34,137 @@ export default function index() {
 
   return (
     <SafeAreaProvider>
-      <TamaguiProvider config={config}>
-        <KeyboardProvider>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}>
-            <ImageBackground
-              source={require("../../assets/bg-gym.jpg")}
-              style={styles.background}
-              resizeMode="cover"
-              blurRadius={6} // 👈 adds blur to the image
+      {/* <TamaguiProvider config={config}> */}
+      <KeyboardProvider>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}>
+          <ImageBackground
+            source={require("../../assets/bg-gym.jpg")}
+            style={styles.background}
+            resizeMode="cover"
+            blurRadius={6} // 👈 adds blur to the image
+          >
+            <Pressable
+              onPress={() => Keyboard.dismiss()}
+              style={{ width: "100%" }}
+              android_disableSound={false} // optional for Android
             >
-              <Pressable
-                onPress={() => Keyboard.dismiss()}
-                style={{ width: "100%" }}
-                android_disableSound={false} // optional for Android
-              >
-                <ScrollView
-                  contentContainerStyle={{
-                    flexGrow: 1,
-                    paddingBottom: 20,
-                  }}>
-                  <XStack justify="center">
-                    <YStack
-                      p={30}
-                      width={"90%"}
-                      bg={"rgba(0,0,0,0.7)"}
-                      justify="center"
-                      gap={20}
-                      rounded={8}>
-                      <XStack justify="center">
-                        <XStack bg={"$accent1"} rounded={6} p={20}>
-                          <Dumbbell size={34} />
-                        </XStack>
+              <ScrollView
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  paddingBottom: 20,
+                }}>
+                <XStack justify="center">
+                  <YStack
+                    p={30}
+                    width={"90%"}
+                    bg={"rgba(0,0,0,0.7)"}
+                    justify="center"
+                    gap={20}
+                    rounded={8}>
+                    <XStack justify="center">
+                      <XStack bg={"$accent1"} rounded={6} p={20}>
+                        <Dumbbell size={34} />
                       </XStack>
+                    </XStack>
+                    <XStack justify="center">
+                      <H4 color={"white"} justify="center">
+                        Sign in to your account
+                      </H4>
+                    </XStack>
+                    <YStack width={"100%"} gap={20}>
                       <XStack justify="center">
-                        <H4 color={"white"} justify="center">
-                          Sign in to your account
-                        </H4>
+                        <Input
+                          width={"90%"}
+                          id="email"
+                          value={email}
+                          onChangeText={onChangeEmail}
+                          defaultValue=""
+                          keyboardAppearance="default"
+                          keyboardType="default"
+                          placeholder="Email address"></Input>
                       </XStack>
-                      <YStack width={"100%"} gap={20}>
+                      <YStack position="relative">
                         <XStack justify="center">
                           <Input
-                            width={"90%"}
-                            id="email"
-                            value={email}
-                            onChangeText={onChangeEmail}
-                            defaultValue=""
-                            keyboardAppearance="default"
-                            keyboardType="default"
-                            placeholder="Email address"></Input>
+                            id="password"
+                            value={password}
+                            onChangeText={onChangePassword}
+                            placeholder="Password"
+                            secureTextEntry={!showPassword}
+                            width="90%"
+                          />
+                          <Button
+                            unstyled
+                            onPress={togglePasswordVisibility}
+                            position="absolute"
+                            t={0}
+                            r={20}
+                            height="100%"
+                            width={40}
+                            justify="center"
+                            alignItems="center">
+                            {showPassword ? (
+                              <Eye
+                                color={
+                                  colorScheme === "dark" ? "white" : "black"
+                                }
+                              />
+                            ) : (
+                              <EyeOff
+                                color={
+                                  colorScheme === "dark" ? "white" : "black"
+                                }
+                              />
+                            )}
+                          </Button>
                         </XStack>
-                        <YStack position="relative">
-                          <XStack justify="center">
-                            <Input
-                              id="password"
-                              value={password}
-                              onChangeText={onChangePassword}
-                              placeholder="Password"
-                              secureTextEntry={!showPassword}
-                              width="90%"
-                            />
+                        <XStack justify="flex-end" p={20}>
+                          <Text
+                            textDecorationLine="underline"
+                            onPress={() => router.replace("/forgot-password")}
+                            color={"white"}>
+                            Forgot your password ?
+                          </Text>
+                        </XStack>
+                        <YStack gap={20}>
+                          <XStack justify="center" width={"100%"}>
                             <Button
-                              unstyled
-                              onPress={togglePasswordVisibility}
-                              position="absolute"
-                              t={0}
-                              right={20}
-                              height="100%"
-                              width={40}
-                              justifyContent="center"
-                              alignItems="center">
-                              {showPassword ? <Eye /> : <EyeOff />}
+                              width={"90%"}
+                              iconAfter={<LogIn />}
+                              onPress={() => {
+                                console.log(
+                                  "email: ",
+                                  email,
+                                  "password: ",
+                                  password
+                                );
+                                router.replace("/home");
+                              }}>
+                              Sign In
                             </Button>
                           </XStack>
-                          <XStack justify="flex-end" p={20}>
+                          <XStack justify="center" width={"100%"} gap={5}>
+                            <Text color={"white"}>Don't have an account?</Text>
                             <Text
                               textDecorationLine="underline"
-                              onPress={() => router.replace("/forgot-password")}
+                              onPress={() => router.push("/register")}
                               color={"white"}>
-                              Forgot your password ?
+                              Sign Up
                             </Text>
                           </XStack>
-                          <YStack gap={20}>
-                            <XStack justify="center" width={"100%"}>
-                              <Button
-                                width={"90%"}
-                                iconAfter={<LogIn />}
-                                onPress={() => {
-                                  console.log(
-                                    "email: ",
-                                    email,
-                                    "password: ",
-                                    password
-                                  );
-                                  router.replace("/home");
-                                }}>
-                                Sign In
-                              </Button>
-                            </XStack>
-                            <XStack justify="center" width={"100%"} gap={5}>
-                              <Text color={"white"}>
-                                Don't have an account?
-                              </Text>
-                              <Text
-                                textDecorationLine="underline"
-                                onPress={() => router.push("/register")}
-                                color={"white"}>
-                                Sign Up
-                              </Text>
-                            </XStack>
-                          </YStack>
                         </YStack>
                       </YStack>
                     </YStack>
-                  </XStack>
-                </ScrollView>
-              </Pressable>
-            </ImageBackground>
-          </KeyboardAvoidingView>
-        </KeyboardProvider>
-      </TamaguiProvider>
+                  </YStack>
+                </XStack>
+              </ScrollView>
+            </Pressable>
+          </ImageBackground>
+        </KeyboardAvoidingView>
+      </KeyboardProvider>
+      {/* </TamaguiProvider> */}
     </SafeAreaProvider>
   );
 }
