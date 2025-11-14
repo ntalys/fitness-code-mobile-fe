@@ -223,7 +223,7 @@ export default function Page() {
                   </Button>
                 ) : (
                   <Button
-                    // disabled={!disableContinueBtn}
+                    disabled={!disableContinueBtn}
                     disabledStyle={{ opacity: 0.5 }}
                     size="$5"
                     iconAfter={
