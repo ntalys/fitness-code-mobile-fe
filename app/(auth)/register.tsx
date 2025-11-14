@@ -89,10 +89,10 @@ export default function Page() {
       Toast.show({
         type: "success",
         text1: data.message,
+        onHide: () => {
+          router.replace("/");
+        },
       });
-      setTimeout(() => {
-        router.replace("/");
-      }, 800);
     } catch (error) {
       Toast.show({
         type: "error",
