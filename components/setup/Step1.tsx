@@ -1,29 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  H6,
-  Input,
-  Label,
-  Paragraph,
-  Text,
-  XStack,
-  YStack,
-} from "tamagui";
+import { Button, H6, Input, Label, Paragraph, XStack, YStack } from "tamagui";
 import { CustomSelectOpt } from "../custom/CustomSelectOpt";
 
-import { Keyboard, Platform, Pressable } from "react-native";
+import { Keyboard, Platform, Pressable, useColorScheme } from "react-native";
 
 import PopoverCalendarIOS from "../custom/PopoverCalendarIOS";
 import PopoverCalendarAndroid from "../custom/PopoverCalendarAndroid";
 import { Eye, EyeOff } from "lucide-react-native";
-import {
-  Control,
-  Controller,
-  FieldErrorsImpl,
-  useForm,
-  useFormContext,
-  UseFormWatch,
-} from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   userPersonalInformation,
   UserPersonalInformation,
@@ -39,12 +23,11 @@ type Step1Props = {
 };
 
 const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
+  const colorScheme = useColorScheme();
   const { fname, lname, gender, dateOfBirth, email, password } = personalInfo;
 
   const {
     control,
-    trigger,
-    watch,
     formState: { errors, isValid },
   } = useForm({
     resolver: zodResolver(userPersonalInformation),
@@ -297,7 +280,11 @@ const Step1 = ({ personalInfo, setPersonalInfo, isStep1Valid }: Step1Props) => {
                 height="100%"
                 width={40}
                 justify="center">
-                {showPassword ? <Eye /> : <EyeOff />}
+                {showPassword ? (
+                  <Eye color={colorScheme === "dark" ? "white" : "black"} />
+                ) : (
+                  <EyeOff color={colorScheme === "dark" ? "white" : "black"} />
+                )}
               </Button>
             </YStack>
             {errors && (
