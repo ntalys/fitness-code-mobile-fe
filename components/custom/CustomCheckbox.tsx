@@ -1,5 +1,5 @@
 import { Checkbox, CheckboxProps, Label, XStack } from "tamagui";
-import CustomIcon from "./CustomIcon";
+import { Check } from "lucide-react-native";
 
 export function CustomCheckbox({
   size,
@@ -12,7 +12,7 @@ export function CustomCheckbox({
     <XStack width={300} alignItems="center" gap="$4">
       <Checkbox id={id} size={size} {...checkboxProps}>
         <Checkbox.Indicator>
-          <CustomIcon name="Check" color={"black"} size={20} />
+          <Check />
         </Checkbox.Indicator>
       </Checkbox>
 
