@@ -13,6 +13,7 @@ import {
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Calendar, ChevronDown, ChevronUp } from "lucide-react-native";
+import { useColorScheme } from "react-native";
 
 import { format } from "date-fns";
 
@@ -24,6 +25,8 @@ const PopoverCalendarIOS = (
     date: Date | null;
   }
 ) => {
+  const colorScheme = useColorScheme();
+
   const onChange = (_event: any, selectedDate?: Date) => {
     if (selectedDate) props.setDate(selectedDate);
   };
@@ -47,7 +50,7 @@ const PopoverCalendarIOS = (
             color={"hsla(0, 15%, 50%, 1)"}>
             <Select.Value
               placeholder="dd/mm/yyyy"
-              color={!formattedDate ? "$color10" : "hsla(0, 18%, 15%, 1)"}>
+              color={!formattedDate ? "$color10" : "$color"}>
               {formattedDate}
             </Select.Value>
           </Select.Trigger>
@@ -92,7 +95,7 @@ const PopoverCalendarIOS = (
 
           <Select.Viewport minWidth={200}>
             <Select.Group>
-              <Select.Label textAlign="center" bg={"hsla(0, 15%, 77%, 1)"}>
+              <Select.Label textAlign="center" bg={"$color2"}>
                 Date of Birth
               </Select.Label>
               <View
@@ -104,8 +107,8 @@ const PopoverCalendarIOS = (
                   mode="date"
                   display="inline"
                   onChange={onChange}
-                  themeVariant="light"
-                  textColor="black"
+                  themeVariant={colorScheme === "light" ? "light" : "dark"}
+                  textColor={colorScheme === "light" ? "light" : "dark"}
                   accentColor="hsla(0, 15%, 50%, 1)"
                 />
               </View>

@@ -73,7 +73,7 @@ export const CustomSelectOpt = ({
         color={"hsla(0, 15%, 50%, 1)"}>
         <Select.Value
           placeholder={placeholder}
-          color={!value ? "$color10" : "hsla(0, 18%, 15%, 1)"}
+          color={!value ? "$color10" : "$color"}
         />
       </Select.Trigger>
 
@@ -111,7 +111,7 @@ export const CustomSelectOpt = ({
           <Select.Viewport minWidth={200}>
             <Select.Group>
               {labelTitle && (
-                <Select.Label textAlign="center" bg={"hsla(0, 15%, 77%, 1)"}>
+                <Select.Label textAlign="center" bg={"$color2"}>
                   {labelTitle}
                 </Select.Label>
               )}

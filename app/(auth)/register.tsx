@@ -1,14 +1,5 @@
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {
-  Button,
-  H3,
-  Progress,
-  TamaguiProvider,
-  Text,
-  XStack,
-  YStack,
-} from "tamagui";
-import config from "../../tamagui.config";
+import { Button, H3, Progress, Text, XStack, YStack } from "tamagui";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../../components/setup";
@@ -16,12 +7,15 @@ import {
   KeyboardAvoidingView,
   KeyboardProvider,
 } from "react-native-keyboard-controller";
-import { Alert, Platform, Pressable, ScrollView } from "react-native";
+import { Platform, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
 import { LoadingSpinner } from "../../components/custom/LoadingSpinner";
+import { useColorScheme } from "react-native";
 
 export default function Page() {
+  const colorScheme = useColorScheme();
+
   const router = useRouter();
   const [progress, setProgress] = useState(20);
   const [step, setStep] = useState(1);
@@ -95,10 +89,10 @@ export default function Page() {
       Toast.show({
         type: "success",
         text1: data.message,
+        onHide: () => {
+          router.replace("/");
+        },
       });
-      setTimeout(() => {
-        router.replace("/");
-      }, 800);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -139,11 +133,11 @@ export default function Page() {
 
   return (
     <SafeAreaProvider>
-      <TamaguiProvider config={config} defaultTheme="light">
-        <KeyboardProvider>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}>
+      <KeyboardProvider>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}>
+          <YStack height={"100%"} bg={"$color2"}>
             {/* Header */}
             <XStack z="$5">
               <Toast />
@@ -154,6 +148,7 @@ export default function Page() {
               {step > 1 && (
                 <Button
                   unstyled
+                  color={colorScheme === "dark" ? "white" : "black"}
                   size="$6"
                   pt="$4"
                   icon={ArrowLeft}
@@ -175,7 +170,7 @@ export default function Page() {
                 <Text>{progress}%</Text>
               </XStack>
 
-              <Progress value={progress} max={100} bg="white">
+              <Progress value={progress} max={100} bg="$color3">
                 <Progress.Indicator animation="quick" bg="$accent4" />
               </Progress>
             </YStack>
@@ -187,7 +182,7 @@ export default function Page() {
                 paddingBottom: 20,
               }}
               keyboardShouldPersistTaps="handled">
-              <YStack bg="white" rounded="$6" p="$4">
+              <YStack bg="$color3" rounded="$6" p="$4">
                 {Object.entries(currStepComponent).map(([key, Comp]) => (
                   <YStack
                     key={key}
@@ -217,7 +212,11 @@ export default function Page() {
                 {step === 5 ? (
                   <Button
                     size="$5"
-                    iconAfter={Check}
+                    iconAfter={
+                      <Check
+                        color={colorScheme === "dark" ? "white" : "black"}
+                      />
+                    }
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Complete Setup"}
@@ -227,7 +226,11 @@ export default function Page() {
                     disabled={!disableContinueBtn}
                     disabledStyle={{ opacity: 0.5 }}
                     size="$5"
-                    iconAfter={ArrowRight}
+                    iconAfter={
+                      <ArrowRight
+                        color={colorScheme === "dark" ? "white" : "black"}
+                      />
+                    }
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Continue"}
@@ -236,9 +239,9 @@ export default function Page() {
               </XStack>
             </YStack>
             {isLoading && <LoadingSpinner />}
-          </KeyboardAvoidingView>
-        </KeyboardProvider>
-      </TamaguiProvider>
+          </YStack>
+        </KeyboardAvoidingView>
+      </KeyboardProvider>
     </SafeAreaProvider>
   );
 }

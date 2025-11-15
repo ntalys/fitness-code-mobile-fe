@@ -1,18 +1,10 @@
 import { Keyboard, Pressable, View } from "react-native";
 import React, { useState } from "react";
-import {
-  Button,
-  H6,
-  Image,
-  Input,
-  Paragraph,
-  Text,
-  XStack,
-  YStack,
-} from "tamagui";
+import { Button, H6, Input, Paragraph, XStack, YStack } from "tamagui";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import ForgotPassword from "../../assets/forgotPassword.svg";
 
 const forgotPassword = () => {
   const router = useRouter();
@@ -27,13 +19,9 @@ const forgotPassword = () => {
         style={{ width: "100%" }}
         android_disableSound={false} // optional for Android
       >
-        <YStack bg={"white"} height={"100%"} gap={7}>
+        <YStack bg={"$color2"} height={"100%"} gap={7} pt={40}>
           <XStack justify="center">
-            <Image
-              width={300}
-              height={250}
-              source={require("../../assets/forgot-password.png")}
-            />
+            <ForgotPassword width={300} height={325} />
           </XStack>
 
           <YStack justify="center">

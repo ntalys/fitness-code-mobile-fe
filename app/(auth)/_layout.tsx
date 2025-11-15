@@ -18,15 +18,25 @@ const _layout = () => {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
         name="register"
-        options={{ headerShown: true, title: "", headerBackTitle: "back" }}
+        options={{
+          headerShown: true,
+          title: "",
+          headerBackTitle: "back",
+          headerBackButtonDisplayMode: "default",
+          headerStyle: { backgroundColor: "$color2" },
+        }}
       />
       <Stack.Screen
         name="policies"
-        options={{ headerShown: true, title: "", headerBackTitle: "back" }}
+        options={{
+          headerShown: true,
+          title: "",
+          headerBackTitle: "back",
+        }}
       />
       <Stack.Screen
         name="forgot-password"
-        options={{ headerShown: true, title: "" }}
+        options={{ headerShown: false, title: "" }}
       />
     </Stack>
   );
