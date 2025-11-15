@@ -23,7 +23,9 @@ const _layout = () => {
           title: "",
           headerBackTitle: "back",
           headerBackButtonDisplayMode: "default",
-          headerStyle: { backgroundColor: "black" },
+          headerStyle: {
+            backgroundColor: colorScheme === "dark" ? "black" : "white",
+          },
         }}
       />
       <Stack.Screen
