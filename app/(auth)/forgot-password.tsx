@@ -19,7 +19,7 @@ const forgotPassword = () => {
         style={{ width: "100%" }}
         android_disableSound={false} // optional for Android
       >
-        <YStack bg={"$color2"} height={"100%"} gap={7} pt={40}>
+        <YStack bg={"$background"} height={"100%"} gap={7} pt={40}>
           <XStack justify="center">
             <ForgotPassword width={300} height={325} />
           </XStack>
