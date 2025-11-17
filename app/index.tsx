@@ -15,6 +15,16 @@ export default function Index() {
     });
   }, []);
 
+  AsyncStorage.getAllKeys((err, keys) => {
+    AsyncStorage.multiGet(keys, (error, stores) => {
+      stores.map((result, i, store) => {
+        console.log({ [store[i][0]]: store[i][1] });
+        return true;
+      });
+      AsyncStorage.clear();
+    });
+  });
+
   if (!loaded) return null;
 
   if (!firstTime) return <Redirect href="(auth)/" />;
