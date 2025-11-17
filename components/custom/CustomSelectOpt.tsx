@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Check, ChevronDown, ChevronUp } from "lucide-react-native";
 import { Adapt, Select, SelectProps, Sheet, Text, YStack } from "tamagui";
+import { useColorScheme } from "react-native";
 
 type Item = { name: string; value: string; disabled?: boolean; msg?: string };
 
@@ -26,6 +27,8 @@ export const CustomSelectOpt = ({
   onOpenChange,
   ...props
 }: CustomSelectOptProps) => {
+  const colorScheme = useColorScheme();
+
   const options = useMemo(
     () =>
       items.map((item, index) => (
@@ -40,7 +43,10 @@ export const CustomSelectOpt = ({
             {item.name}
           </Select.ItemText>
           <Select.ItemIndicator marginLeft="auto">
-            <Check size={20} />
+            <Check
+              size={20}
+              color={colorScheme === "dark" ? "white" : "black"}
+            />
           </Select.ItemIndicator>
         </Select.Item>
       )),

@@ -81,8 +81,11 @@ export default function Page() {
       );
 
       const data = await response.json();
+      console.log("data: ", data);
 
       if (!response.ok) {
+        console.log("data: ", data);
+
         throw new Error(data.message || "Unknown server error");
       }
 
@@ -212,11 +215,7 @@ export default function Page() {
                 {step === 5 ? (
                   <Button
                     size="$5"
-                    iconAfter={
-                      <Check
-                        color={colorScheme === "dark" ? "white" : "black"}
-                      />
-                    }
+                    iconAfter={<Check />}
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Complete Setup"}
@@ -226,11 +225,7 @@ export default function Page() {
                     disabled={!disableContinueBtn}
                     disabledStyle={{ opacity: 0.5 }}
                     size="$5"
-                    iconAfter={
-                      <ArrowRight
-                        color={colorScheme === "dark" ? "white" : "black"}
-                      />
-                    }
+                    iconAfter={<ArrowRight />}
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Continue"}
