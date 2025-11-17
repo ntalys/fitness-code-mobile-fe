@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import { XStack, YStack, Button } from "tamagui";
+import React, { useRef, useState } from "react";
+import { XStack, YStack, Button, Text } from "tamagui";
 import OnBoardingSlider from "../../components/on-boarding/OnBoardingSlider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useColorScheme } from "react-native";
@@ -9,6 +9,8 @@ import Welcome from "../../assets/on-boarding/welcome.svg";
 import ProgressOverview from "../../assets/on-boarding/progressOverview.svg";
 import PlanWorkout from "../../assets/on-boarding/planWorkout.svg";
 import BuildForYou from "../../assets/on-boarding/coach.svg";
+import Carousel from "react-native-reanimated-carousel";
+import { Dimensions } from "react-native";
 
 import { ArrowRight } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,6 +18,7 @@ const OnBoarding = () => {
   const width = Dimensions.get("window").width;
   const colorScheme = useColorScheme(); // "light" | "dark"
   const router = useRouter();
+  const carouselRef = useRef(null);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
@@ -67,19 +70,35 @@ const OnBoarding = () => {
           </Button>
         </XStack>
         <YStack justify="center" gap={40}>
-          <XStack justify="center">
-            <OnBoardingSlider
-              svg={slides[currentSlide].svg}
-              title={slides[currentSlide].title}
-              description={slides[currentSlide].description}
-            />
-          </XStack>
+          <Carousel
+            ref={carouselRef}
+            key={slides.length}
+            width={width}
+            height={500}
+            data={slides}
+            pagingEnabled
+            onSnapToItem={(index) => setCurrentSlide(index)}
+            renderItem={({ item }) => (
+              <XStack justify="center">
+                <OnBoardingSlider
+                  svg={item.svg}
+                  title={item.title}
+                  description={item.description}
+                />
+              </XStack>
+            )}
+          />
           <YStack justify="center">
             <XStack justify="center" gap={5}>
               {slides.map((_, index) => (
                 <DotIndicator
                   key={index}
-                  onPress={() => setCurrentSlide(index)}
+                  onPress={() =>
+                    carouselRef.current?.scrollTo({
+                      index,
+                      animated: true,
+                    })
+                  }
                   active={index === currentSlide}
                 />
               ))}
@@ -91,14 +110,12 @@ const OnBoarding = () => {
               theme="accent"
               color={"$color"}
               onPress={() => {
-                setCurrentSlide((prev) => {
-                  if (prev < slides.length - 1) {
-                    return prev + 1;
-                  }
-                  router.push("(auth)");
+                if (currentSlide < slides.length - 1) {
+                  carouselRef.current.next();
+                } else {
                   AsyncStorage.setItem("onboarded", "true");
-                  return prev;
-                });
+                  router.push("(auth)");
+                }
               }}
               iconAfter={
                 <ArrowRight
@@ -115,3 +132,18 @@ const OnBoarding = () => {
 };
 
 export default OnBoarding;
+
+// () => {
+//                 console.log("here: ", slides.length - 1);
+//                 console.log("slides.length: ", slides.length);
+
+//                 if (currentSlide < slides.length - 1) {
+//                   carouselRef.current?.scrollTo({
+//                     index: currentSlide + 1,
+//                     animated: true,
+//                   });
+//                 } else {
+//                   AsyncStorage.setItem("onboarded", "true");
+//                   router.push("(auth)");
+//                 }
+//               }
