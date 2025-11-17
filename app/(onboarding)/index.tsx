@@ -132,18 +132,3 @@ const OnBoarding = () => {
 };
 
 export default OnBoarding;
-
-// () => {
-//                 console.log("here: ", slides.length - 1);
-//                 console.log("slides.length: ", slides.length);
-
-//                 if (currentSlide < slides.length - 1) {
-//                   carouselRef.current?.scrollTo({
-//                     index: currentSlide + 1,
-//                     animated: true,
-//                   });
-//                 } else {
-//                   AsyncStorage.setItem("onboarded", "true");
-//                   router.push("(auth)");
-//                 }
-//               }
