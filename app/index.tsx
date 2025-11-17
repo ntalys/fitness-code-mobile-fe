@@ -17,7 +17,7 @@ export default function Index() {
 
   if (!loaded) return null;
 
-  if (!firstTime) return <Redirect href="(auth)/login" />;
+  if (!firstTime) return <Redirect href="(auth)/" />;
 
   return <Redirect href="(onboarding)/" />;
 }
