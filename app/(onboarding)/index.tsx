@@ -12,7 +12,8 @@ import BuildForYou from "../../assets/on-boarding/coach.svg";
 
 import { ArrowRight } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const welcome = () => {
+const OnBoarding = () => {
+  const width = Dimensions.get("window").width;
   const colorScheme = useColorScheme(); // "light" | "dark"
   const router = useRouter();
 
@@ -113,4 +114,4 @@ const welcome = () => {
   );
 };
 
-export default welcome;
+export default OnBoarding;
