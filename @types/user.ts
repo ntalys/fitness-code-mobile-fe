@@ -77,30 +77,26 @@ export const userFitnessExp = z.object({
 
 export type UserFitnessExp = z.infer<typeof userFitnessExp>;
 
-export const userAcceptTermsAndConditions = z
-  .boolean()
-  .superRefine((val, ctx) => {
-    if (val === false || val === undefined || val === null) {
-      console.log("val: ", val);
+export const acceptConditions = z.boolean().superRefine((val, ctx) => {
+  if (val === false || val === undefined || val === null) {
+    console.log("val: ", val);
 
-      ctx.addIssue({
-        code: "custom",
-        message: "Terms and Condition must be accepted",
-        input: val,
-      });
-    }
-  });
+    ctx.addIssue({
+      code: "custom",
+      message: "Terms and Condition must be accepted",
+      input: val,
+    });
+  }
+});
 
-export type UserAcceptTermsAndConditions = z.infer<
-  typeof userAcceptTermsAndConditions
->;
+export type UserAcceptTermsAndConditions = z.infer<typeof acceptConditions>;
 
 export const user = z.object({
   userPersonalInformation,
   userPhysicalMeasurements,
   userFitnessGoal,
   userFitnessExp,
-  userAcceptTermsAndConditions,
+  acceptConditions,
 });
 
 export type User = z.infer<typeof user>;
