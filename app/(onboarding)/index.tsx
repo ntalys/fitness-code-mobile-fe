@@ -11,6 +11,7 @@ import PlanWorkout from "../../assets/on-boarding/planWorkout.svg";
 import BuildForYou from "../../assets/on-boarding/coach.svg";
 
 import { ArrowRight } from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const welcome = () => {
   const colorScheme = useColorScheme(); // "light" | "dark"
   const router = useRouter();
@@ -55,7 +56,12 @@ const welcome = () => {
       }}>
       <YStack width={"100%"} height={"100%"} justify="center">
         <XStack position="absolute" t={10} r={24}>
-          <Button unstyled onPress={() => router.push("(auth)")}>
+          <Button
+            unstyled
+            onPress={() => {
+              AsyncStorage.setItem("onboarded", "true");
+              router.push("(auth)");
+            }}>
             skip
           </Button>
         </XStack>
@@ -86,12 +92,11 @@ const welcome = () => {
               onPress={() => {
                 setCurrentSlide((prev) => {
                   if (prev < slides.length - 1) {
-                    return prev + 1; // move to next slide
+                    return prev + 1;
                   }
-
-                  // last slide → navigate
                   router.push("(auth)");
-                  return prev; // keep same value
+                  AsyncStorage.setItem("onboarded", "true");
+                  return prev;
                 });
               }}
               iconAfter={
