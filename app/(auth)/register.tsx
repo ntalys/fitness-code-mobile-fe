@@ -216,6 +216,7 @@ export default function Page() {
                   <Button
                     size="$5"
                     iconAfter={<Check />}
+                    fontWeight={"500"}
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Complete Setup"}
@@ -224,6 +225,7 @@ export default function Page() {
                   <Button
                     disabled={!disableContinueBtn}
                     disabledStyle={{ opacity: 0.5 }}
+                    fontWeight={"500"}
                     size="$5"
                     iconAfter={<ArrowRight />}
                     onPress={onProgressStepIncrease}

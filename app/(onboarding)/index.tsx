@@ -108,6 +108,7 @@ const OnBoarding = () => {
             <Button
               width={360}
               theme="accent"
+              fontWeight={"500"}
               color={"$color"}
               onPress={() => {
                 if (currentSlide < slides.length - 1) {
