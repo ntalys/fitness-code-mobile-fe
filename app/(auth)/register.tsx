@@ -90,16 +90,22 @@ export default function Page() {
       }
 
       Toast.show({
-        type: "success",
-        text1: data.message,
+        type: "SToast",
+        text1: "Success",
+        text2: data.message,
+        visibilityTime: 2000,
+        autoHide: true,
         onHide: () => {
           router.replace("/");
         },
       });
     } catch (error) {
       Toast.show({
-        type: "error",
-        text1: error.message,
+        type: "EToast",
+        text1: "An error occurred",
+        text2: error.message,
+        visibilityTime: 2000,
+        autoHide: true,
       });
     } finally {
       setIsLoading(() => false);
