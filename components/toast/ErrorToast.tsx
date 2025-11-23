@@ -16,16 +16,19 @@ const ErrorToast = ({ ...props }) => {
     widthProgress.value = 1;
   }, []);
 
-  // const rootView = useAnimatedStyle(() => ({
-  //   height: withTiming(`${showMsg && props.text2 ? 90 : 60}%`, {
-  //     easing: Easing.inOut(Easing.quad),
-  //     reduceMotion: ReduceMotion.System,
-  //   }),
-  //   backgroundColor: props.colorScheme === "light" ? "white" : "black",
-  //   borderLeftColor: "red",
-  //   borderLeftWidth: 8,
-  //   borderRadius: 6,
-  // }));
+  const rootView = useAnimatedStyle(() => ({
+    height: withTiming(showMsg && props.text2 ? 90 : 60, {
+      easing: Easing.inOut(Easing.quad),
+      reduceMotion: ReduceMotion.System,
+    }),
+    alignItems: "center",
+    justifyContent: "center",
+    width: "88%",
+    backgroundColor: props.colorScheme === "light" ? "white" : "black",
+    borderLeftColor: "red",
+    borderLeftWidth: 6,
+    borderRadius: 10,
+  }));
 
   const visibilityBar = useAnimatedStyle(() => ({
     width: withTiming(`${widthProgress.value * 98}%`, {
@@ -33,6 +36,8 @@ const ErrorToast = ({ ...props }) => {
       easing: Easing.inOut(Easing.quad),
       reduceMotion: ReduceMotion.System,
     }),
+    borderBottomEndRadius: 8,
+    borderBottomStartRadius: 8,
     backgroundColor: "red",
     position: "absolute",
     bottom: 0,
@@ -41,13 +46,7 @@ const ErrorToast = ({ ...props }) => {
   }));
 
   return (
-    <YStack
-      height={showMsg && props.text2 ? 90 : 60}
-      width={"88%"}
-      bg={props.colorScheme === "light" ? "white" : "black"}
-      borderLeftColor={"$red10"}
-      borderLeftWidth={8}
-      rounded={6}>
+    <Animated.View style={rootView}>
       <Button
         unstyled
         position="absolute"
@@ -89,7 +88,7 @@ const ErrorToast = ({ ...props }) => {
           bg={"$green10"}
           height={4}></XStack> */}
       </YStack>
-    </YStack>
+    </Animated.View>
   );
 };
 
