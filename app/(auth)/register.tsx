@@ -112,6 +112,8 @@ export default function Page() {
     }
   };
 
+  useEffect(() => Toast.hide(), [acceptConditions]);
+
   async function onProgressStepIncrease() {
     if (step === 5) {
       await onSubmit();
