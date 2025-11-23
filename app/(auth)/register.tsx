@@ -224,7 +224,7 @@ export default function Page() {
                   <Button
                     size="$5"
                     iconAfter={<Check />}
-                    fontWeight={"500"}
+                    fontWeight={"400"}
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Complete Setup"}
