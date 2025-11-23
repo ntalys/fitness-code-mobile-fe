@@ -93,12 +93,14 @@ const OnBoarding = () => {
               {slides.map((_, index) => (
                 <DotIndicator
                   key={index}
-                  onPress={() =>
+                  onPress={() => {
+                    const carouselRefIndex =
+                      carouselRef.current?.getCurrentIndex();
                     carouselRef.current?.scrollTo({
-                      index,
+                      index: carouselRefIndex,
                       animated: true,
-                    })
-                  }
+                    });
+                  }}
                   active={index === currentSlide}
                 />
               ))}
