@@ -19,10 +19,10 @@ const config = (colorScheme) => ({
   ),
 });
 
-const ToastInSteroids2 = () => {
+const ToastInSteroids = () => {
   const colorScheme = useColorScheme();
 
   return <Toast config={config(colorScheme)} />;
 };
 
-export default ToastInSteroids2;
+export default ToastInSteroids;
