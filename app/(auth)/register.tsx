@@ -151,7 +151,7 @@ export default function Page() {
           <YStack height={"100%"} bg={"$color2"}>
             {/* Header */}
             <XStack z="$5">
-              <Toast />
+              <ToastInSteroids />
             </XStack>
             <XStack justify="center" px="$4" pt="$4">
               <H3>Setup Your Profile</H3>
