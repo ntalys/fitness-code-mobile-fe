@@ -94,10 +94,8 @@ const OnBoarding = () => {
                 <DotIndicator
                   key={index}
                   onPress={() => {
-                    const carouselRefIndex =
-                      carouselRef.current?.getCurrentIndex();
                     carouselRef.current?.scrollTo({
-                      index: carouselRefIndex,
+                      index,
                       animated: true,
                     });
                   }}
