@@ -12,7 +12,6 @@ import Animated, {
 const InfoToast = ({ ...props }) => {
   const widthProgress = useSharedValue(0); // 0 → 1
   const [showMsg, setShowMsg] = useState(false);
-
   useEffect(() => {
     widthProgress.value = 1;
   }, []);
@@ -26,12 +25,12 @@ const InfoToast = ({ ...props }) => {
     justifyContent: "center",
     width: "88%",
     backgroundColor: props.colorScheme === "light" ? "white" : "black",
-    borderLeftColor: "blue",
+    borderLeftColor: "gray",
     borderLeftWidth: 6,
     borderRadius: 10,
   }));
 
-  const animatedStyle = useAnimatedStyle(() => ({
+  const visibilityBar = useAnimatedStyle(() => ({
     width: withTiming(`${widthProgress.value * 98}%`, {
       duration: 2000,
       easing: Easing.inOut(Easing.quad),
@@ -39,7 +38,7 @@ const InfoToast = ({ ...props }) => {
     }),
     borderBottomEndRadius: 8,
     borderBottomStartRadius: 8,
-    backgroundColor: "blue",
+    backgroundColor: "gray",
     position: "absolute",
     bottom: 0,
     height: 4,
@@ -56,36 +55,31 @@ const InfoToast = ({ ...props }) => {
         onPress={() => setShowMsg((preVal) => (preVal = !preVal))}>
         <CustomIcon
           name={showMsg ? "ChevronUp" : "ChevronDown"}
-          color="blue"
+          color="gray"
           size={24}
         />
       </Button>
-      <YStack justify="center" height={"100%"} width={"100%"}>
-        <YStack pl={12} justify="center" gap={10}>
-          <XStack gap={5}>
-            <CustomIcon name="Info" color="blue" size={24} />
-            <YStack justify="center">
-              <Text
-                justify="center"
-                color={props.colorScheme === "light" ? "black" : "white"}>
-                {props.text1}
+
+      <YStack height={"100%"} width={"100%"} justify="center">
+        <XStack gap={12} height={"30%"}>
+          <YStack pl={12} height={"100%"} justify="center">
+            <CustomIcon name="Info" color="gray" size={24} />
+          </YStack>
+          <YStack justify="center">
+            <Text>{props.text1}</Text>
+          </YStack>
+        </XStack>
+
+        <XStack justify="center">
+          <YStack height={"100%"}>
+            {showMsg && props.text2 && (
+              <Text color={props.colorScheme === "light" ? "black" : "white"}>
+                {props.text2}
               </Text>
-            </YStack>
-          </XStack>
-          {showMsg && props.text2 && (
-            <Text color={props.colorScheme === "light" ? "black" : "white"}>
-              {props.text2}
-            </Text>
-          )}
-        </YStack>
-        <Animated.View style={animatedStyle} />
-        {/* <XStack
-          position="absolute"
-          b={0}
-          mx={4}
-          width={"98%"}
-          bg={"$green10"}
-          height={4}></XStack> */}
+            )}
+          </YStack>
+        </XStack>
+        <Animated.View style={visibilityBar} />
       </YStack>
     </Animated.View>
   );

@@ -60,33 +60,26 @@ const ErrorToast = ({ ...props }) => {
         />
       </Button>
 
-      <YStack justify="center" height={"100%"} width={"100%"}>
-        <YStack pl={12} justify="center" gap={10}>
-          <XStack gap={5}>
+      <YStack height={"100%"} width={"100%"} justify="center">
+        <XStack gap={12} height={"30%"}>
+          <YStack pl={12} height={"100%"} justify="center">
             <CustomIcon name="TriangleAlert" color="red" size={24} />
-            <YStack justify="center">
-              <Text
-                justify="center"
-                color={props.colorScheme === "light" ? "black" : "white"}>
-                {props.text1}
-              </Text>
-            </YStack>
-          </XStack>
-          {showMsg && props.text2 && (
-            <Text color={props.colorScheme === "light" ? "black" : "white"}>
-              {props.text2}
-            </Text>
-          )}
-        </YStack>
-        <Animated.View style={visibilityBar} />
+          </YStack>
+          <YStack justify="center">
+            <Text>{props.text1}</Text>
+          </YStack>
+        </XStack>
 
-        {/* <XStack
-          position="absolute"
-          b={0}
-          mx={4}
-          width={"98%"}
-          bg={"$green10"}
-          height={4}></XStack> */}
+        <XStack justify="center">
+          <YStack height={"100%"}>
+            {showMsg && props.text2 && (
+              <Text color={props.colorScheme === "light" ? "black" : "white"}>
+                {props.text2}
+              </Text>
+            )}
+          </YStack>
+        </XStack>
+        <Animated.View style={visibilityBar} />
       </YStack>
     </Animated.View>
   );
