@@ -93,12 +93,12 @@ const OnBoarding = () => {
               {slides.map((_, index) => (
                 <DotIndicator
                   key={index}
-                  onPress={() =>
+                  onPress={() => {
                     carouselRef.current?.scrollTo({
                       index,
                       animated: true,
-                    })
-                  }
+                    });
+                  }}
                   active={index === currentSlide}
                 />
               ))}
@@ -111,7 +111,8 @@ const OnBoarding = () => {
               fontWeight={"500"}
               color={"$color"}
               onPress={() => {
-                if (currentSlide < slides.length - 1) {
+                const index = carouselRef.current?.getCurrentIndex();
+                if (index < slides.length - 1) {
                   carouselRef.current.next();
                 } else {
                   AsyncStorage.setItem("onboarded", "true");

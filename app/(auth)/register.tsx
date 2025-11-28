@@ -1,6 +1,6 @@
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, H3, Progress, Text, XStack, YStack } from "tamagui";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react-native";
 import { Step1, Step2, Step3, Step4, Step5 } from "../../components/setup";
 import {
@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
 import { LoadingSpinner } from "../../components/custom/LoadingSpinner";
 import { useColorScheme } from "react-native";
+import ToastInSteroids from "../../components/toast/ToastInSteroids";
 
 export default function Page() {
   const colorScheme = useColorScheme();
@@ -90,21 +91,29 @@ export default function Page() {
       }
 
       Toast.show({
-        type: "success",
-        text1: data.message,
+        type: "BeastSuccessToast",
+        text1: "Register Success",
+        text2: data.message,
+        visibilityTime: 2000,
+        autoHide: true,
         onHide: () => {
           router.replace("/");
         },
       });
     } catch (error) {
       Toast.show({
-        type: "error",
-        text1: error.message,
+        type: "BeastErrorToast",
+        text1: "Register error",
+        text2: error.message,
+        visibilityTime: 2000,
+        autoHide: true,
       });
     } finally {
       setIsLoading(() => false);
     }
   };
+
+  useEffect(() => Toast.hide(), [acceptConditions]);
 
   async function onProgressStepIncrease() {
     if (step === 5) {
@@ -143,7 +152,7 @@ export default function Page() {
           <YStack height={"100%"} bg={"$color2"}>
             {/* Header */}
             <XStack z="$5">
-              <Toast />
+              <ToastInSteroids />
             </XStack>
             <XStack justify="center" px="$4" pt="$4">
               <H3>Setup Your Profile</H3>
@@ -216,7 +225,7 @@ export default function Page() {
                   <Button
                     size="$5"
                     iconAfter={<Check />}
-                    fontWeight={"500"}
+                    fontWeight={"400"}
                     onPress={onProgressStepIncrease}
                     theme="accent">
                     {"Complete Setup"}
