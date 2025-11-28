@@ -91,7 +91,7 @@ export default function Page() {
       }
 
       Toast.show({
-        type: "SToast",
+        type: "BeastSuccessToast",
         text1: "Register Success",
         text2: data.message,
         visibilityTime: 2000,
@@ -102,7 +102,7 @@ export default function Page() {
       });
     } catch (error) {
       Toast.show({
-        type: "EToast",
+        type: "BeastErrorToast",
         text1: "Register error",
         text2: error.message,
         visibilityTime: 2000,
