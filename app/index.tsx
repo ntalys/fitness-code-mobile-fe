@@ -1,6 +1,13 @@
 import { Redirect } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { YStack } from "tamagui";
+
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
 
 export default function Index() {
   console.log("inside");
@@ -27,7 +34,13 @@ export default function Index() {
 
   if (!loaded) return null;
 
-  if (!firstTime) return <Redirect href="(auth)/" />;
-
-  return <Redirect href="(onboarding)/" />;
+  return (
+    <YStack style={{ flex: 1 }}>
+      {firstTime ? (
+        <Redirect href="(onboarding)/" />
+      ) : (
+        <Redirect href="(auth)/" />
+      )}
+    </YStack>
+  );
 }
