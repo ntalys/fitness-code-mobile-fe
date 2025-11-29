@@ -1,6 +1,5 @@
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import CustomIcon from "../custom/CustomIcon";
-import { View } from "tamagui";
+import { Text, View } from "tamagui";
 
 const TabItem = ({
   iconName,
@@ -23,24 +22,29 @@ const TabItem = ({
   return (
     <View
       style={{
-        alignItems: "center",
         justifyContent: "center",
+        alignItems: "center",
       }}>
       <CustomIcon name={iconName} size={28} color={tintColor} />
 
       {focused && (
-        <Animated.Text
-          entering={FadeIn.duration(450)}
-          exiting={FadeOut.duration(450)}
+        <View
           style={{
+            height: "100%",
             width: "100%",
             marginTop: 6,
-            fontSize: 12,
-            color: tintColor,
-            fontWeight: "500",
           }}>
-          {label}
-        </Animated.Text>
+          <Text
+            style={{
+              width: "100%",
+
+              fontSize: 12,
+              color: tintColor,
+              fontWeight: "500",
+            }}>
+            {label}
+          </Text>
+        </View>
       )}
     </View>
   );
