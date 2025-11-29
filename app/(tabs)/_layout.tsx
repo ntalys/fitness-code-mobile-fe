@@ -1,7 +1,7 @@
 import { Platform, useColorScheme } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
-import CustomIcon from "../../components/custom/CustomIcon";
+import { TabItem } from "../../components/Tabs/TabItem";
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
@@ -11,27 +11,25 @@ const TabLayout = () => {
         screenOptions={{
           animation: "fade",
           headerShown: false,
+          tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor:
               colorScheme === "dark" ? "$hsla(0, 20%, 1%, 1)" : "white",
             borderTopColor:
               colorScheme === "dark" ? "$hsla(0, 20%, 1%, 1)" : "white",
           },
-          // tabBarStyle: Platform.select({
-          //   ios: {
-          //     // Use a transparent background on iOS to show the blur effect
-          //     // position: "absolute",
-          //   },
-          //   default: {},
-          // }),
         }}>
         <Tabs.Screen
           name="home"
           options={{
             title: "Home",
-            tabBarActiveTintColor: "hsla(51, 100%, 54%, 1)",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="House" color={color} size={28} />
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="House"
+                label="Home"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
@@ -39,9 +37,13 @@ const TabLayout = () => {
           name="calendar"
           options={{
             title: "Calendar",
-            tabBarActiveTintColor: "hsla(51, 100%, 54%, 1)",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="Calendar" color={color} size={28} />
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="Calendar"
+                label="Calendar"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
@@ -49,9 +51,13 @@ const TabLayout = () => {
           name="workouts"
           options={{
             title: "Workouts",
-            tabBarActiveTintColor: "hsla(51, 100%, 54%, 1)",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="Dumbbell" color={color} size={28} />
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="Dumbbell"
+                label="Workouts"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
@@ -59,9 +65,13 @@ const TabLayout = () => {
           name="search"
           options={{
             title: "Search",
-            tabBarActiveTintColor: "hsla(51, 100%, 54%, 1)",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="Search" color={color} size={28} />
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="Search"
+                label="Search"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
@@ -69,9 +79,13 @@ const TabLayout = () => {
           name="profile"
           options={{
             title: "Profile",
-            tabBarActiveTintColor: "hsla(51, 100%, 54%, 1)",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="User" color={color} size={28} />
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="User"
+                label="Profile"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
