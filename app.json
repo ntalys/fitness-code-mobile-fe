@@ -1,9 +1,36 @@
 {
   "expo": {
     "scheme": "acme",
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "ios": {
+            "backgroundColor": "#ffffff",
+            "icon": {
+              "dark": "./assets/splash-screen/ios-dark.png",
+              "light": "./assets/splash-screen/ios-light.png",
+              "tinted": "./assets/splash-screen/ios-tinted.png"
+            },
+            "resizeMode": "cover"
+          },
+          "android": {
+            "backgroundColor": "#0c7cff",
+            "image": "./assets/images/splash-android-icon.png",
+            "imageWidth": 150
+          }
+        }
+      ]
+    ],
     "name": "fitness-code-mobile-fe",
     "slug": "fitness-code-mobile-fe",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "android": {
+      "package": "com.anonymous.fitnesscodemobilefe"
+    },
+    "ios": {
+      "bundleIdentifier": "com.anonymous.fitnesscodemobilefe"
+    }
   }
 }
