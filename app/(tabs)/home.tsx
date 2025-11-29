@@ -1,15 +1,24 @@
 import { ChevronRight, User } from "lucide-react-native";
 import React from "react";
+import { useColorScheme } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { YStack, Button, Text } from "tamagui";
 export default function HomeScreen() {
+  const colorScheme = useColorScheme(); // "light" | "dark"
+
   return (
     <>
-      <YStack f={1} ai="center" jc="center" bg="$background">
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor:
+            colorScheme === "dark" ? "$hsla(0, 20%, 1%, 1)" : "white",
+        }}>
+        {/* <YStack flex={1} ai="center" jc="center" bg="red"> */}
         <Text fontSize="$13" color="$color">
           Home
         </Text>
-
-        <YStack f={1} ai="center" jc={"center"}>
+        <YStack ai="center" jc={"center"}>
           <Button
             theme="accent"
             mt="$4"
@@ -19,15 +28,11 @@ export default function HomeScreen() {
             Accent Button
           </Button>
         </YStack>
-
         <Button theme="success" mt="$4">
           Success Button
         </Button>
-
-        <Button theme="error" mt="$4">
-          Error Button
-        </Button>
-      </YStack>
+        {/* </YStack> */}
+      </SafeAreaView>
     </>
   );
 }
