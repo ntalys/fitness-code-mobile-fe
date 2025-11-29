@@ -1,4 +1,4 @@
-import { Platform, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { TabItem } from "../../components/Tabs/TabItem";
