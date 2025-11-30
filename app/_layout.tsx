@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import React from "react";
 import { TamaguiProvider, Theme } from "tamagui";
@@ -15,11 +15,9 @@ const _layout = () => {
       <TamaguiProvider config={config}>
         <Theme name={colorScheme === "dark" ? "dark" : "light"}>
           <Stack screenOptions={{ headerShown: false }}>
-            <SafeAreaProvider>
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="+not-found" />
-            </SafeAreaProvider>
+            <Stack.Screen name="(auth)" />
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="+not-found" />
           </Stack>
         </Theme>
       </TamaguiProvider>

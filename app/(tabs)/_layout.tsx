@@ -1,69 +1,91 @@
-import { Platform, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
-import CustomIcon from "../../components/custom/CustomIcon";
-import { StatusBar } from "expo-status-bar";
+import { TabItem } from "../../components/Tabs/TabItem";
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
   return (
     <>
-      {/* <StatusBar style={colorScheme === "dark" ? "light" : "dark"} /> */}
       <Tabs
         screenOptions={{
-          headerShown: true,
-          title: "",
-          tabBarStyle: Platform.select({
-            ios: {
-              // Use a transparent background on iOS to show the blur effect
-              position: "absolute",
-            },
-            default: {},
-          }),
+          animation: "fade",
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            backgroundColor:
+              colorScheme === "dark" ? "$hsla(0, 20%, 1%, 1)" : "white",
+            borderTopColor:
+              colorScheme === "dark" ? "$hsla(0, 20%, 1%, 1)" : "white",
+          },
         }}>
         <Tabs.Screen
           name="home"
           options={{
             title: "Home",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="House" color={color} size={28} />
-              // <IconSymbol size={28} name={"homekit"} color={color} />
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="House"
+                label="Home"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
         <Tabs.Screen
           name="calendar"
           options={{
-            // title: "Calendar",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="Calendar" color={color} size={28} />
+            title: "Calendar",
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="Calendar"
+                label="Calendar"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
         <Tabs.Screen
           name="workouts"
           options={{
-            // title: "Workouts",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="Dumbbell" color={color} size={28} />
+            title: "Workouts",
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="Dumbbell"
+                label="Workouts"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
         <Tabs.Screen
           name="search"
           options={{
-            // title: "Search",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="Search" color={color} size={28} />
+            title: "Search",
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="Search"
+                label="Search"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
         <Tabs.Screen
           name="profile"
           options={{
-            // title: "Profile",
-            tabBarIcon: ({ color }) => (
-              <CustomIcon name="User" color={color} size={28} />
+            title: "Profile",
+            tabBarIcon: ({ focused }) => (
+              <TabItem
+                iconName="User"
+                label="Profile"
+                focused={focused}
+                colorScheme={colorScheme}
+              />
             ),
           }}
         />
