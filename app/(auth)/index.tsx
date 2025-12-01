@@ -17,6 +17,10 @@ import { Dumbbell, Eye, EyeOff, LogIn } from "lucide-react-native";
 import { useState } from "react";
 import { useColorScheme } from "react-native";
 
+import Toast from "react-native-toast-message";
+import ToastInSteroids from "../../components/toast/ToastInSteroids";
+import { LoadingSpinner } from "../../components/custom/LoadingSpinner";
+
 export default function index() {
   const router = useRouter();
   const colorScheme = useColorScheme();
@@ -24,12 +28,65 @@ export default function index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeEmail = (text: string) => setEmail(() => text);
   const onChangePassword = (text: string) => setPassword(() => text);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const onSignin = async () => {
+    const payload = {
+      email,
+      password,
+    };
+    setIsLoading(() => true);
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/auth/sign-in",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // 🧠 important so Express can parse JSON
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await response.json();
+      console.log("data: ", data);
+
+      if (!response.ok) {
+        console.log("data: ", data);
+
+        throw new Error(data.message || "Unknown server error");
+      }
+
+      Toast.show({
+        type: "BeastSuccessToast",
+        text1: data.message,
+        // text2: data.message,
+        visibilityTime: 2000,
+        autoHide: true,
+        onHide: () => {
+          router.replace("/home");
+        },
+      });
+    } catch (error) {
+      Toast.show({
+        type: "BeastErrorToast",
+        text1: "Logged in error",
+        text2: error.message,
+        visibilityTime: 2000,
+        autoHide: true,
+      });
+    } finally {
+      setIsLoading(() => false);
+    }
   };
 
   return (
@@ -133,15 +190,7 @@ export default function index() {
                             <Button
                               width={"90%"}
                               iconAfter={<LogIn />}
-                              onPress={() => {
-                                console.log(
-                                  "email: ",
-                                  email,
-                                  "password: ",
-                                  password
-                                );
-                                router.replace("/home");
-                              }}>
+                                onPress={() => router.replace("/home")}>
                               Sign In
                             </Button>
                           </XStack>
