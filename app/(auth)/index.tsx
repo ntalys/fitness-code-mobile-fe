@@ -6,20 +6,30 @@ import {
   Keyboard,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Button, H4, Input, ScrollView, Text, XStack, YStack } from "tamagui";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
-  KeyboardAvoidingView,
-  KeyboardProvider,
-} from "react-native-keyboard-controller";
+  Button,
+  H4,
+  Input,
+  Label,
+  Paragraph,
+  ScrollView,
+  Text,
+  XStack,
+  YStack,
+} from "tamagui";
 
-import { Dumbbell, Eye, EyeOff, LogIn } from "lucide-react-native";
+import { Eye, EyeOff, LogIn } from "lucide-react-native";
 import { useState } from "react";
 import { useColorScheme } from "react-native";
 
 import Toast from "react-native-toast-message";
 import ToastInSteroids from "../../components/toast/ToastInSteroids";
 import { LoadingSpinner } from "../../components/custom/LoadingSpinner";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "../../@types/sign-in";
+import CustomIcon from "../../components/custom/CustomIcon";
 
 export default function index() {
   const router = useRouter();
@@ -29,13 +39,27 @@ export default function index() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isToastShown, setIsToastShown] = useState(false);
 
-  const onChangeEmail = (text: string) => setEmail(() => text);
-  const onChangePassword = (text: string) => setPassword(() => text);
+  const onChangeEmail = (text: string) => setEmail((prev) => email);
+
+  const onChangePassword = (text: string) => setPassword((prev) => password);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+
+  const {
+    control,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: zodResolver(signIn),
+    mode: "all",
+    defaultValues: {
+      email,
+      password,
+    },
+  });
 
   const onSignin = async () => {
     const payload = {
@@ -43,7 +67,7 @@ export default function index() {
       password,
     };
     setIsLoading(() => true);
-
+    setIsToastShown(() => true);
     try {
       const response = await fetch(
         "http://localhost:3000/api/v1/auth/sign-in",
@@ -83,6 +107,7 @@ export default function index() {
         text2: error.message,
         visibilityTime: 2000,
         autoHide: true,
+        onHide: () => setIsToastShown(false),
       });
     } finally {
       setIsLoading(() => false);
@@ -90,131 +115,174 @@ export default function index() {
   };
 
   return (
-    <SafeAreaProvider>
-      {/* <TamaguiProvider config={config}> */}
-      <KeyboardProvider>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}>
-          <ImageBackground
-            source={require("../../assets/bg-gym.jpg")}
-            style={styles.background}
-            resizeMode="cover"
-            blurRadius={6} // 👈 adds blur to the image
-          >
-            <Pressable
-              onPress={() => Keyboard.dismiss()}
-              style={{ width: "100%" }}
-              android_disableSound={false} // optional for Android
-            >
-              <ScrollView
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  paddingBottom: 20,
-                }}>
+    <ImageBackground
+      source={require("../../assets/bg-gym.jpg")}
+      style={styles.background}
+      resizeMode="cover"
+      blurRadius={6}>
+      <ToastInSteroids />
+
+      <Pressable
+        onPress={() => Keyboard.dismiss()}
+        style={{ width: "100%" }}
+        android_disableSound={false} // optional for Android
+      >
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingHorizontal: 25,
+            paddingBottom: 20,
+          }}
+          keyboardShouldPersistTaps="handled">
+          <SafeAreaView
+            style={{
+              flex: 1,
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <YStack
+              opacity={1}
+              justify="center"
+              bg="rgba(0,0,0,0.5)"
+              rounded="$6"
+              p="$4"
+              width={360}
+              height={500}>
+              <YStack mb={30} z={2} gap={5}>
                 <XStack justify="center">
-                  <YStack
-                    p={30}
-                    width={"90%"}
-                    bg={"rgba(0,0,0,0.7)"}
-                    justify="center"
-                    gap={20}
-                    rounded={8}>
-                    <XStack justify="center">
-                      <XStack bg={"$accent1"} rounded={6} p={20}>
-                        <Dumbbell size={34} />
-                      </XStack>
-                    </XStack>
-                    <XStack justify="center">
-                      <H4 color={"white"} justify="center">
-                        Sign in to your account
-                      </H4>
-                    </XStack>
-                    <YStack width={"100%"} gap={20}>
-                      <XStack justify="center">
-                        <Input
-                          width={"90%"}
-                          id="email"
-                          value={email}
-                          onChangeText={onChangeEmail}
-                          defaultValue=""
-                          keyboardAppearance="default"
-                          keyboardType="default"
-                          placeholder="Email address"></Input>
-                      </XStack>
-                      <YStack position="relative">
-                        <XStack justify="center">
-                          <Input
-                            id="password"
-                            value={password}
-                            onChangeText={onChangePassword}
-                            placeholder="Password"
-                            secureTextEntry={!showPassword}
-                            width="90%"
-                          />
-                          <Button
-                            unstyled
-                            onPress={togglePasswordVisibility}
-                            position="absolute"
-                            t={0}
-                            r={20}
-                            height="100%"
-                            width={40}
-                            justify="center"
-                            alignItems="center">
-                            {showPassword ? (
-                              <Eye
-                                color={
-                                  colorScheme === "dark" ? "white" : "black"
-                                }
-                              />
-                            ) : (
-                              <EyeOff
-                                color={
-                                  colorScheme === "dark" ? "white" : "black"
-                                }
-                              />
-                            )}
-                          </Button>
-                        </XStack>
-                        <XStack justify="flex-end" p={20}>
-                          <Text
-                            textDecorationLine="underline"
-                            onPress={() => router.replace("/forgot-password")}
-                            color={"white"}>
-                            Forgot your password ?
-                          </Text>
-                        </XStack>
-                        <YStack gap={20}>
-                          <XStack justify="center" width={"100%"}>
-                            <Button
-                              width={"90%"}
-                              iconAfter={<LogIn />}
-                                onPress={() => router.replace("/home")}>
-                              Sign In
-                            </Button>
-                          </XStack>
-                          <XStack justify="center" width={"100%"} gap={5}>
-                            <Text color={"white"}>Don't have an account?</Text>
-                            <Text
-                              textDecorationLine="underline"
-                              onPress={() => router.push("/register")}
-                              color={"white"}>
-                              Sign Up
-                            </Text>
-                          </XStack>
-                        </YStack>
-                      </YStack>
-                    </YStack>
-                  </YStack>
+                  <CustomIcon name={"Dumbbell"} size={48} color="yellow" />
                 </XStack>
-              </ScrollView>
-            </Pressable>
-          </ImageBackground>
-        </KeyboardAvoidingView>
-      </KeyboardProvider>
-      {/* </TamaguiProvider> */}
-    </SafeAreaProvider>
+                <XStack justify="center">
+                  <H4 color={"white"}>Sign In to your Account</H4>
+                </XStack>
+              </YStack>
+
+              <YStack gap={20}>
+                <YStack mt={-20}>
+                  <Label width={90} htmlFor="email" color={"white"}>
+                    Email*
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        value={value}
+                        onChangeText={(text) => {
+                          onChange(text); // update react-hook-form
+                          onChangeEmail(text); // sync with your state
+                        }}
+                        onBlur={onBlur}
+                        defaultValue=""
+                        keyboardAppearance="default"
+                        keyboardType="email-address"
+                        placeholder="name@example.com"
+                      />
+                    )}
+                  />
+                  {errors && (
+                    <Paragraph position="absolute" t={"$12"} color={"red"}>
+                      {errors.email?.message}
+                    </Paragraph>
+                  )}
+                </YStack>
+                <YStack>
+                  <Label width={90} htmlFor="password" color={"white"}>
+                    Password*
+                  </Label>
+                  <YStack width="100%" position="relative" mb={30}>
+                    <Controller
+                      control={control}
+                      name="password"
+                      render={({ field: { onChange, onBlur, value } }) => (
+                        <Input
+                          value={value}
+                          onChangeText={(text) => {
+                            onChange(text); // update react-hook-form
+                            onChangePassword(text); // sync with your state
+                          }}
+                          onBlur={onBlur}
+                          placeholder="Enter your Password"
+                          secureTextEntry={!showPassword}
+                          width="100%"
+                        />
+                      )}
+                    />
+                    <Button
+                      unstyled
+                      onPress={togglePasswordVisibility}
+                      position="absolute"
+                      t={0}
+                      r={10}
+                      height="100%"
+                      width={40}
+                      justify="center">
+                      {showPassword ? (
+                        <Eye
+                          color={colorScheme === "dark" ? "white" : "black"}
+                        />
+                      ) : (
+                        <EyeOff
+                          color={colorScheme === "dark" ? "white" : "black"}
+                        />
+                      )}
+                    </Button>
+                  </YStack>
+                  {errors && (
+                    <Paragraph position="absolute" t={"$12"} color={"red"}>
+                      {errors.password?.message}
+                    </Paragraph>
+                  )}
+                </YStack>
+              </YStack>
+
+              <XStack justify="flex-end">
+                <Text
+                  textDecorationLine="underline"
+                  onPress={() =>
+                    !isToastShown && router.replace("/forgot-password")
+                  }
+                  color={"white"}
+                  mr={3}>
+                  Forgot your password ?
+                </Text>
+              </XStack>
+
+              <YStack justify="center" mt={25}>
+                <XStack justify="center">
+                  <Button
+                    disabled={isToastShown}
+                    disabledStyle={{ opacity: 0.5 }}
+                    width={320}
+                    theme="accent"
+                    fontWeight={"500"}
+                    color={"$color"}
+                    onPress={onSignin}
+                    iconAfter={
+                      <LogIn
+                        color={colorScheme === "dark" ? "white" : "black"}
+                      />
+                    }>
+                    Sign In
+                  </Button>
+                </XStack>
+                <XStack justify="center" width={"100%"} gap={5} mt={20}>
+                  <Text color={"white"}>Don't have an account?</Text>
+                  <Text
+                    textDecorationLine="underline"
+                    onPress={() => !isToastShown && router.push("/register")}
+                    color={"white"}>
+                    Sign Up
+                  </Text>
+                </XStack>
+              </YStack>
+              {isLoading && <LoadingSpinner />}
+            </YStack>
+          </SafeAreaView>
+        </ScrollView>
+      </Pressable>
+    </ImageBackground>
   );
 }
 
