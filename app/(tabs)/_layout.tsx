@@ -2,12 +2,14 @@ import { useColorScheme } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { TabItem } from "../../components/Tabs/TabItem";
+import uuid from "react-native-uuid";
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
   return (
     <>
       <Tabs
+        key={uuid.v4()}
         screenOptions={{
           animation: "fade",
           headerShown: false,
@@ -25,6 +27,7 @@ const TabLayout = () => {
             title: "Home",
             tabBarIcon: ({ focused }) => (
               <TabItem
+                key={uuid.v4()}
                 iconName="House"
                 label="Home"
                 focused={focused}
@@ -39,6 +42,7 @@ const TabLayout = () => {
             title: "Calendar",
             tabBarIcon: ({ focused }) => (
               <TabItem
+                key={uuid.v4()}
                 iconName="Calendar"
                 label="Calendar"
                 focused={focused}
@@ -53,6 +57,7 @@ const TabLayout = () => {
             title: "Workouts",
             tabBarIcon: ({ focused }) => (
               <TabItem
+                key={uuid.v4()}
                 iconName="Dumbbell"
                 label="Workouts"
                 focused={focused}
@@ -67,6 +72,7 @@ const TabLayout = () => {
             title: "Search",
             tabBarIcon: ({ focused }) => (
               <TabItem
+                key={uuid.v4()}
                 iconName="Search"
                 label="Search"
                 focused={focused}
@@ -81,6 +87,7 @@ const TabLayout = () => {
             title: "Profile",
             tabBarIcon: ({ focused }) => (
               <TabItem
+                key={uuid.v4()}
                 iconName="User"
                 label="Profile"
                 focused={focused}
