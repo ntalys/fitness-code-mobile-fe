@@ -28,6 +28,8 @@ export default function Page() {
   const [isStep3Valid, setIsStep3Valid] = useState(false);
   const [isStep4Valid, setIsStep4Valid] = useState(false);
 
+  const [isToastShown, setIsToastShown] = useState(false);
+
   const currStepComponent = {
     1: Step1,
     2: Step2,
@@ -68,6 +70,8 @@ export default function Page() {
       acceptConditions,
     };
     setIsLoading(() => true);
+    setIsToastShown(() => true);
+
     try {
       const response = await fetch(
         "http://localhost:3000/api/v1/auth/sign-up",
@@ -109,6 +113,7 @@ export default function Page() {
         visibilityTime: 2000,
         autoHide: true,
         topOffset: 15,
+        onHide: () => setIsToastShown(false),
       });
     } finally {
       setIsLoading(() => false);
@@ -225,6 +230,8 @@ export default function Page() {
               <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
                 {step === 5 ? (
                   <Button
+                    disabled={isToastShown}
+                    disabledStyle={{ opacity: 0.5 }}
                     size="$5"
                     iconAfter={<Check />}
                     fontWeight={"400"}
