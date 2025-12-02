@@ -200,7 +200,6 @@ export default function Page() {
               flexGrow: 1,
               paddingHorizontal: 25,
             }}
-            snapToStart={true}
             keyboardShouldPersistTaps="handled">
             <YStack bg="$color3" rounded="$6" p="$4">
               {Object.entries(currStepComponent).map(([key, Comp]) => (
