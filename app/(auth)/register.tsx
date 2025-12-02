@@ -96,6 +96,7 @@ export default function Page() {
         text2: data.message,
         visibilityTime: 2000,
         autoHide: true,
+        topOffset: 15,
         onHide: () => {
           router.replace("/");
         },
@@ -107,6 +108,7 @@ export default function Page() {
         text2: error.message,
         visibilityTime: 2000,
         autoHide: true,
+        topOffset: 15,
       });
     } finally {
       setIsLoading(() => false);
