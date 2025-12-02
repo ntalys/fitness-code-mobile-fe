@@ -151,112 +151,112 @@ export default function Page() {
   }, [isStep1Valid, isStep2Valid, isStep3Valid, isStep4Valid, step]);
 
   return (
-    <SafeAreaProvider>
-      <KeyboardProvider>
+    <KeyboardProvider>
+      <YStack height={"100%"} bg={"$color2"}>
+        {/* Header */}
+        <XStack z="$5">
+          <ToastInSteroids />
+        </XStack>
+        <XStack justify="center" px="$4" pt="$4">
+          <H3>Setup Your Profile</H3>
+
+          {step > 1 && (
+            <Button
+              unstyled
+              color={colorScheme === "dark" ? "white" : "black"}
+              size="$6"
+              pt="$4"
+              icon={ArrowLeft}
+              onPress={onProgressStepDecrease}
+              style={{
+                position: "absolute",
+                left: -4,
+                justifyContent: "center",
+                backgroundColor: "transparent",
+              }}
+            />
+          )}
+        </XStack>
+
+        {/* Progress bar */}
+        <YStack px={25} pt={20} pb={10} gap={18}>
+          <XStack justify="space-between">
+            <Text>{step}/5</Text>
+            <Text>{progress}%</Text>
+          </XStack>
+
+          <Progress value={progress} max={100} bg="$color3">
+            <Progress.Indicator animation="quick" bg="$accent4" />
+          </Progress>
+        </YStack>
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}>
-          <YStack height={"100%"} bg={"$color2"}>
-            {/* Header */}
-            <XStack z="$5">
-              <ToastInSteroids />
-            </XStack>
-            <XStack justify="center" px="$4" pt="$4">
-              <H3>Setup Your Profile</H3>
-
-              {step > 1 && (
-                <Button
-                  unstyled
-                  color={colorScheme === "dark" ? "white" : "black"}
-                  size="$6"
-                  pt="$4"
-                  icon={ArrowLeft}
-                  onPress={onProgressStepDecrease}
-                  style={{
-                    position: "absolute",
-                    left: -4,
-                    justifyContent: "center",
-                    backgroundColor: "transparent",
-                  }}
-                />
-              )}
-            </XStack>
-
-            {/* Progress bar */}
-            <YStack px={25} pt={20} pb={10} gap={18}>
-              <XStack justify="space-between">
-                <Text>{step}/5</Text>
-                <Text>{progress}%</Text>
-              </XStack>
-
-              <Progress value={progress} max={100} bg="$color3">
-                <Progress.Indicator animation="quick" bg="$accent4" />
-              </Progress>
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0} // adjust if needed
+        >
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingHorizontal: 25,
+            }}
+            snapToStart={true}
+            keyboardShouldPersistTaps="handled">
+            <YStack bg="$color3" rounded="$6" p="$4">
+              {Object.entries(currStepComponent).map(([key, Comp]) => (
+                <YStack
+                  key={key}
+                  display={step === Number(key) ? "flex" : "none"}>
+                  <Comp
+                    personalInfo={personalInfo}
+                    setPersonalInfo={setPersonalInfo}
+                    physicalMeasurements={physicalMeasurements}
+                    setPhysicalMeasurements={setPhysicalMeasurements}
+                    fitnessGoal={fitnessGoal}
+                    setFitnessGoal={setFitnessGoal}
+                    fitnessExp={fitnessExp}
+                    setFitnessExp={setFitnessExp}
+                    acceptConditionsValue={acceptConditions}
+                    setAcceptConditions={setAcceptConditions}
+                    isStep1Valid={setIsStep1Valid}
+                    isStep2Valid={setIsStep2Valid}
+                    isStep3Valid={setIsStep3Valid}
+                    isStep4Valid={setIsStep4Valid}
+                  />
+                </YStack>
+              ))}
             </YStack>
-
-            <ScrollView
-              contentContainerStyle={{
-                flexGrow: 1,
-                paddingHorizontal: 25,
-                paddingBottom: 20,
-              }}
-              keyboardShouldPersistTaps="handled">
-              <YStack bg="$color3" rounded="$6" p="$4">
-                {Object.entries(currStepComponent).map(([key, Comp]) => (
-                  <YStack
-                    key={key}
-                    display={step === Number(key) ? "flex" : "none"}>
-                    <Comp
-                      personalInfo={personalInfo}
-                      setPersonalInfo={setPersonalInfo}
-                      physicalMeasurements={physicalMeasurements}
-                      setPhysicalMeasurements={setPhysicalMeasurements}
-                      fitnessGoal={fitnessGoal}
-                      setFitnessGoal={setFitnessGoal}
-                      fitnessExp={fitnessExp}
-                      setFitnessExp={setFitnessExp}
-                      acceptConditionsValue={acceptConditions}
-                      setAcceptConditions={setAcceptConditions}
-                      isStep1Valid={setIsStep1Valid}
-                      isStep2Valid={setIsStep2Valid}
-                      isStep3Valid={setIsStep3Valid}
-                      isStep4Valid={setIsStep4Valid}
-                    />
-                  </YStack>
-                ))}
-              </YStack>
-            </ScrollView>
-            <YStack p={25} mb={40}>
-              <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
-                {step === 5 ? (
-                  <Button
-                    disabled={isToastShown}
-                    disabledStyle={{ opacity: 0.5 }}
-                    size="$5"
-                    iconAfter={<Check />}
-                    fontWeight={"400"}
-                    onPress={onProgressStepIncrease}
-                    theme="accent">
-                    {"Complete Setup"}
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={!disableContinueBtn}
-                    disabledStyle={{ opacity: 0.5 }}
-                    fontWeight={"500"}
-                    size="$5"
-                    iconAfter={<ArrowRight />}
-                    onPress={onProgressStepIncrease}
-                    theme="accent">
-                    {"Continue"}
-                  </Button>
-                )}
-              </XStack>
-            </YStack>
-            {isLoading && <LoadingSpinner />}
-          </YStack>
+          </ScrollView>
         </KeyboardAvoidingView>
-      </KeyboardProvider>
-    </SafeAreaProvider>
+        <YStack p={25} mb={40}>
+          <XStack w="$100" justify={step < 5 ? "flex-start" : "center"}>
+            {step === 5 ? (
+              <Button
+                disabled={isToastShown}
+                disabledStyle={{ opacity: 0.5 }}
+                size="$5"
+                iconAfter={<Check />}
+                fontWeight={"400"}
+                onPress={onProgressStepIncrease}
+                theme="accent">
+                {"Complete Setup"}
+              </Button>
+            ) : (
+              <Button
+                disabled={!disableContinueBtn}
+                disabledStyle={{ opacity: 0.5 }}
+                fontWeight={"500"}
+                size="$5"
+                iconAfter={<ArrowRight />}
+                onPress={onProgressStepIncrease}
+                theme="accent">
+                {"Continue"}
+              </Button>
+            )}
+          </XStack>
+        </YStack>
+        {isLoading && <LoadingSpinner />}
+      </YStack>
+    </KeyboardProvider>
   );
 }
