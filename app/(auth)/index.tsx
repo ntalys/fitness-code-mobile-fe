@@ -41,9 +41,9 @@ export default function index() {
   const [isLoading, setIsLoading] = useState(false);
   const [isToastShown, setIsToastShown] = useState(false);
 
-  const onChangeEmail = (text: string) => setEmail((prev) => email);
+  const onChangeEmail = (text: string) => setEmail(() => text);
 
-  const onChangePassword = (text: string) => setPassword((prev) => password);
+  const onChangePassword = (text: string) => setPassword(() => text);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -93,9 +93,9 @@ export default function index() {
       Toast.show({
         type: "BeastSuccessToast",
         text1: data.message,
-        // text2: data.message,
         visibilityTime: 2000,
         autoHide: true,
+        topOffset: 80,
         onHide: () => {
           router.replace("/home");
         },
