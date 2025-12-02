@@ -107,6 +107,7 @@ export default function index() {
         text2: error.message,
         visibilityTime: 2000,
         autoHide: true,
+        topOffset: 80,
         onHide: () => setIsToastShown(false),
       });
     } finally {
