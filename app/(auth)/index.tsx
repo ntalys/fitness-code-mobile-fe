@@ -169,6 +169,8 @@ export default function index() {
                     name="email"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
+                        disabled={isToastShown}
+                        disabledStyle={{ opacity: 0.5 }}
                         value={value}
                         onChangeText={(text) => {
                           onChange(text); // update react-hook-form
@@ -198,6 +200,8 @@ export default function index() {
                       name="password"
                       render={({ field: { onChange, onBlur, value } }) => (
                         <Input
+                          disabled={isToastShown}
+                          disabledStyle={{ opacity: 0.5 }}
                           value={value}
                           onChangeText={(text) => {
                             onChange(text); // update react-hook-form
@@ -211,6 +215,8 @@ export default function index() {
                       )}
                     />
                     <Button
+                      disabled={isToastShown}
+                      disabledStyle={{ opacity: 0.5 }}
                       unstyled
                       onPress={togglePasswordVisibility}
                       position="absolute"
@@ -240,6 +246,8 @@ export default function index() {
 
               <XStack justify="flex-end">
                 <Text
+                  disabled={isToastShown}
+                  disabledStyle={{ opacity: 0.5 }}
                   textDecorationLine="underline"
                   onPress={() =>
                     !isToastShown && router.replace("/forgot-password")
@@ -271,6 +279,8 @@ export default function index() {
                 <XStack justify="center" width={"100%"} gap={5} mt={20}>
                   <Text color={"white"}>Don't have an account?</Text>
                   <Text
+                    disabled={isToastShown}
+                    disabledStyle={{ opacity: 0.5 }}
                     textDecorationLine="underline"
                     onPress={() => !isToastShown && router.push("/register")}
                     color={"white"}>
