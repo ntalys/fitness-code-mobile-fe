@@ -70,7 +70,7 @@ export default function index() {
     setIsToastShown(() => true);
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/auth/sign-in",
+        "http://localhost:8000/api/v1/auth/sign-in",
         {
           method: "POST",
           headers: {
