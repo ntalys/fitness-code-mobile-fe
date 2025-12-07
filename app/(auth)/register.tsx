@@ -74,7 +74,7 @@ export default function Page() {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/auth/sign-up",
+        "http://localhost:8000/api/v1/auth/sign-up",
         {
           method: "POST",
           headers: {
