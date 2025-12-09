@@ -221,6 +221,7 @@ export default function Page() {
                     isStep2Valid={setIsStep2Valid}
                     isStep3Valid={setIsStep3Valid}
                     isStep4Valid={setIsStep4Valid}
+                    isToastShown={isToastShown}
                   />
                 </YStack>
               ))}
