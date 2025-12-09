@@ -11,6 +11,7 @@ const Step5 = ({
   fitnessExp,
   acceptConditionsValue = false,
   setAcceptConditions,
+  isToastShown,
 }) => {
   const router = useRouter();
   return (
@@ -157,6 +158,8 @@ const Step5 = ({
         <YStack py={12}>
           <XStack px={6} alignItems="center" gap="$2">
             <Checkbox
+              disabled={isToastShown}
+              disabledStyle={{ opacity: 0.5 }}
               name="userAcceptTermsAndConditions"
               size={"$4"}
               value={acceptConditionsValue}
@@ -169,6 +172,8 @@ const Step5 = ({
             <Text px={12}>
               I accept and agree to comply with{" "}
               <Text
+                disabled={isToastShown}
+                disabledStyle={{ opacity: 0.5 }}
                 textDecorationLine="underline"
                 onPress={() => router.push("/policies")}
                 color={"$color10"}>
