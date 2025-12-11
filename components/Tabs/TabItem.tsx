@@ -1,5 +1,5 @@
 import CustomIcon from "../custom/CustomIcon";
-import { Text, View } from "tamagui";
+import { Text, View, XStack, YStack } from "tamagui";
 
 const TabItem = ({
   iconName,
@@ -20,33 +20,34 @@ const TabItem = ({
   const tintColor = focused ? activeColor : inactiveColor;
 
   return (
-    <View
+    <YStack
       style={{
+        backgroundColor: "red",
         justifyContent: "center",
         alignItems: "center",
+        height: "100%",
+        width: "0%",
       }}>
       <CustomIcon name={iconName} size={28} color={tintColor} />
 
       {focused && (
-        <View
+        <YStack
           style={{
-            height: "100%",
-            width: "100%",
-            marginTop: 6,
+            position: "relative",
+            marginTop: 2,
           }}>
           <Text
             style={{
               width: "100%",
-
               fontSize: 12,
               color: tintColor,
               fontWeight: "500",
             }}>
             {label}
           </Text>
-        </View>
+        </YStack>
       )}
-    </View>
+    </YStack>
   );
 };
 

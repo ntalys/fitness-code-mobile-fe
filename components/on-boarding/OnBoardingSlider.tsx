@@ -10,7 +10,7 @@ const OnBoardingSlider = ({ svg, title, description }) => {
       p="$4"
       width={360}
       height={500}>
-      <XStack justify="center" width={300} height={300}>
+      <XStack justify="center" width={"100%"} height={300}>
         {svg}
       </XStack>
       <YStack justify="center" gap={20}>
