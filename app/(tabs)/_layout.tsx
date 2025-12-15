@@ -1,11 +1,21 @@
 import { useColorScheme } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
+import React, { useEffect } from "react";
+import { Tabs, useRouter } from "expo-router";
 import { TabItem } from "../../components/Tabs/TabItem";
 import uuid from "react-native-uuid";
+import { useAuth } from "../../context/AuthContext";
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
+  const router = useRouter();
+  const { token } = useAuth();
+
+  useEffect(() => {
+    if (!token) {
+      router.replace("(auth)/");
+    }
+  }, [token]);
+
   return (
     <>
       <Tabs

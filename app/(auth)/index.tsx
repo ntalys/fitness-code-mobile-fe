@@ -30,15 +30,19 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "../../@types/sign-in";
 import CustomIcon from "../../components/custom/CustomIcon";
+import { useAuth } from "../../context/AuthContext";
 
 export default function index() {
   const router = useRouter();
   const colorScheme = useColorScheme();
+  const { login, loading } = useAuth();
+
+  console.log("loading : ", loading);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isToastShown, setIsToastShown] = useState(false);
 
   const onChangeEmail = (text: string) => setEmail(() => text);
@@ -62,34 +66,11 @@ export default function index() {
   });
 
   const onSignin = async () => {
-    const payload = {
-      email,
-      password,
-    };
-    setIsLoading(() => true);
-    setIsToastShown(() => true);
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/auth/sign-in",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json", // 🧠 important so Express can parse JSON
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+    const data = await login(email, password);
 
-      const data = await response.json();
-      console.log("data: ", data);
+    setIsToastShown(true);
 
-      if (!response.ok) {
-        console.log("data: ", data);
-
-        throw new Error(data.message || "Unknown server error");
-      }
-
+    if (data.success) {
       Toast.show({
         type: "BeastSuccessToast",
         text1: data.message,
@@ -98,20 +79,19 @@ export default function index() {
         topOffset: 80,
         onHide: () => {
           router.replace("/home");
+          setIsToastShown(false);
         },
       });
-    } catch (error) {
+    } else {
       Toast.show({
         type: "BeastErrorToast",
         text1: "Logged in error",
-        text2: error.message,
+        text2: data.message,
         visibilityTime: 2000,
         autoHide: true,
         topOffset: 80,
         onHide: () => setIsToastShown(false),
       });
-    } finally {
-      setIsLoading(() => false);
     }
   };
 
@@ -288,7 +268,7 @@ export default function index() {
                   </Text>
                 </XStack>
               </YStack>
-              {isLoading && <LoadingSpinner />}
+              {loading && <LoadingSpinner />}
             </YStack>
           </SafeAreaView>
         </ScrollView>

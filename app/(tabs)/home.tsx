@@ -3,8 +3,17 @@ import React from "react";
 import { useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { YStack, Button, Text } from "tamagui";
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "expo-router";
 export default function HomeScreen() {
   const colorScheme = useColorScheme(); // "light" | "dark"
+  const router = useRouter();
+  const { logout } = useAuth();
+
+  const onSignOut = async () => {
+    const res = await logout();
+    router.replace("(auth)/");
+  };
 
   return (
     <>
@@ -20,6 +29,7 @@ export default function HomeScreen() {
         </Text>
         <YStack ai="center" jc={"center"}>
           <Button
+            onPress={onSignOut}
             theme="accent"
             mt="$4"
             icon={User}
