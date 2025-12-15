@@ -1,8 +1,9 @@
 export interface User {
   id: number;
-  username: string;
+  fname: string;
+  lname: string;
   email: string;
-  role: "admin" | "user";
+  // role: "admin" | "user";
 }
 
 export interface AuthContextType {
