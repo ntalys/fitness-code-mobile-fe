@@ -2,11 +2,13 @@ import { User } from "lucide-react-native";
 import React from "react";
 import { useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, Text, YStack } from "tamagui";
+import { Text } from "tamagui";
+import { useAuth } from "../../context/AuthContext";
 
 const ProfileScreen = () => {
   const colorScheme = useColorScheme(); // "light" | "dark"
 
+  const { user } = useAuth();
   return (
     <SafeAreaView
       style={{
@@ -17,6 +19,8 @@ const ProfileScreen = () => {
       <Text fontSize="$13" color="$color">
         Profile
       </Text>
+
+      <Text>{JSON.stringify(user)}</Text>
     </SafeAreaView>
   );
 };
