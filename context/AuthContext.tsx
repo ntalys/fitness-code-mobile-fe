@@ -21,14 +21,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loadStoredAuth = async () => {
     try {
-      const [storedToken] = await Promise.all([
+      const [storedToken, storedUser] = await Promise.all([
         AsyncStorage.getItem("authToken"),
-        // AsyncStorage.getItem("userData"),
+        AsyncStorage.getItem("userData"),
       ]);
 
       if (storedToken) {
         setToken(storedToken);
-        // setUser(JSON.parse(storedUser));
+        setUser(JSON.parse(storedUser));
       }
     } finally {
       setLoading(false);
@@ -54,12 +54,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await Promise.all([
           AsyncStorage.setItem("authToken", data.token),
 
-          //   AsyncStorage.setItem("userData", JSON.stringify(data.user)),
+          AsyncStorage.setItem("userData", JSON.stringify(data.user)),
         ]);
 
         setIsAuthenticated(true);
         setToken(data.token);
-        // setUser(data.user);
+        setUser(data.user);
 
         return data;
       }
