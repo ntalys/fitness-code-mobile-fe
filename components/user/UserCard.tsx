@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Avatar,
-  H4,
-  H6,
-  Paragraph,
-  Separator,
-  Text,
-  XStack,
-  YStack,
-} from "tamagui";
+import { Avatar, H4, H6, Separator, Text, XStack, YStack } from "tamagui";
 import CustomIcon from "../custom/CustomIcon";
 
 const UserCard = ({
@@ -72,42 +63,57 @@ const UserCard = ({
           </XStack>
         </YStack>
 
-        <Separator my={15} />
+        <Separator my={20} />
 
-        <YStack gap={20}>
-          <XStack justify="space-between">
-            {/* Column 1 */}
-            <YStack flex={1} gap={6}>
+        <XStack justify="space-between">
+          <YStack gap={10}>
+            <XStack justify="center">
               <CustomIcon
                 name="Calendar"
                 color="hsla(0, 15%, 50%, 1)"
                 size={24}
               />
-              <Text fontWeight={700}>{registerDate?.split("T")[0] ?? ""}</Text>
+            </XStack>
+            <XStack justify="center">
+              <Text>{registerDate.split("T")[0] ?? ""}</Text>
+            </XStack>
+            <XStack justify="center">
               <Text color="#888">Member Since</Text>
-            </YStack>
-            {/* Column 2 */}
-            <YStack flex={1} gap={6}>
+            </XStack>
+          </YStack>
+
+          <YStack gap={10}>
+            <XStack justify="center">
               <CustomIcon
                 name="Trophy"
                 color="hsla(0, 15%, 50%, 1)"
                 size={24}
               />
-              <Text fontWeight={700}>here1</Text>
+            </XStack>
+            <XStack justify="center">
+              <Text>175</Text>
+            </XStack>
+            <XStack justify="center">
               <Text color="#888">Total Workouts</Text>
-            </YStack>
-            {/* Column 3 */}
-            <YStack flex={1} gap={6}>
+            </XStack>
+          </YStack>
+
+          <YStack gap={10}>
+            <XStack justify="center">
               <CustomIcon
                 name="ChartSpline"
                 color="hsla(0, 15%, 50%, 1)"
                 size={24}
               />
-              <Text fontWeight={700}>here1</Text>
+            </XStack>
+            <XStack justify="center">
+              <Text>175 days</Text>
+            </XStack>
+            <XStack justify="center">
               <Text color="#888">Current Streak</Text>
-            </YStack>
-          </XStack>
-        </YStack>
+            </XStack>
+          </YStack>
+        </XStack>
       </YStack>
     </YStack>
   );
