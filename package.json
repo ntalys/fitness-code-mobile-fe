@@ -25,6 +25,7 @@
     "@tamagui/portal": "^1.132.23",
     "@tamagui/progress": "^1.132.23",
     "@tamagui/stacks": "^1.132.23",
+    "@tamagui/switch": "^1.141.5",
     "@tamagui/text": "^1.132.23",
     "@tamagui/themes": "^1.132.23",
     "date-fns": "^4.1.0",
