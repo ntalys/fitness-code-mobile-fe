@@ -20,27 +20,28 @@ const ProfileScreen = () => {
         backgroundColor:
           colorScheme === "dark" ? "$hsla(0, 20%, 1%, 1)" : "white",
       }}>
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          // paddingHorizontal: 25,
-        }}
-        keyboardShouldPersistTaps="handled">
-        <LinearGradient
-          gap={10}
-          width={"100%"}
-          rounded="$2"
-          colors={["$background", "$color3"]}
-          start={[1, 1]}
-          end={[0, 1]}>
-          <XStack pl={20} mt={10}>
-            <Text fontSize="$10" color="$color">
-              Profile
-            </Text>
-          </XStack>
+      <LinearGradient
+        gap={10}
+        width={"100%"}
+        height={"100%"}
+        rounded="$2"
+        colors={["$background", "$color3"]}
+        start={[1, 1]}
+        end={[0, 1]}>
+        <XStack pl={20} mt={10} position="relative">
+          <Text fontSize="$10" color="$color">
+            Profile
+          </Text>
+        </XStack>
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            mt: 10,
+          }}
+          keyboardShouldPersistTaps="handled">
           <ProfileCard user={user} />
-        </LinearGradient>
-      </ScrollView>
+        </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 };
