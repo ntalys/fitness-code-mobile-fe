@@ -16,12 +16,8 @@ export default function Index() {
     });
   }, []);
 
-  // AsyncStorage.clear();
-
-  // ⛔ Wait for EVERYTHING
   if (loading || !onboardingChecked) return null;
 
-  // ✅ Decision tree (ONLY redirects)
   if (firstTime) {
     return <Redirect href="(onboarding)/" />;
   }

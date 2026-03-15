@@ -1,31 +1,33 @@
 import { Stack } from "expo-router";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
 import React from "react";
 import { TamaguiProvider, Theme } from "tamagui";
 
 import config from "../tamagui.config";
-import { useColorScheme } from "react-native";
 import { AuthProvider } from "../context/AuthContext";
+import { ThemeProvider, useTheme } from "../context/ThemeContext";
 
-const _layout = () => {
-  const colorScheme = useColorScheme(); // "light" | "dark"
+const RootLayoutNav = () => {
+  const { resolvedTheme } = useTheme();
 
   return (
-    <>
-      <AuthProvider>
-        <TamaguiProvider config={config}>
-          <Theme name={colorScheme === "dark" ? "dark" : "light"}>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </Theme>
-        </TamaguiProvider>
-      </AuthProvider>
-    </>
+    <TamaguiProvider config={config}>
+      <Theme name={resolvedTheme}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </Theme>
+    </TamaguiProvider>
   );
 };
 
-export default _layout;
+export default function Layout() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </ThemeProvider>
+  );
+}
