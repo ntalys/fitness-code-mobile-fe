@@ -17,9 +17,6 @@ const ProfileCard = (props: { user: User }) => {
   const router = useRouter();
   const { logout } = useAuth();
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggleDarkMode = () => setIsDarkMode((previousState) => !previousState);
-
   const [isPushNotifications, setIsPushNotifications] = useState(false);
   const togglePushNotifications = () =>
     setIsPushNotifications((previousState) => !previousState);
