@@ -22,7 +22,7 @@ const ProfileCard = (props: { user: User }) => {
     setIsPushNotifications((previousState) => !previousState);
 
   const onSignOut = async () => {
-    const res = await logout();
+    await logout();
     router.replace("(auth)/");
   };
 
