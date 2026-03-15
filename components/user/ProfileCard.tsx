@@ -94,8 +94,12 @@ const ProfileCard = (props: { user: User }) => {
         <CustomIcon name="Moon" color="hsla(0, 15%, 50%, 1)" size={24} />
       ),
       title: "Dark Mode",
-      rightIcon: <Switch value={isDarkMode} onChange={toggleDarkMode}></Switch>,
-      onPress: toggleDarkMode,
+      rightIcon: (
+        <Switch
+          value={theme === "dark"}
+          onValueChange={(value) => setTheme(value ? "dark" : "light")}
+        />
+      ),
     },
     {
       leftIcon: (
