@@ -9,10 +9,10 @@ import { useAuth } from "../../context/AuthContext";
 import { User } from "../../@types/auth";
 import GroupButtons from "../custom/GroupButtons";
 import CustomIcon from "../custom/CustomIcon";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProfileCard = (props: { user: User }) => {
-  console.log("props", props.user);
-  const colorScheme = useColorScheme();
+  const { theme, setTheme } = useTheme();
 
   const router = useRouter();
   const { logout } = useAuth();
